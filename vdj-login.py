@@ -4,6 +4,7 @@ import json
 import requests
 from agavepy.agave import Agave
 import argparse
+import os.path
 
 def parse_response(resp):
     token_info = resp.json()
@@ -24,19 +25,37 @@ def refresh(token_url, username, refresh_token):
     resp.raise_for_status()
     return parse_response(resp)
 
-parser = argparse.ArgumentParser()
-parser.add_argument('-u','--username', dest = 'username')
-parser.add_argument('-p', '--password', dest = 'password')
-parser.add_argument('-r', '--refresh', dest = 'refresh')
-args = parser.parse_args()
+def to_vdjapi(access_token, refresh_token):
+    with open(os.path.expanduser('~/.hidden'), 'r') as json_file:
+        json_dict = json.load(json_file)
+    json_file.close()
 
-token_url = 'https://vdjserver.org:443/api/v1/token'
+    json_dict['access_token'] = unicode(access_token)
+    json_dict['refresh_token'] = unicode(refresh_token)
 
-if args.refresh != None:
-    (access_token, refresh_token) = refresh(token_url, args.username, args.refresh)
+    with open(os.path.expanduser('~/.hidden'), 'w') as json_file:
+        json.dump(json_dict, json_file)
+    json_file.close()
+    return
 
-else:
-    (access_token, refresh_token) = create(token_url, args.username, args.password)
+#######################################################################################
 
-print 'Access token is:', access_token
-print 'Refresh token is:', refresh_token
+if __name__ == '__main__':
+
+    parser = argparse.ArgumentParser()
+    parser.add_argument('-u','--username', dest = 'username')
+    parser.add_argument('-p', '--password', dest = 'password')
+    parser.add_argument('-r', '--refresh', dest = 'refresh')
+    args = parser.parse_args()
+
+    token_url = 'https://vdjserver.org:443/api/v1/token'
+
+    if args.refresh != None:
+        (access_token, refresh_token) = refresh(token_url, args.username, args.refresh)
+
+    else:
+        (access_token, refresh_token) = create(token_url, args.username, args.password)
+
+    to_vdjapi(access_token, refresh_token)
+    print 'Access token is:', access_token
+    print 'Refresh token is:', refresh_token
