@@ -5,6 +5,7 @@ import requests
 from agavepy.agave import Agave
 import argparse
 import os.path
+import getpass
 
 def parse_response(resp):
     token_info = resp.json()
@@ -38,23 +39,46 @@ def to_vdjapi(access_token, refresh_token):
     json_file.close()
     return
 
+def get_from_json_file(key, file_path):
+    if os.path.isfile(os.path.expanduser(file_path)) is True:
+        with open(os.path.expanduser(file_path), 'r') as json_file:
+            json_dict = json.load(json_file)
+        json_file.close()
+        return str(json_dict[key])
+    else:
+        print 'Unable to find file', file_path
+        print 'Enter your', key.replace('_', ' ') + ':',
+        return_key = raw_input('')
+        return return_key
+
 #######################################################################################
 
 if __name__ == '__main__':
 
     parser = argparse.ArgumentParser()
-    parser.add_argument('-u','--username', dest = 'username')
-    parser.add_argument('-p', '--password', dest = 'password')
-    parser.add_argument('-r', '--refresh', dest = 'refresh')
+    parser.add_argument('-u', '--username', required = False, dest = 'username', default = None, nargs = '?')
+    parser.add_argument('-p', '--password', required = False, dest = 'password', default = 'not used', nargs = '?')
+    parser.add_argument('-r', '--refresh', required = False, dest = 'refresh', default = 'not used', nargs = '?')
     args = parser.parse_args()
 
     token_url = 'https://vdjserver.org:443/api/v1/token'
 
-    if args.refresh != None:
-        (access_token, refresh_token) = refresh(token_url, args.username, args.refresh)
+    if args.username is None: # if no username given
+        args.username = get_from_json_file('username', '~/.hidden')
+        print 'Username:', args.username
 
-    else:
+    if args.refresh is not 'not used': # if refresh token given
+        if args.refresh is None: # if refresh token not specified
+            args.refresh = get_from_json_file('refresh_token', '~/.hidden')
+        print 'Refresh token:', args.refresh
+        (access_token, refresh_token) = refresh(token_url, args.username, args.refresh)
+        print 'Successfully refreshed token'
+
+    else: #if no refresh token given
+        if args.password is None or args.password is 'not used': # if no password specified
+            args.password = getpass.getpass('Enter your password: ')
         (access_token, refresh_token) = create(token_url, args.username, args.password)
+        print 'Successfully created token'
 
     to_vdjapi(access_token, refresh_token)
     print 'Access token is:', access_token
