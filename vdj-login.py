@@ -49,7 +49,6 @@ def get_from_json_file(key, file_path):
         json_file.close()
         return str(json_dict[key])
     else:
-        else:
         print 'Unable to find file', file_path
         print 'Enter your', key.replace('_', ' ') + ':',
         return_key = raw_input('')
