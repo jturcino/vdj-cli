@@ -82,7 +82,7 @@ if __name__ == '__main__':
 
     else: #if no refresh token given
         if args.password is None or args.password is 'not used': # if no password specified
-            args.passworld = getpass.getpass('Enter your password: ')
+            args.password = getpass.getpass('Enter your password: ')
         (access_token, refresh_token) = create(token_url, args.username, args.password)
         print 'Successfully created token'
 
