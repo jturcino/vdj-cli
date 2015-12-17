@@ -30,13 +30,13 @@ def refresh(token_url, username, refresh_token):
     return parse_response(resp)
 
 def to_vdjapi(access_token, refresh_token):
-    """Replace access and refresh tokens in ~/.hidden with current versions."""
-    with open(os.path.expanduser('~/.hidden'), 'r') as json_file:
+    """Replace access and refresh tokens in ~/.vdjapi with current versions."""
+    with open(os.path.expanduser('~/.vdjapi'), 'r') as json_file:
         json_dict = json.load(json_file)
     json_file.close()
     json_dict['access_token'] = unicode(access_token)
     json_dict['refresh_token'] = unicode(refresh_token)
-    with open(os.path.expanduser('~/.hidden'), 'w') as json_file:
+    with open(os.path.expanduser('~/.vdjapi'), 'w') as json_file:
         json.dump(json_dict, json_file)
     json_file.close()
     return
@@ -70,19 +70,19 @@ if __name__ == '__main__':
 
     # logic for arguments
     if args.username is None: # if no username given
-        args.username = get_from_json_file('username', '~/.hidden')
+        args.username = get_from_json_file('username', '~/.vdjapi')
         print 'Username:', args.username
 
     if args.refresh is not 'not used': # if refresh token given
         if args.refresh is None: # if refresh token not specified
-            args.refresh = get_from_json_file('refresh_token', '~/.hidden')
+            args.refresh = get_from_json_file('refresh_token', '~/.vdjapi')
         print 'Refresh token:', args.refresh
         (access_token, refresh_token) = refresh(token_url, args.username, args.refresh)
         print 'Successfully refreshed token'
 
     else: #if no refresh token given
         if args.password is None or args.password is 'not used': # if no password specified
-            args.password = getpass.getpass('Enter your password: ')
+            args.passworld = getpass.getpass('Enter your password: ')
         (access_token, refresh_token) = create(token_url, args.username, args.password)
         print 'Successfully created token'
 
