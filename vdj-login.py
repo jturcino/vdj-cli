@@ -54,11 +54,10 @@ def read_cache(file_path, key):
         return None
 
 def prompt_user(key):
+    """Promp user to enter value for given key at command line."""
     print 'Enter your', key.replace('_', ' ') + ':',
     return_key = raw_input('')
     return return_key
-
-#######################################################################################
 
 if __name__ == '__main__':
 
