@@ -29,19 +29,20 @@ def refresh(token_url, username, refresh_token):
     resp.raise_for_status()
     return parse_response(resp)
 
-def to_vdjapi(access_token, refresh_token):
+def write_cache(file_path, access_token, refresh_token):
     """Replace access and refresh tokens in ~/.vdjapi with current versions."""
-    with open(os.path.expanduser('~/.vdjapi'), 'r') as json_file:
-        json_dict = json.load(json_file)
-    json_file.close()
-    json_dict['access_token'] = unicode(access_token)
-    json_dict['refresh_token'] = unicode(refresh_token)
-    with open(os.path.expanduser('~/.vdjapi'), 'w') as json_file:
-        json.dump(json_dict, json_file)
-    json_file.close()
+    if os.path.isfile(os.path.expanduser(file_path)) is True:
+        with open(os.path.expanduser(file_path), 'r') as json_file:
+            json_dict = json.load(json_file)
+        json_file.close()
+        json_dict['access_token'] = unicode(access_token)
+        json_dict['refresh_token'] = unicode(refresh_token)
+        with open(os.path.expanduser(file_path), 'w') as json_file:
+            json.dump(json_dict, json_file)
+        json_file.close()
     return
 
-def get_from_json_file(key, file_path):
+def read_cache(file_path, key):
     """Get the value corresponding to key. Defaults to given file, but uses input upon failure."""
     if os.path.isfile(os.path.expanduser(file_path)) is True:
         with open(os.path.expanduser(file_path), 'r') as json_file:
@@ -49,10 +50,13 @@ def get_from_json_file(key, file_path):
         json_file.close()
         return str(json_dict[key])
     else:
-        print 'Unable to find file', file_path
-        print 'Enter your', key.replace('_', ' ') + ':',
-        return_key = raw_input('')
-        return return_key
+        print 'No cache found'
+        return None
+
+def prompt_user(key):
+    print 'Enter your', key.replace('_', ' ') + ':',
+    return_key = raw_input('')
+    return return_key
 
 #######################################################################################
 
@@ -61,32 +65,39 @@ if __name__ == '__main__':
     # arguments
     parser = argparse.ArgumentParser()
     parser.add_argument('-u', '--username', required = False, dest = 'username', default = None, nargs = '?')
-    parser.add_argument('-p', '--password', required = False, dest = 'password', default = 'not used', nargs = '?')
-    parser.add_argument('-r', '--refresh', required = False, dest = 'refresh', default = 'not used', nargs = '?')
+    parser.add_argument('-p', '--password', required = False, dest = 'password', default = None, nargs = '?')
+    parser.add_argument('-r', '--refresh', required = False, dest = 'refresh', default = '', nargs = '?', type = str)
     args = parser.parse_args()
 
     # url for pulling token
     token_url = 'https://vdjserver.org:443/api/v1/token'
+    
+    # path to information cache
+    vdj_cache = '~/.vdjapi'
 
     # logic for arguments
     if args.username is None: # if no username given
-        args.username = get_from_json_file('username', '~/.vdjapi')
-        print 'Username:', args.username
+        args.username = read_cache(vdj_cache, 'username')
+        if args.username is None:
+            args.username = prompt_user('username')
+    print 'Username:', args.username
 
-    if args.refresh is not 'not used': # if refresh token given
-        if args.refresh is None: # if refresh token not specified
-            args.refresh = get_from_json_file('refresh_token', '~/.vdjapi')
+    if args.refresh is '': # if no -r given
+        if args.password is None:
+            args.password = getpass.getpass('Enter your password: ') 
+        (access_token, refresh_token) = create(token_url, args.username, args.password)
+        print 'Successfully created token'
+
+    else: # if -r given
+        if args.refresh is None: # refresh token not specified
+            args.refresh = read_cache(vdj_cache, 'refresh_token')
+            if args.refresh is None:
+                args.refresh = prompt_user('refresh_token')
         print 'Refresh token:', args.refresh
         (access_token, refresh_token) = refresh(token_url, args.username, args.refresh)
         print 'Successfully refreshed token'
 
-    else: #if no refresh token given
-        if args.password is None or args.password is 'not used': # if no password specified
-            args.password = getpass.getpass('Enter your password: ')
-        (access_token, refresh_token) = create(token_url, args.username, args.password)
-        print 'Successfully created token'
-
     # cleaning up
-    to_vdjapi(access_token, refresh_token)
+    write_cache(vdj_cache, access_token, refresh_token)
     print 'Access token is:', access_token
     print 'Refresh token is:', refresh_token
