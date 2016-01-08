@@ -1,2 +1,2 @@
-# vdj-login
-Python script for pulling a token from VDJServer
+# vdj-cli
+Python cli tool for VDJServer
