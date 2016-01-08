@@ -1,2 +1,2 @@
 # vdj-cli
-Python cli tool for VDJServer
+Python cli tools for VDJServer
