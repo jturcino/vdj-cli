@@ -4,8 +4,7 @@ import json
 import os.path
 import requests
 import argparse
-from agave.agavepy import Agave
-import pprint
+from agavepy.agave import Agave
 
 def read_cache(file_path, key):
     """Get the value corresponding to key. Defaults to given file, but uses input upon failure."""
@@ -26,30 +25,29 @@ def prompt_user(key):
 
 
 if __name__ == '__main__':
+    
     # arguments
     parser = argparse.ArgumentParser()
-    parser.add_argument('-V', '--VeryVerbose', required = False, dest = 'very_verbose', default = False, nargs = '?')
+    parser.add_argument('-v', '--verbose', dest = 'verbose', action = 'store_true')
     args = parser.parse_args()
 
     # url
     base_url = 'https://vdj-agave-api.tacc.utexas.edu'
 
     # get token
-    token = read_cache('~/.vdjapi', 'access_token')
-    if token is None:
-        token = prompt_user('access_token')
+    access_token = read_cache('~/.vdjapi', 'access_token')
+    if access_token is None:
+        access_token = prompt_user('access_token')
     
     # get systems 
-    header = {'Authorization':'Bearer '+token}
-    resp = requests.get(url, headers=header)# instead use my_agave = .... then agave.systems.list
-    resp.raise_for_status()
-    systems = resp.json() 
+    my_agave = Agave(api_server = base_url, token = access_token)
+    systems = my_agave.systems.list()
+
+    # if -v
+    if args.verbose is True:
+        print json.dumps(systems, sort_keys = True, indent = 4, separators = (',', ': '))
 
     # if no args
-    if args.very_verbose is False:
-        for system in systems['result']:
+    else:
+        for system in systems:
             print str(system['id'])
-
-    # if -V
-    if args.very_verbose is not False:
-        pprint.pprint(systems)
