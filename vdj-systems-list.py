@@ -18,24 +18,28 @@ def read_cache(file_path, key):
         return None
 
 def prompt_user(key):
-    """Promp user to enter value for given key at command line."""
+    """Prompt user to enter value for given key at command line."""
     print 'Enter your', key.replace('_', ' ') + ':',
     return_key = raw_input('')
     return return_key
 
-
+def restrict_systems(systems_list, system_type):
+    """Remove systems from list that are not of the desired type."""
+    new_list = []
+    for item in range(0, len(systems_list) - 1):
+        if systems_list[item]['type'] == system_type:
+            new_list.append(systems_list[item])
+    return new_list
 
 if __name__ == '__main__':
     
     # arguments
     parser = argparse.ArgumentParser()
-
     parser.add_argument('-v', '--verbose', dest = 'verbose', action = 'store_true')
     parser.add_argument('-S', '--storageonly', dest = 'storageonly', action = 'store_true')
     parser.add_argument('-E', '--executiononly', dest = 'executiononly', action = 'store_true')
     parser.add_argument('-D', '--defaultonly', dest = 'defaultonly', action = 'store_true')
     parser.add_argument('-Q', '--privateonly', dest = 'privateonly', action = 'store_true')
-
     args = parser.parse_args()
 
     # url
@@ -51,13 +55,14 @@ if __name__ == '__main__':
     systems = my_agave.systems.list()
 
     # restrict output (check for storage, execution, default, and/or private only flags)
-    for item in range(0, len(systems)-1):
-        if systems[item]['type'] is not THING:
-            del systems[item]
-
-
-
-
+    if args.storageonly is True:
+        systems = restrict_systems(systems, 'STORAGE')
+    elif args.executiononly is True:
+        systems = restrict_systems(systems, 'EXECUTION')
+    elif args.defaultonly is True:
+        systems = restrict_systems(systems, 'DEFAULT')
+    elif args.privateonly is True:
+        systems = restrict_systems(systems, 'PRIVATE')
 
     # if -v
     if args.verbose is True:
