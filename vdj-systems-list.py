@@ -36,6 +36,7 @@ if __name__ == '__main__':
     # arguments
     parser = argparse.ArgumentParser()
     parser.add_argument('-v', '--verbose', dest = 'verbose', action = 'store_true')
+    parser.add_argument('-z', '--accesstoken', dest = 'accesstoken', required = False, default = None, nargs = '?')
     parser.add_argument('-S', '--storageonly', dest = 'storageonly', action = 'store_true')
     parser.add_argument('-E', '--executiononly', dest = 'executiononly', action = 'store_true')
     parser.add_argument('-D', '--defaultonly', dest = 'defaultonly', action = 'store_true')
@@ -46,9 +47,12 @@ if __name__ == '__main__':
     base_url = 'https://vdj-agave-api.tacc.utexas.edu'
 
     # get token
-    access_token = read_cache('~/.vdjapi', 'access_token')
-    if access_token is None:
-        access_token = prompt_user('access_token')
+    if args.accesstoken is None:
+        access_token = read_cache('~/.vdjapi', 'access_token')
+        if access_token is None:
+            access_token = prompt_user('access_token')
+    else:
+        access_token = args.accesstoken
 
     # get systems 
     my_agave = Agave(api_server = base_url, token = access_token)
