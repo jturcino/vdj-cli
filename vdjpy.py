@@ -12,13 +12,14 @@ def create(token_url, username, password):
     resp.raise_for_status()
     return parse_response(resp)
 
-def make_vdj_agave(url, access_token):
+def make_vdj_agave(access_token):
     """Make an Agave object at url with given access token."""
     if access_token is None:
-        access_token = read_cache('~/.vdjapi', 'access_token')
+        access_token = read_cache(cache, 'access_token')
         if access_token is None:
             access_token = prompt_user('access_token')
-    return Agave(api_server = url, token = access_token)
+    return Agave(api_server = base_url, token = access_token)
+
 
 def parse_response(resp):
     """Return access and refresh tokens from JSON-generated dictionary."""
@@ -34,10 +35,10 @@ def prompt_user(key):
     return_key = raw_input('')
     return return_key
 
-def read_cache(file_path, key):
+def read_cache(key):
     """Get the value corresponding to key. Defaults to given file, but uses input upon failure."""
-    if os.path.isfile(os.path.expanduser(file_path)) is True:
-        with open(os.path.expanduser(file_path), 'r') as json_file:
+    if os.path.isfile(os.path.expanduser(cache)) is True:
+        with open(os.path.expanduser(cache), 'r') as json_file:
             json_dict = json.load(json_file)
         json_file.close()
         return str(json_dict[key])
@@ -60,14 +61,18 @@ def restrict_systems(systems_list, system_type):
             new_list.append(systems_list[item])
     return new_list
 
-def write_cache(file_path, access_token, refresh_token):
-    """Replace access and refresh tokens in ~/.vdjapi with current versions."""
-    if os.path.isfile(os.path.expanduser(file_path)) is True:
-        with open(os.path.expanduser(file_path), 'r') as json_file:
+def write_cache(access_token, refresh_token):
+    """Replace access and refresh tokens in cache with current versions."""
+    if os.path.isfile(os.path.expanduser(cache)) is True:
+        with open(os.path.expanduser(cache), 'r') as json_file:
             json_dict = json.load(json_file)
         json_file.close()
         json_dict['access_token'] = unicode(access_token)
         json_dict['refresh_token'] = unicode(refresh_token)
-        with open(os.path.expanduser(file_path), 'w') as json_file:
+        with open(os.path.expanduser(cache), 'w') as json_file:
             json.dump(json_dict, json_file)
         json_file.close()
+    return
+
+base_url = 'https://vdj-agave-api.tacc.utexas.edu'
+cache = '~/.vdjapi'

@@ -1,12 +1,8 @@
 #!/usr/bin/env python
 
-import json
-import requests
-from agavepy.agave import Agave
 import argparse
-import os.path
 import getpass
-import sharedfunctions
+import vdjpy
 
 if __name__ == '__main__':
 
@@ -20,32 +16,29 @@ if __name__ == '__main__':
     # url for pulling token
     token_url = 'https://vdjserver.org:443/api/v1/token'
     
-    # path to information cache
-    vdj_cache = '~/.vdjapi'
-
     # logic for arguments
     if args.username is None: # if no username given
-        args.username = sharedfunctions.read_cache(vdj_cache, 'username')
+        args.username = vdjpy.read_cache('username')
         if args.username is None:
-            args.username = sharedfunctions.prompt_user('username')
+            args.username = vdjpy.prompt_user('username')
     print 'Username:', args.username
 
     if args.refresh is '': # if no -r given
         if args.password is None:
             args.password = getpass.getpass('Enter your password: ') 
-        (access_token, refresh_token) = sharedfunctions.create(token_url, args.username, args.password)
+        (access_token, refresh_token) = vdjpy.create(token_url, args.username, args.password)
         print 'Successfully created token'
 
     else: # if -r given
         if args.refresh is None: # refresh token not specified
-            args.refresh = sharedfunctions.read_cache(vdj_cache, 'refresh_token')
+            args.refresh = vdjpy.read_cache('refresh_token')
             if args.refresh is None:
-                args.refresh = sharedfunctions.prompt_user('refresh_token')
+                args.refresh = vdjpy.prompt_user('refresh_token')
         print 'Refresh token:', args.refresh
-        (access_token, refresh_token) = sharedfunctions.refresh(token_url, args.username, args.refresh)
+        (access_token, refresh_token) = vdjpy.refresh(token_url, args.username, args.refresh)
         print 'Successfully refreshed token'
 
     # cleaning up
-    sharedfunctions.write_cache(vdj_cache, access_token, refresh_token)
+    vdjpy.write_cache(access_token, refresh_token)
     print 'Access token is:', access_token
     print 'Refresh token is:', refresh_token
