@@ -20,11 +20,11 @@ if __name__ == '__main__':
 
     # get systems
     my_agave = vdjpy.make_vdj_agave(access_token)
-    apps = my_agave.apps.list() # flag in here
+    apps = my_agave.apps.list()
 
     # if -v
     if args.verbose is True:
-        print apps
+        print json.dumps(apps, default = vdjpy.json_serial, sort_keys = True, indent = 4, separators = (',', ': '))
 
     # if no args
     else:

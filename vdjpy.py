@@ -4,6 +4,7 @@ import json
 import requests
 from agavepy.agave import Agave
 import os.path
+from datetime import datetime
 
 def create(token_url, username, password):
     """Create a new authentication token at url with given username and password."""
@@ -12,6 +13,14 @@ def create(token_url, username, password):
     resp.raise_for_status()
     return parse_response(resp)
 
+def json_serial(obj):
+    """JSON serializer for objects not serializable by default json code"""
+
+    if isinstance(obj, datetime):
+        serial = obj.isoformat()
+        return serial
+    raise TypeError ("Type not serializable")
+
 def make_vdj_agave(access_token):
     """Make an Agave object at url with given access token."""
     if access_token is None:
@@ -19,7 +28,6 @@ def make_vdj_agave(access_token):
         if access_token is None:
             access_token = prompt_user('access_token')
     return Agave(api_server = base_url, token = access_token)
-
 
 def parse_response(resp):
     """Return access and refresh tokens from JSON-generated dictionary."""
