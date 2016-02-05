@@ -14,29 +14,34 @@ if __name__ == '__main__':
     parser.add_argument('-E', '--executiononly', dest = 'executiononly', action = 'store_true')
     parser.add_argument('-D', '--defaultonly', dest = 'defaultonly', action = 'store_true')
     parser.add_argument('-Q', '--privateonly', dest = 'privateonly', action = 'store_true')
+    parser.add_argument('-P', '--publiconly', dest = 'publiconly', action = 'store_true')
     args = parser.parse_args()
 
     # get token
     if args.accesstoken is None:
-        access_token = vdjpy.read_cache('access_token')
-        if access_token is None:
-            access_token = vdjpy.prompt_user('access_token')
-    else:
-        access_token = args.accesstoken
+        args.accesstoken = vdjpy.read_cache('access_token')
+        if args.accesstoken is None:
+            args.accesstoken = vdjpy.prompt_user('access_token')
 
-    # get systems 
-    my_agave = vdjpy.make_vdj_agave(access_token)
-    systems = my_agave.systems.list()
+    # public or private
+    private = False
+    public = False
+    if args.privateonly is True and args.publiconly is False:
+        private = True
+        public = False
+    if args.publiconly is True and args.privateonly is False:
+        public = True
+        private = False
+
+    # get systems
+    my_agave = vdjpy.make_vdj_agave(args.accesstoken)
+    systems = my_agave.systems.list(default = args.defaultonly, privateOnly = private, publicOnly = public)
 
     # restrict output (check for storage, execution, default, and/or private only flags)
     if args.storageonly is True:
         systems = vdjpy.restrict_systems(systems, 'STORAGE')
     elif args.executiononly is True:
         systems = vdjpy.restrict_systems(systems, 'EXECUTION')
-    elif args.defaultonly is True:
-        systems = vdjpy.restrict_systems(systems, 'DEFAULT')
-    elif args.privateonly is True:
-        systems = vdjpy.restrict_systems(systems, 'PRIVATE')
 
     # if -v
     if args.verbose is True:
