@@ -10,7 +10,7 @@ if __name__ == '__main__':
 
     # arguments
     parser = argparse.ArgumentParser()
-    parser.add_argument('-a', '--appID', dest = 'appID', required = True)
+    parser.add_argument('-a', '--appID', dest = 'appID', default = None, nargs = '?')
     parser.add_argument('-z', '--accesstoken', dest = 'accesstoken', default = None, nargs = '?')
     parser.add_argument('-v', '--verbose', dest = 'verbose', action = 'store_true')
     args = parser.parse_args()
@@ -20,6 +20,10 @@ if __name__ == '__main__':
         args.accesstoken = vdjpy.read_cache('access_token')
         if args.accesstoken is None:
             args.accesstoken = vdjpy.prompt_user('access_token')
+
+    # check appID
+    if args.appID is None:
+        args.appID = vdjpy.prompt_user('app ID')
 
     # get systems
     my_agave = vdjpy.make_vdj_agave(args.accesstoken)
@@ -39,4 +43,4 @@ if __name__ == '__main__':
                 user_pems+='w'
             if item['permission']['execute'] is True:
                 user_pems+='x'
-            print item['username'] + ': ' + user_pems
+            print item['username'] + ' ' + user_pems
