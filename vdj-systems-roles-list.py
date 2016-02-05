@@ -8,17 +8,23 @@ if __name__ == '__main__':
     
     # arguments
     parser = argparse.ArgumentParser()
-    parser.add_argument('-s', '--systemID', dest = 'systemID', required = True)
+    parser.add_argument('-s', '--systemID', dest = 'systemID', default = None, nargs = '?')
     parser.add_argument('-v', '--verbose', dest = 'verbose', action = 'store_true')
+    parser.add_argument('-z', '--accesstoken', dest = 'accesstoken', default = None, nargs = '?')
     args = parser.parse_args()
 
     # get token
-    access_token = vdjpy.read_cache('access_token')
-    if access_token is None:
-        access_token = vdjpy.prompt_user('access_token')
+    if args.accesstoken is None:
+        args.accesstoken = vdjpy.read_cache('access_token')
+        if args.accesstoken is None:
+            args.accesstoken = vdjpy.prompt_user('access_token')
 
-    # get systems roles
-    my_agave = vdjpy.make_vdj_agave(access_token)
+    # check systemID
+    if args.systemID is None:
+        args.systemID = vdjpy.prompt_user('system ID')
+
+    # get systems
+    my_agave = vdjpy.make_vdj_agave(args.accesstoken)
     roles_list = my_agave.systems.listRoles(systemId = args.systemID)
 
     # if -v
