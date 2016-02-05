@@ -13,22 +13,16 @@ if __name__ == '__main__':
     parser.add_argument('-a', '--appID', dest = 'appID', required = True)
     parser.add_argument('-z', '--accesstoken', dest = 'accesstoken', default = None, nargs = '?')
     parser.add_argument('-v', '--verbose', dest = 'verbose', action = 'store_true')
-    parser.add_argument('-u', '--username', dest = 'username', default = None, nargs = '?')
     args = parser.parse_args()
 
     # get token
-    access_token = vdjpy.read_cache('access_token')
-    if access_token is None:
-        access_token = vdjpy.prompt_user('access_token')
-
-    # get username
-    if args.username is None:
-        args.username = vdjpy.read_cache('username')
-        if args.username is None:
-            args.username = vdjpy.prompt_user('username')
+    if args.accesstoken is None:
+        args.accesstoken = vdjpy.read_cache('access_token')
+        if args.accesstoken is None:
+            args.accesstoken = vdjpy.prompt_user('access_token')
 
     # get systems
-    my_agave = vdjpy.make_vdj_agave(access_token)
+    my_agave = vdjpy.make_vdj_agave(args.accesstoken)
     pems_list = my_agave.apps.listPermissions(appId = args.appID)
 
     # if -v
