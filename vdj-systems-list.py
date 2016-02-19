@@ -23,25 +23,21 @@ if __name__ == '__main__':
         if args.accesstoken is None:
             args.accesstoken = vdjpy.prompt_user('access_token')
 
-    # public or private
-    private = False
-    public = False
-    if args.privateonly is True and args.publiconly is False:
-        private = True
-        public = False
-    if args.publiconly is True and args.privateonly is False:
-        public = True
-        private = False
-
     # get systems
     my_agave = vdjpy.make_vdj_agave(args.accesstoken)
-    systems = my_agave.systems.list(default = args.defaultonly, privateOnly = private, publicOnly = public)
+
+    if args.storageonly:
+        systems = my_agave.systems.list(default = args.defaultonly, privateOnly = args.privateonly, publicOnly = args.publiconly, type = 'STORAGE')
+    elif args.executiononly:
+        systems = my_agave.systems.list(default = args.defaultonly, privateOnly = args.privateonly, publicOnly = args.publiconly, type = 'EXECUTION') 
+    else:
+        systems = my_agave.systems.list(default = args.defaultonly, privateOnly = args.privateonly, publicOnly = args.publiconly)
 
     # restrict output (check for storage, execution, default, and/or private only flags)
-    if args.storageonly is True:
-        systems = vdjpy.restrict_systems(systems, 'STORAGE')
-    elif args.executiononly is True:
-        systems = vdjpy.restrict_systems(systems, 'EXECUTION')
+#    if args.storageonly is True:
+#        systems = vdjpy.restrict_systems(systems, 'STORAGE')
+#    elif args.executiononly is True:
+#        systems = vdjpy.restrict_systems(systems, 'EXECUTION')
 
     # if -v
     if args.verbose is True:
