@@ -17,11 +17,9 @@ if __name__ == '__main__':
 
     # get token
     if args.accesstoken is None:
-        access_token = vdjpy.read_cache('access_token')
-        if access_token is None:
-            access_token = vdjpy.prompt_user('access_token')
-    else:
-        access_token = args.accesstoken
+        args.accesstoken = vdjpy.read_cache('access_token')
+        if args.accesstoken is None:
+            args.accesstoken = vdjpy.prompt_user('access_token')
 
 
     # check systemID
@@ -40,9 +38,14 @@ if __name__ == '__main__':
         args.role = raw_input('')
     args.role = args.role.upper()
 
-    
-    my_agave = vdjpy.make_vdj_agave(access_token)
+    # get systems
+    my_agave = vdjpy.make_vdj_agave(args.accesstoken)
     role_update = my_agave.systems.updateRoleForUser(systemId = args.systemID, username = args.username, body = {'username':args.username, 'role':args.role})
 
-    print json.dumps(role_update, sort_keys = True, indent = 4, separators = (',', ': '))
+    # if -v
+    if args.verbose is True:
+        print json.dumps(role_update, sort_keys = True, indent = 4, separators = (',', ': '))
 
+    # if no -v
+    else:
+        print 'Sucessfully updated role for', role_update[0]['username'], 'to', role_update[0]['role']
