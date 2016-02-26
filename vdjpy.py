@@ -43,7 +43,7 @@ def prompt_user(key):
     return_key = raw_input('')
     return return_key
 
-def read_cache(key):
+def read_cache(cache, key):
     """Get the value corresponding to key. Defaults to given file, but uses input upon failure."""
     if os.path.isfile(os.path.expanduser(cache)) is True:
         with open(os.path.expanduser(cache), 'r') as json_file:
