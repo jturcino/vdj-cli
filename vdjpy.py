@@ -15,7 +15,6 @@ def create(token_url, username, password):
 
 def json_serial(obj):
     """JSON serializer for objects not serializable by default json code"""
-
     if isinstance(obj, datetime):
         serial = obj.isoformat()
         return serial
@@ -60,14 +59,6 @@ def refresh(token_url, username, refresh_token):
     resp = requests.put(token_url, auth = auth, verify = False)
     resp.raise_for_status()
     return parse_response(resp)
-
-def restrict_systems(systems_list, system_type):
-    """Remove systems from list that are not of the desired type."""
-    new_list = []
-    for item in range(0, len(systems_list) - 1):
-        if systems_list[item]['type'] == system_type:
-            new_list.append(systems_list[item])
-    return new_list
 
 def write_cache(access_token, refresh_token):
     """Replace access and refresh tokens in cache with current versions."""
