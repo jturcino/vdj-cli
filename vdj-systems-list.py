@@ -12,38 +12,36 @@ if __name__ == '__main__':
     parser.add_argument('-z', '--accesstoken', dest = 'accesstoken', required = False, default = None, nargs = '?')
     parser.add_argument('-S', '--storageonly', dest = 'storageonly', action = 'store_true')
     parser.add_argument('-E', '--executiononly', dest = 'executiononly', action = 'store_true')
-    parser.add_argument('-D', '--defaultonly', dest = 'defaultonly', action = 'store_true')
-    parser.add_argument('-Q', '--privateonly', dest = 'privateonly', action = 'store_true')
-    parser.add_argument('-P', '--publiconly', dest = 'publiconly', action = 'store_true')
+    parser.add_argument('-D', '--default', dest = 'default', action = 'store_true')
+    parser.add_argument('-Q', '--private', dest = 'private', action = 'store_true')
+    parser.add_argument('-P', '--public', dest = 'public', action = 'store_true')
     args = parser.parse_args()
 
-    # get token
-    if args.accesstoken is None:
-        args.accesstoken = vdjpy.read_cache('access_token')
-        if args.accesstoken is None:
-            args.accesstoken = vdjpy.prompt_user('access_token')
+    kwargs = {}
+
+    # storage/execution
+    if args.storageonly and not args.executiononly:
+        kwargs['type'] = 'STORAGE'
+    elif args.executiononly and not args.storageonly:
+        kwargs['type'] = 'EXECUTION'
+    
+    # default
+    if args.default:
+        kwargs['default'] = True
+
+    # private/public
+    if args.public and not args.private:
+        kwargs['public'] = True
+    elif args.private and not args.public:
+        kwargs['public'] = False
 
     # get systems
     my_agave = vdjpy.make_vdj_agave(args.accesstoken)
+    systems = my_agave.systems.list(**kwargs)
 
-    if args.storageonly:
-        systems = my_agave.systems.list(default = args.defaultonly, privateOnly = args.privateonly, publicOnly = args.publiconly, type = 'STORAGE')
-    elif args.executiononly:
-        systems = my_agave.systems.list(default = args.defaultonly, privateOnly = args.privateonly, publicOnly = args.publiconly, type = 'EXECUTION') 
-    else:
-        systems = my_agave.systems.list(default = args.defaultonly, privateOnly = args.privateonly, publicOnly = args.publiconly)
-
-    # restrict output (check for storage, execution, default, and/or private only flags)
-#    if args.storageonly is True:
-#        systems = vdjpy.restrict_systems(systems, 'STORAGE')
-#    elif args.executiononly is True:
-#        systems = vdjpy.restrict_systems(systems, 'EXECUTION')
-
-    # if -v
+    # verbose/standard output
     if args.verbose is True:
         print json.dumps(systems, sort_keys = True, indent = 4, separators = (',', ': '))
-
-    # if no args
     else:
         for system in systems:
             print str(system['id'])
