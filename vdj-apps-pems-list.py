@@ -11,23 +11,34 @@ if __name__ == '__main__':
     # arguments
     parser = argparse.ArgumentParser()
     parser.add_argument('-a', '--appID', dest = 'appID', default = None, nargs = '?')
+    parser.add_argument('-l', '--limit', dest = 'limit', default = 250, nargs = '?', type = int)
+    parser.add_argument('-o', '--offset', dest = 'offset', default = 0, nargs = '?', type = int)
     parser.add_argument('-z', '--accesstoken', dest = 'accesstoken', default = None, nargs = '?')
     parser.add_argument('-v', '--verbose', dest = 'verbose', action = 'store_true')
     args = parser.parse_args()
 
-    # get token
-    if args.accesstoken is None:
-        args.accesstoken = vdjpy.read_cache('access_token')
-        if args.accesstoken is None:
-            args.accesstoken = vdjpy.prompt_user('access_token')
+    kwargs = {}
 
     # check appID
     if args.appID is None:
         args.appID = vdjpy.prompt_user('app ID')
+    kwargs['appId'] = args.appID
+
+    # limit
+    print args.limit
+    if args.limit is None:
+        args.limit = vdjpy.prompt_user('number of apps to return')
+    kwargs['limit'] = args.limit
+
+    # offset
+    if args.offset is None:
+        args.offset = vdjpy.prompt_user('number to offset')
+    kwargs['offset'] = args.offset
 
     # get systems
+    print kwargs
     my_agave = vdjpy.make_vdj_agave(args.accesstoken)
-    pems_list = my_agave.apps.listPermissions(appId = args.appID)
+    pems_list = my_agave.apps.listPermissions(limit = args.limit, appId = args.appID)
 
     # if -v
     if args.verbose is True:
