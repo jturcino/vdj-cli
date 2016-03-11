@@ -15,20 +15,17 @@ if __name__ == '__main__':
     parser.add_argument('-z', '--accesstoken', dest = 'accesstoken', required = False, default = None, nargs = '?')
     args = parser.parse_args()
 
-    # get token
-    if args.accesstoken is None:
-        args.accesstoken = vdjpy.read_cache('access_token')
-        if args.accesstoken is None:
-            args.accesstoken = vdjpy.prompt_user('access_token')
-
+    kwargs = {}
 
     # check systemID
     if args.systemID is None:
         args.systemID = vdjpy.prompt_user('system ID')
+    kwargs['systemId'] = args.systemID
     
     # check username
     if args.username is None:
         args.username = vdjpy.prompt_user('username to add')
+    kwargs['username'] = args.username
 
     # check role
     if args.role is not None:
@@ -36,11 +33,11 @@ if __name__ == '__main__':
     if args.role is None or not "USER" or not "PUBLISHER" or not "ADMIN" or not "OWNER":
         print 'Possible roles for', args.username, 'are USER, PUBLISHER, ADMIN, and OWNER. \nPlease enter the selected role:',
         args.role = raw_input('')
-    args.role = args.role.upper()
+    kwargs['body'] = {'username':args.username, 'role':args.role.upper()}
 
     # get systems
     my_agave = vdjpy.make_vdj_agave(args.accesstoken)
-    role_update = my_agave.systems.updateRoleForUser(systemId = args.systemID, username = args.username, body = {'username':args.username, 'role':args.role})
+    role_update = my_agave.systems.updateRoleForUser(**kwargs)
 
     # if -v
     if args.verbose is True:
