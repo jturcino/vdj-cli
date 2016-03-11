@@ -8,21 +8,32 @@ if __name__ == '__main__':
 
     # arguments
     parser = argparse.ArgumentParser()
-    parser.add_argument('-s', '--systemID', dest = 'systemID', required = True)
-    parser.add_argument('-u', '--username', dest = 'username', required = True)
+    parser.add_argument('-s', '--systemID', dest = 'systemID', default = None, nargs = '?')
+    parser.add_argument('-u', '--username', dest = 'username', default = None, nargs = '?')
     parser.add_argument('-v', '--verbose', dest = 'verbose', action = 'store_true')
     parser.add_argument('-z', '--accesstoken', dest = 'accesstoken', required = False, default = None, nargs = '?')
     args = parser.parse_args()
 
-    # get token
-    if args.accesstoken is None:
-        access_token = vdjpy.read_cache('access_token')
-        if access_token is None:
-            access_token = vdjpy.prompt_user('access_token')
-    else:
-        access_token = args.accesstoken
+    kwargs = {}
 
-    my_agave = vdjpy.make_vdj_agave(access_token)
-    role_delete = my_agave.systems.deleteRoleForUser(systemId = args.systemID, username = args.username)
+    # system
+    if args.systemID is None:
+        args.systemID = vdjpy.prompt_user('system ID')
+    kwargs['systemId'] = args.systemID
+
+    # username
+    if args.username is None:
+        args.username = vdjpy.prompt_user('username to delete from system')
+    kwargs['username'] = args.username
+
+    # get systems
+    my_agave = vdjpy.make_vdj_agave(args.accesstoken)
+    role_delete = my_agave.systems.deleteRoleForUser(**kwargs)
     
-    print json.dumps(role_delete, sort_keys = True, indent = 4, separators = (',', ': '))
+    # if -v
+    if args.verbose:
+        print json.dumps(role_delete, sort_keys = True, indent = 4, separators = (',', ': '))
+
+    # if no -v
+    else:
+        print 'User', args.username, 'now deleted from', args.systemID
