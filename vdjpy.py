@@ -24,8 +24,6 @@ def make_vdj_agave(access_token):
     """Make an Agave object at url with given access token."""
     if access_token is None:
         access_token = read_cache(cache, 'access_token')
-        if access_token is None:
-            access_token = prompt_user('access_token')
     return Agave(api_server = base_url, token = access_token)
 
 def parse_response(resp):
@@ -50,8 +48,7 @@ def read_cache(cache, key):
         json_file.close()
         return str(json_dict[key])
     else:
-        print 'No cache found'
-        return None
+        return prompt_user(key)
 
 def refresh(token_url, username, refresh_token):
     """Refresh authentication token at url with given username and refresh token."""
