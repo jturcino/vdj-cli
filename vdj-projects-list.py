@@ -3,6 +3,7 @@
 import vdjpy
 import argparse
 import json
+import os.path
 
 if __name__ == '__main__':
 
@@ -14,8 +15,9 @@ if __name__ == '__main__':
     parser.add_argument('-z', '--accesstoken', dest = 'accesstoken', default = None, nargs = '?')
     args = parser.parse_args()
 
-    # query input
+    # query and cache
     query = '{"name":"project"}'
+    projects_cache = './.vdjprojects'
 
     # -l
     if args.limit is None:
@@ -37,3 +39,8 @@ if __name__ == '__main__':
     else:
        for item in projects:
            print item.value['name'] + '\t' + item.uuid
+
+    # write to cache
+    with open(os.path.expanduser(projects_cache), 'w') as projects_file:
+        json.dump(projects, projects_file)
+    projects_file.close()
