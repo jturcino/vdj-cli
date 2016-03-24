@@ -35,24 +35,23 @@ if __name__ == '__main__':
         projects_file.close()
         uuid = check_for_name(projects_list, args.project) #add vdjpy
 
-    if uuid is None: #make object
+    #make Agave object
+    if uuid is None: 
         my_agave = vdjpy.make_vdj_agave(args.accesstoken)
         projects = my_agave.meta.listMetadata(q = projects_query, limit = 5000)
         uuid = check_for_name(projects, args.project) #add vdjpy
     
 
-    # args.project does not exist
+    # if args.project does not exist
     if uuid is None:
         print 'The project', args.project, 'does not exist. \nHere are your current projects and uuids:'
         for item in projects:
             print item['value']['name'] + '\t' + item['uuid']
     
-    # args.project exits
+    # if args.project exits
     else:
         uuid = str(uuid)
         files_query = '{' + '"name": { $in: ["projectFile", "projectJobFile"]}, "value.projectUuid": "' + uuid + '", "value.isDeleted": false}'
-        print files_query
         files_query = urllib.quote(files_query)
-        print files_query
         files = my_agave.meta.listMetadata(q = files_query, limit = 5000)
         print json.dumps(files, default = vdjpy.json_serial, sort_keys = True, indent = 4, separators = (',', ': '))
