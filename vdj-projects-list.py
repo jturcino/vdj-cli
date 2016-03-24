@@ -17,6 +17,14 @@ if __name__ == '__main__':
     # query input
     query = '{"name":"project"}'
 
+    # -l
+    if args.limit is None:
+        args.limit = vdjpy.prompt_user('project limit')
+
+    # -o
+    if args.offset is None:
+        args.offset = vdjpy.prompt_user('offset value')
+
     # make object
     my_agave = vdjpy.make_vdj_agave(args.accesstoken)
     projects = my_agave.meta.listMetadata(q = query, limit = args.limit, offset = args.offset)
