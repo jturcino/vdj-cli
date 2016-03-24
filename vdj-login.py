@@ -18,9 +18,7 @@ if __name__ == '__main__':
     
     # logic for arguments
     if args.username is None: # if no username given
-        args.username = vdjpy.read_cache('username')
-        if args.username is None:
-            args.username = vdjpy.prompt_user('username')
+        args.username = vdjpy.read_cache('~/.vdjapi','username')
     print 'Username:', args.username
 
     if args.refresh is '': # if no -r given
@@ -32,8 +30,6 @@ if __name__ == '__main__':
     else: # if -r given
         if args.refresh is None: # refresh token not specified
             args.refresh = vdjpy.read_cache('refresh_token')
-            if args.refresh is None:
-                args.refresh = vdjpy.prompt_user('refresh_token')
         print 'Refresh token:', args.refresh
         (access_token, refresh_token) = vdjpy.refresh(token_url, args.username, args.refresh)
         print 'Successfully refreshed token'
