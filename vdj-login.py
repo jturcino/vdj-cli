@@ -2,7 +2,7 @@
 
 import argparse
 import getpass
-import replace
+import vdjpy
 
 if __name__ == '__main__':
 
@@ -15,21 +15,21 @@ if __name__ == '__main__':
 
     # get username
     if args.username is None: # if no username given
-        args.username = replace.read_for_login('~/.vdjapi', 'username')
+        args.username = vdjpy.read_for_login('~/.vdjapi', 'username')
     print 'Username:', args.username
 
     # if no -r
     if args.refresh is '':
         if args.password is None:
             args.password = getpass.getpass('Enter your password: ')
-        (access_token, refresh_token) = replace.create(args.username, args.password)
+        (access_token, refresh_token) = vdjpy.create(args.username, args.password)
         print 'Successfully created token'
 
     # if -r
     else:
         if args.refresh is None: # refresh token not specified
-            args.refresh = replace.read_for_login('~/.vdjapi', 'refresh_token')
-        (access_token, refresh_token) = replace.refresh(args.username, args.refresh)
+            args.refresh = vdjpy.read_for_login('~/.vdjapi', 'refresh_token')
+        (access_token, refresh_token) = vdjpy.refresh(args.username, args.refresh)
         print 'Successfully refreshed token'
 
     print 'Access token is:', access_token
