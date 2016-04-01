@@ -25,7 +25,6 @@ if __name__ == '__main__':
     kwargs['appId'] = args.appID
 
     # limit
-    print args.limit
     if args.limit is None:
         args.limit = vdjpy.prompt_user('number of apps to return')
     kwargs['limit'] = args.limit
@@ -36,7 +35,6 @@ if __name__ == '__main__':
     kwargs['offset'] = args.offset
 
     # get systems
-    print kwargs
     my_agave = vdjpy.make_vdj_agave(args.accesstoken)
     pems_list = my_agave.apps.listPermissions(limit = args.limit, appId = args.appID)
 
@@ -47,7 +45,7 @@ if __name__ == '__main__':
     # if no -v
     else:
         for item in pems_list:
-            user_pems = ''
+            user_pems = '\t'
             if item['permission']['read'] is True:
                 user_pems+='r'
             if item['permission']['write'] is True:
