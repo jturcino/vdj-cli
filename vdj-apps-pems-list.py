@@ -26,17 +26,17 @@ if __name__ == '__main__':
 
     # limit
     if args.limit is None:
-        args.limit = vdjpy.prompt_user('number of apps to return')
+        args.limit = int(vdjpy.prompt_user('number of apps to return'))
     kwargs['limit'] = args.limit
 
     # offset
     if args.offset is None:
-        args.offset = vdjpy.prompt_user('number to offset')
+        args.offset = int(vdjpy.prompt_user('number to offset'))
     kwargs['offset'] = args.offset
 
     # get systems
     my_agave = vdjpy.make_vdj_agave(args.accesstoken)
-    pems_list = my_agave.apps.listPermissions(limit = args.limit, appId = args.appID)
+    pems_list = my_agave.apps.listPermissions(**kwargs)
 
     # if -v
     if args.verbose is True:
