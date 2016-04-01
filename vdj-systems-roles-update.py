@@ -30,7 +30,7 @@ if __name__ == '__main__':
     # check role
     if args.role is not None:
          args.role = args.role.upper()
-    if args.role is None or not "USER" or not "PUBLISHER" or not "ADMIN" or not "OWNER":
+    if args.role is not "USER" or not "PUBLISHER" or not "ADMIN" or not "OWNER" or None:
         print 'Possible roles for', args.username, 'are USER, PUBLISHER, ADMIN, and OWNER. \nPlease enter the selected role:',
         args.role = raw_input('')
     kwargs['body'] = {'username':args.username, 'role':args.role.upper()}
