@@ -28,8 +28,7 @@ if __name__ == '__main__':
         args.offset = vdjpy.prompt_user('offset value')
 
     # make object
-    my_agave = vdjpy.make_vdj_agave(args.accesstoken)
-    projects = my_agave.meta.listMetadata(q = query, limit = args.limit, offset = args.offset)
+    projects = vdjpy.get_vdj_projects(args.accesstoken)
 
     # if -v
     if args.verbose is True:
@@ -41,6 +40,4 @@ if __name__ == '__main__':
            print item.value['name'] + '\t' + item.uuid
 
     # write to cache
-    with open(os.path.expanduser(projects_cache), 'w') as projects_file:
-        json.dump(projects, projects_file)
-    projects_file.close()
+    vdjpy.write_json(projects, projects_cache)
