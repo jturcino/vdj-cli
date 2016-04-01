@@ -10,7 +10,6 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('-s', '--systemID', dest = 'systemID', default = None, nargs = '?')
     parser.add_argument('-u', '--username', dest = 'username', default = None, nargs = '?')
-    parser.add_argument('-v', '--verbose', dest = 'verbose', action = 'store_true')
     parser.add_argument('-z', '--accesstoken', dest = 'accesstoken', required = False, default = None, nargs = '?')
     args = parser.parse_args()
 
@@ -30,10 +29,4 @@ if __name__ == '__main__':
     my_agave = vdjpy.make_vdj_agave(args.accesstoken)
     role_delete = my_agave.systems.deleteRoleForUser(**kwargs)
     
-    # if -v
-    if args.verbose:
-        print json.dumps(role_delete, sort_keys = True, indent = 4, separators = (',', ': '))
-
-    # if no -v
-    else:
-        print 'User', args.username, 'now deleted from', args.systemID
+    print 'User', args.username, 'now deleted from', args.systemID
