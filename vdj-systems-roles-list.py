@@ -9,9 +9,10 @@ if __name__ == '__main__':
     # arguments
     parser = argparse.ArgumentParser()
     parser.add_argument('-s', '--systemID', dest = 'systemID', default = None, nargs = '?')
+    parser.add_argument('-u', '--username', dest = 'username', default = '', nargs = '?')
     parser.add_argument('-v', '--verbose', dest = 'verbose', action = 'store_true')
     parser.add_argument('-z', '--accesstoken', dest = 'accesstoken', default = None, nargs = '?')
-    parser.add_argument('-u', '--username', dest = 'username', default = '', nargs = '?')
+    parser.add_argument('-l', '--limit', dest = 'limit', type = int, default = 250, nargs = '?')
     args = parser.parse_args()
 
     kwargs = {}
@@ -27,24 +28,30 @@ if __name__ == '__main__':
             args.username = vdjpy.prompt_user('username')
         kwargs['username'] = args.username
 
+    # -l
+    if args.limit is None:
+        args.limit = int(vdjpy.prompt_user('number of users to return'))
+    kwargs['limit'] = args.limit
+
     # get systems
     my_agave = vdjpy.make_vdj_agave(args.accesstoken)
 
     # if -u
-    if args.username:
+    if args.username is not '':
         roles_list = my_agave.systems.getRoleForUser(**kwargs)
-        print roles_list
+
     # if no -u
     else:
         roles_list = my_agave.systems.listRoles(**kwargs)
-    for system in roles_list:
-        print str(system['username']), str(system['role'])
 
     # if -v
-#    if args.verbose is True:
-#    print json.dumps(roles_list, sort_keys = True, indent = 4, separators = (',', ': '))
+    if args.verbose is True:
+        print json.dumps(roles_list, sort_keys = True, indent = 4, separators = (',', ': '))
 
     # if no -v
-#    else:
-#        for system in roles_list:
-#            print str(system['username']), str(system['role'])
+    else:
+        if type(roles_list) is list:
+            for system in roles_list:
+                print str(system['username']), str(system['role'])
+        else:
+            print str(roles_list['username']),  str(roles_list['role'])
