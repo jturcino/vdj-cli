@@ -6,11 +6,6 @@ import json
 import os.path
 import urllib
 
-def check_for_name(json_object, name):
-    for item in json_object:
-        if item['value']['name'] == name:
-            return item['uuid']
-
 if __name__ == '__main__':
 
     # arguments
@@ -33,13 +28,15 @@ if __name__ == '__main__':
         with open(os.path.expanduser(projects_cache), 'r') as projects_file:
             projects_list = json.load(projects_file)
         projects_file.close()
-        uuid = check_for_name(projects_list, args.project) #add vdjpy
+        uuid = vdjpy.check_for_project_name(projects_list, args.project) 
 
-    #make Agave object
+    # make Agave object 
+    my_agave = vdjpy.make_vdj_agave(args.accesstoken)
+
+    # if no cache
     if uuid is None: 
-        my_agave = vdjpy.make_vdj_agave(args.accesstoken)
         projects = my_agave.meta.listMetadata(q = projects_query, limit = 5000)
-        uuid = check_for_name(projects, args.project) #add vdjpy
+        uuid = vdjpy.check_for_project_name(projects, args.project) 
     
 
     # if args.project does not exist
