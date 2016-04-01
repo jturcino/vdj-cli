@@ -15,8 +15,7 @@ if __name__ == '__main__':
     parser.add_argument('-z', '--accesstoken', dest = 'accesstoken', default = None, nargs = '?')
     args = parser.parse_args()
 
-    # query and cache
-    query = '{"name":"project"}'
+    # cache
     projects_cache = './.vdjprojects'
 
     # -l
@@ -28,7 +27,7 @@ if __name__ == '__main__':
         args.offset = vdjpy.prompt_user('offset value')
 
     # make object
-    projects = vdjpy.get_vdj_projects(args.accesstoken)
+    projects = vdjpy.get_vdj_projects(args.accesstoken, args.limit, args.offset)
 
     # if -v
     if args.verbose is True:
