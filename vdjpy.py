@@ -5,6 +5,7 @@ import requests
 from agavepy.agave import Agave
 import os.path
 from datetime import datetime
+from operator import itemgetter
 
 def check_for_project_name(json_object, name):
     """Checks for a entries with a given name in a given json dictionary"""
@@ -91,6 +92,16 @@ def refresh(username, refresh_token):
     if os.path.isfile(os.path.expanduser(user_cache)) is True:
         write_tokens(access_token, refresh_token)
     return (access_token, refresh_token)
+
+def sortbyquery(mylist, query):
+    """Sorts a list of dictionaries with the given query"""
+    if query is None:
+        query = prompt_user("key by which to sort")
+    if query == 'value.name':
+        mylist.sort(key = lambda e: e['value']['name'])
+    else:
+        mylist.sort(key = itemgetter(query))
+    return mylist
 
 def write_json(json_in, filename):
     """Write the given json to the given file. Changes from unicode to string."""
