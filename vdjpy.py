@@ -29,6 +29,20 @@ def get_dictionary_value(dictionary, key):
     """Returns value of given key for given dictionary"""
     return dictionary[key]
 
+def get_uuid(project_name, accesstoken):
+    uuid = None
+    if os.path.isfile(os.path.expanduser(projects_cache)) is True:
+        projects = read_json(projects_cache)
+        uuid = check_for_project_name(projects, project_name)
+    else:
+        projects = get_vdj_projects(accesstoken, 5000, 0)
+        uuid = check_for_project_name(projects, project_name)
+    if uuid is None:
+        print 'The project', project_name, 'does not exist. \nHere are your current projects and uuids:'
+        for item in projects:
+            print item['value']['name'] + ' ' + item['uuid']
+    return str(uuid)
+
 def get_vdj_projects(accesstoken, limit_in, offset_in):
     """Hits VDJ projects metadata endpoint. Returns reponse after writing response to projects cache."""
     my_agave = make_vdj_agave(accesstoken)
@@ -128,3 +142,4 @@ token_url = 'https://vdjserver.org:443/api/v1/token'
 projects_query = '{"name":"project"}'
 projects_cache = './.vdjprojects'
 user_cache = '~/.vdjapi'
+data_url = 'data.vdjserver.org/'
