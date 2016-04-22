@@ -2,6 +2,7 @@
 
 import json
 import requests
+from requests.packages.urllib3.exceptions import InsecureRequestWarning # to disable later on
 from agavepy.agave import Agave
 import os.path
 from datetime import datetime
@@ -15,6 +16,7 @@ def check_for_project_name(json_object, name):
 
 def create(username, password):
     """Create a new authentication token at url with given username and password."""
+    requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
     auth = requests.auth.HTTPBasicAuth(username, password)
     resp = requests.post(token_url, auth = auth, verify = False)
     resp.raise_for_status()
