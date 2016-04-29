@@ -8,22 +8,18 @@ import os.path
 from datetime import datetime
 from operator import itemgetter
 
+# global constants
+base_url = 'https://vdj-agave-api.tacc.utexas.edu'
+token_url = 'https://vdjserver.org:443/api/v1/token'
+projects_cache = './.vdjprojects'
+user_cache = '~/.vdjapi'
+data_url = 'data.vdjserver.org/'
+
 def check_for_project_name(json_object, name):
     """Checks for a entries with a given name in a given json dictionary"""
     for item in json_object:
         if item['value']['name'] == name:
             return item['uuid']
-
-def create(username, password):
-    """Create a new authentication token at url with given username and password."""
-    requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
-    auth = requests.auth.HTTPBasicAuth(username, password)
-    resp = requests.post(token_url, auth = auth, verify = False)
-    resp.raise_for_status()
-    (access_token, refresh_token) = parse_response(resp)
-    if os.path.isfile(os.path.expanduser(user_cache)) is True:
-        write_tokens(access_token, refresh_token)
-    return (access_token, refresh_token)
 
 def get_dictionary_value(dictionary, key):
     """Returns value of given key for given dictionary"""
@@ -45,6 +41,7 @@ def get_uuid(project_name, accesstoken):
 
 def get_vdj_projects(accesstoken, limit_in, offset_in):
     """Hits VDJ projects metadata endpoint. Returns reponse after writing response to projects cache."""
+    projects_query = '{"name":"project"}'
     my_agave = make_vdj_agave(accesstoken)
     projects = my_agave.meta.listMetadata(q = projects_query, limit = limit_in, offset = offset_in)
     write_json(projects, projects_cache)
@@ -83,31 +80,22 @@ def prompt_user(key):
 
 def read_for_login(cache, key):
     """Get the value corresponding to key. Defaults to given file, but uses input upon failure."""
-    if os.path.isfile(os.path.expanduser(user_cache)) is True:
-        json_dict = read_json(cache)
-        return str(get_dictionary_value(json_dict, key))
-    else:
+    dictionary = read_json(cache)
+    if dictionary is None:
         return prompt_user(key)
+    else:
+        return str(dictionary[key])
 
 def read_json(filename):
     """Return the contents of a file containing json. Returns None if the file does not exist."""
     if os.path.isfile(os.path.expanduser(filename)) is True:
         with open(os.path.expanduser(filename), 'r') as json_file:
-            dictionary = json.load(json_file)
-        json_file.close()
-        return dictionary
-    else:
-        return None
-
-def refresh(username, refresh_token):
-    """Refresh authentication token at url with given username and refresh token."""
-    auth = requests.auth.HTTPBasicAuth(username, refresh_token)
-    resp = requests.put(token_url, auth = auth, verify = False)
-    resp.raise_for_status()
-    (access_token, refresh_token) = parse_response(resp)
-    if os.path.isfile(os.path.expanduser(user_cache)) is True:
-        write_tokens(access_token, refresh_token)
-    return (access_token, refresh_token)
+            try:
+                dictionary = json.load(json_file)
+                return dictionary
+            except ValueError:
+                print "JSON could not be parsed in " + filename
+    return None
 
 def sortbyquery(mylist, query):
     """Sorts a list of dictionaries with the given query"""
@@ -118,6 +106,27 @@ def sortbyquery(mylist, query):
     else:
         mylist.sort(key = itemgetter(query))
     return mylist
+
+def create(username, password):
+    """Create a new authentication token at url with given username and password."""
+    requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
+    auth = requests.auth.HTTPBasicAuth(username, password)
+    resp = requests.post(token_url, auth = auth, verify = False)
+    resp.raise_for_status()
+    (access_token, refresh_token) = parse_response(resp)
+    if os.path.isfile(os.path.expanduser(user_cache)) is True:
+        write_tokens(access_token, refresh_token)
+    return (access_token, refresh_token)
+
+def refresh(username, refresh_token):
+    """Refresh authentication token at url with given username and refresh token."""
+    auth = requests.auth.HTTPBasicAuth(username, refresh_token)
+    resp = requests.put(token_url, auth = auth, verify = False)
+    resp.raise_for_status()
+    (access_token, refresh_token) = parse_response(resp)
+    if os.path.isfile(os.path.expanduser(user_cache)) is True:
+        write_tokens(access_token, refresh_token)
+    return (access_token, refresh_token)
 
 def write_json(json_in, filename):
     """Write the given json to the given file. Changes from unicode to string."""
@@ -136,10 +145,3 @@ def write_tokens(access_token, refresh_token):
     write_json(json_dict, user_cache)
     return
 
-# global variables
-base_url = 'https://vdj-agave-api.tacc.utexas.edu'
-token_url = 'https://vdjserver.org:443/api/v1/token'
-projects_query = '{"name":"project"}'
-projects_cache = './.vdjprojects'
-user_cache = '~/.vdjapi'
-data_url = 'data.vdjserver.org/'
