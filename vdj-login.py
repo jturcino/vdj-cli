@@ -15,7 +15,7 @@ if __name__ == '__main__':
 
     # get username
     if args.username is None: # if no username given
-        args.username = vdjpy.read_for_login('~/.vdjapi', 'username')
+        args.username = vdjpy.get_json_value('~/.vdjapi', 'username')
     print 'Username:', args.username
 
     # if no -r
@@ -28,7 +28,7 @@ if __name__ == '__main__':
     # if -r
     else:
         if args.refresh is None: # refresh token not specified
-            args.refresh = vdjpy.read_for_login('~/.vdjapi', 'refresh_token')
+            args.refresh = vdjpy.get_json_value('~/.vdjapi', 'refresh_token')
         (access_token, refresh_token) = vdjpy.refresh(args.username, args.refresh)
         print 'Successfully refreshed token'
 

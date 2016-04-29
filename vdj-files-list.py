@@ -37,8 +37,8 @@ if __name__ == '__main__':
 
     # read cache
     uuid = None
-    if os.path.isfile(os.path.expanduser(projects_cache)) is True:
-        projects = vdjpy.read_json(projects_cache)
+    projects = vdjpy.read_jsonfile(projects_cache)
+    if projects is not None:
         uuid = vdjpy.check_for_project_name(projects, args.project) 
 
     # make Agave object 
