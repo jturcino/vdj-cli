@@ -28,7 +28,7 @@ def get_dictionary_value(dictionary, key):
 def get_uuid(project_name, accesstoken):
     uuid = None
     if os.path.isfile(os.path.expanduser(projects_cache)) is True:
-        projects = read_json(projects_cache)
+        projects = read_jsonfile(projects_cache)
         uuid = check_for_project_name(projects, project_name)
     else:
         projects = get_vdj_projects(accesstoken, 5000, 0)
@@ -57,7 +57,7 @@ def json_serial(obj):
 def make_vdj_agave(access_token):
     """Make an Agave object at url with given access token."""
     if access_token is None:
-        dictionary = read_json(user_cache)
+        dictionary = read_jsonfile(user_cache)
         if dictionary is None:
             access_token = prompt_user('access_token')
         else:
@@ -78,15 +78,15 @@ def prompt_user(key):
     return_key = raw_input('')
     return return_key
 
-def read_for_login(cache, key):
+def get_json_value(cache, key):
     """Get the value corresponding to key. Defaults to given file, but uses input upon failure."""
-    dictionary = read_json(cache)
+    dictionary = read_jsonfile(cache)
     if dictionary is None:
         return prompt_user(key)
     else:
         return str(dictionary[key])
 
-def read_json(filename):
+def read_jsonfile(filename):
     """Return the contents of a file containing json. Returns None if the file does not exist."""
     if os.path.isfile(os.path.expanduser(filename)) is True:
         with open(os.path.expanduser(filename), 'r') as json_file:
