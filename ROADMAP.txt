@@ -1,0 +1,122 @@
+coverage for essentially a v1 release:
+
+apps-addupdate
+apps-common.sh
+apps-delete
+apps-history
+apps-list 					done
+apps-pems-delete
+apps-pems-list				done
+apps-pems-update
+apps-publish
+apps-search
+
+auth-tokens-create 			done in vdj-login
+auth-tokens-refresh 		done in vdj-login
+
+files-list 					done
+files-upload 				done
+files-get - download from agave path to local machine
+files-import - from URL to agave path
+files-pems-list
+files-pems-update
+files-pems-delete
+files-mkdir
+files-copy - from agave path to agave path
+files-move - from agave path to agave path
+files-rename - essentially a special case of files-move
+files-history
+files-delete
+
+jobs-list
+jobs-delete
+jobs-history
+jobs-output
+jobs-output-get
+jobs-output-list
+jobs-pems-list
+jobs-pems-update
+jobs-submit
+jobs-stop - not sure how this is different from jobs-delete
+jobs-status
+
+metadata-addupdate
+metadata-delete
+metadata-list 				done
+metadata-pems-addupdate
+metadata-pems-list
+
+notifications-addupdate
+notifications-delete
+notifications-list
+
+postits-create
+postits-delete
+postits-list
+
+profiles-list
+
+systems-addupdate
+systems-delete
+systems-disable
+systems-enable
+systems-list 				done
+systems-roles-addupdate 	done
+systems-roles-delete 		done
+systems-roles-list 			done
+systems-setdefault
+systems-unpublish
+systems-unsetdefault
+systems-history
+systems-publish
+
+
+
+other endpoints for essentially a v2 release:
+auth-check
+apps-clone
+apps-disable
+apps-enable
+apps-erase
+clients-create
+clients-delete
+clients-list
+clients-subscriptions-list
+clients-subscriptions-update
+files-index
+files-publish
+jobs resubmit
+jobs-run-this
+jobs-search
+jobs-template - use existing as long as we can?
+jsonpki - use existing as long as we can?
+metadata-schema-addupdate
+metadata-schema-delete
+metadata-schema-list
+metadata-schema-pems-addupdate
+metadata-schema-pems-list
+monitors-addupdate
+monitors-checks-list
+monitors-common.sh
+monitors-delete
+monitors-list
+notifications-list-failures
+notifications-search
+transforms-list
+systems-clone
+systems-search
+systems-queues-addupdate
+systems-queues-delete
+systems-queues-list
+
+Not implementing:
+profiles-users-addupdate - maybe not implement
+profiles-users-delete - maybe not implement
+profiles-users-list - maybe not implement
+requestbin-create
+requestbin-requests-list
+systems-credentials-addupdate - internal user stuff
+systems-credentials-delete
+systems-credentials-list
+systems-erase
+
