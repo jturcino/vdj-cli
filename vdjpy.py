@@ -14,10 +14,8 @@ from requests.packages.urllib3.exceptions import InsecureRequestWarning # to dis
 base_url = 'https://vdj-agave-api.tacc.utexas.edu'
 token_url = 'https://vdjserver.org:443/api/v1/token'
 projects_cache = './.vdjprojects'
-user_cache = '~/.vdjapi2'
+user_cache = '~/.vdjapi'
 data_url = 'data.vdjserver.org/'
-
-# does not contain parse_response, read_for_login, create, refresh, and write_tokens
 
 def check_for_project_name(json_object, name):
     """Checks for a entries with a given name in a given json dictionary"""
