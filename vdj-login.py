@@ -5,6 +5,7 @@ import getpass
 import vdjpy
 import requests.exceptions
 import sys
+import time
 
 cache_dict = {"apisecret":"","apikey":"","username":"","access_token":"","refresh_token":"","created_at":"","expires_in":"","expires_at":""}
 user_cache = '~/.vdjapi'
@@ -46,6 +47,7 @@ if __name__ == '__main__':
     # get token
     try:
         response = vdjpy.get_token(args.username, args.refresh, args.password)
+        current_time = int(time.time())
     except requests.exceptions.HTTPError:
         if args.password is None:
             sys.exit('The refresh token is not valid. Please try again without the refresh flag.')
@@ -55,8 +57,8 @@ if __name__ == '__main__':
     cache_dict['access_token'] = response['result']['access_token']
     cache_dict['refresh_token'] = response['result']['refresh_token']
     cache_dict['expires_in'] = response['result']['expires_in']
-    # grab time stamp from when submitted get_token for created_at
-    # expires_at is created_at + expires_in
+    cache_dict['created_at'] = current_time
+    cache_dict['expires_at'] = time.ctime(current_time + response['result']['expires_in'])
 
     # write to cache
     vdjpy.write_json(cache_dict, user_cache)
