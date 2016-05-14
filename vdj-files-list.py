@@ -35,26 +35,15 @@ if __name__ == '__main__':
         args.offset = vdjpy.prompt_user('offset value')
     kwargs['offset'] = args.offset
 
-    # read cache
-    uuid = None
-    projects = vdjpy.read_jsonfile(projects_cache)
-    if projects is not None:
-        uuid = vdjpy.check_for_project_name(projects, args.project) 
-
     # make Agave object 
     my_agave = vdjpy.make_vdj_agave(args.accesstoken)
 
-    # if no cache
-    if uuid is None: 
-        projects = vdjpy.get_vdj_projects(args.accesstoken, 5000, 0) 
-        uuid = vdjpy.check_for_project_name(projects, args.project) 
-    
+    # read cache
+    uuid = vdjpy.get_uuid(args.project, args.accesstoken)
 
     # if args.project does not exist
     if uuid is None:
-        print 'The project', args.project, 'does not exist. \nHere are your current projects and uuids:'
-        for item in projects:
-            print item['value']['name'] + '\t' + item['uuid']
+        sys.exit()
     
     # if args.project exits
     else:
