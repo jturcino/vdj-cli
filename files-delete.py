@@ -2,6 +2,7 @@
 
 import vdjpy
 import argparse
+import sys
 
 system = 'data.vdjserver.org/'
 
