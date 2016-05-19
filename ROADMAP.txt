@@ -4,19 +4,19 @@ apps-addupdate
 apps-common.sh
 apps-delete
 apps-history
-apps-list 		done
+apps-list 			done
 apps-pems-delete
-apps-pems-list		done
+apps-pems-list			done
 apps-pems-update
 apps-publish
 apps-search
 
-auth-tokens-create 	done in vdj-login
-auth-tokens-refresh 	done in vdj-login
+auth-tokens-create 		done in vdj-login
+auth-tokens-refresh 		done in vdj-login
 
-files-list 		done
-files-upload 		done
-files-get 		done, BUT no recursion
+files-list 			done
+files-upload 			done
+files-get 			done, BUT no recursion
 files-import - from URL to agave path
 files-pems-list
 files-pems-update
@@ -26,7 +26,7 @@ files-copy - from agave path to agave path
 files-move - from agave path to agave path
 files-rename - essentially a special case of files-move
 files-history
-files-delete
+files-delete			done
 
 jobs-list
 jobs-delete
@@ -42,7 +42,7 @@ jobs-status
 
 metadata-addupdate
 metadata-delete
-metadata-list 				done
+metadata-list 			done
 metadata-pems-addupdate
 metadata-pems-list
 
@@ -60,10 +60,10 @@ systems-addupdate
 systems-delete
 systems-disable
 systems-enable
-systems-list 				done
+systems-list 			done
 systems-roles-addupdate 	done
 systems-roles-delete 		done
-systems-roles-list 			done
+systems-roles-list 		done
 systems-setdefault
 systems-unpublish
 systems-unsetdefault
