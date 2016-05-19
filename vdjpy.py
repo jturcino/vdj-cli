@@ -27,6 +27,12 @@ def get_dictionary_value(dictionary, key):
     """Returns value of given key for given dictionary"""
     return dictionary[key]
 
+def get_project_files(project_uuid, accesstoken):
+    files_query = '{' + '"name": { $in: ["projectFile", "projectJobFile"]},"value.projectUuid": "' + project_uuid + '", "value.isDeleted": false}'
+    my_agave = make_vdj_agave(accesstoken)
+    files = my_agave.meta.listMetadata(q = urllib.quote(files_query), limit = 5000)
+    return files
+
 def get_token(username, refresh, password):
     requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
     if password is None: # refresh token
