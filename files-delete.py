@@ -4,7 +4,6 @@ import vdjpy
 import argparse
 import sys
 
-system = 'data.vdjserver.org/'
 
 if __name__ == '__main__':
 
@@ -13,10 +12,14 @@ if __name__ == '__main__':
     parser.add_argument('-p', '--project', dest = 'project', default = None, nargs = '?')
     parser.add_argument('-z', '--accesstoken', dest = 'accesstoken', default = None, nargs = '?')
     parser.add_argument('-f', '--file_to_delete', dest = 'file_to_delete', default = None, nargs = '?')
+    parser.add_argument('-s', '--system', dest = 'system', default = None, nargs = '?')
     args = parser.parse_args()
 
     kwargs = {}
-    kwargs['systemId'] = system
+
+    if args.system is None:
+        args.system = vdjpy.prompt_user('system name')
+    kwargs['systemId'] = args.system
 
     # -p
     if args.project is None:
