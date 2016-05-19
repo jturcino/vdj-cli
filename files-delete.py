@@ -20,9 +20,10 @@ if __name__ == '__main__':
     # -p
     if args.project is None:
         args.project = vdjpy.prompt_user('project name')
-    project_uuid = str(vdjpy.get_uuid(args.project, args.accesstoken))
+    project_uuid = vdjpy.get_uuid(args.project, args.accesstoken)
     if project_uuid is None:
         sys.exit('Could not find specified project.')
+    project_uuid = str(project_uuid)
     
     # -f
     if args.file_to_delete is None:
