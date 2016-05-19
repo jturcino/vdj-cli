@@ -14,6 +14,7 @@ if __name__ == '__main__':
     parser.add_argument('-z', '--accesstoken', dest = 'accesstoken', default = None, nargs = '?')
     parser.add_argument('-l', '--limit', dest = 'limit', type = int, default = 5000, nargs = '?')
     parser.add_argument('-o', '--offset', dest = 'offset', type = int, default = 0, nargs = '?')
+    parser.add_argument('-v', '--verbose', dest = 'verbose', action = 'store_true')
     args = parser.parse_args()
 
     kwargs = {}
@@ -43,14 +44,19 @@ if __name__ == '__main__':
 
     # if args.project does not exist
     if uuid is None:
-        sys.exit()
+        sys.exit('Could not find project', args.project)
     
     # if args.project exits
-    else:
-        uuid = str(uuid)
-        files_query = '{' + '"name": { $in: ["projectFile", "projectJobFile"]}, "value.projectUuid": "' + uuid + '", "value.isDeleted": false}'
-        files_query = urllib.quote(files_query)
-        kwargs['q'] = files_query
+    uuid = str(uuid)
+    files = vdjpy.get_project_files(uuid, args.accesstoken)
+    if args.limit < 5000:
+        files = files[:args.limit]
 
-        files = my_agave.meta.listMetadata(**kwargs)
+    # if -v
+    if args.verbose:
         print json.dumps(files, default = vdjpy.json_serial, sort_keys = True, indent = 4, separators = (',', ': '))
+
+    # if no -v
+    else:
+        for item in files:
+            print item['value']['name']
