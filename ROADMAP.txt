@@ -4,19 +4,19 @@ apps-addupdate
 apps-common.sh
 apps-delete
 apps-history
-apps-list 					done
+apps-list 		done
 apps-pems-delete
-apps-pems-list				done
+apps-pems-list		done
 apps-pems-update
 apps-publish
 apps-search
 
-auth-tokens-create 			done in vdj-login
-auth-tokens-refresh 		done in vdj-login
+auth-tokens-create 	done in vdj-login
+auth-tokens-refresh 	done in vdj-login
 
-files-list 					done
-files-upload 				done
-files-get - download from agave path to local machine
+files-list 		done
+files-upload 		done
+files-get 		done, BUT no recursion
 files-import - from URL to agave path
 files-pems-list
 files-pems-update
