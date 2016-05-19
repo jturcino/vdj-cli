@@ -17,11 +17,12 @@ projects_cache = './.vdjprojects'
 user_cache = '~/.vdjapi'
 data_url = 'data.vdjserver.org/'
 
-def check_for_project_name(json_object, name):
+def check_for_name(json_object, name):
     """Checks for a entries with a given name in a given json dictionary"""
     for item in json_object:
-        if item['value']['name'] == name:
+        if str(item['value']['name']) == name:
             return item['uuid']
+    return None
 
 def get_dictionary_value(dictionary, key):
     """Returns value of given key for given dictionary"""
