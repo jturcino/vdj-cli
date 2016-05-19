@@ -17,7 +17,7 @@ projects_cache = './.vdjprojects'
 user_cache = '~/.vdjapi'
 data_url = 'data.vdjserver.org/'
 
-def check_for_name(json_object, name):
+def check_for_project_name(json_object, name):
     """Checks for a entries with a given name in a given json dictionary"""
     for item in json_object:
         if str(item['value']['name']) == name:
