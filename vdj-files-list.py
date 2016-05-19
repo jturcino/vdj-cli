@@ -44,7 +44,7 @@ if __name__ == '__main__':
 
     # if args.project does not exist
     if uuid is None:
-        sys.exit('Could not find project', args.project)
+        sys.exit('Could not find specified project')
     
     # if args.project exits
     uuid = str(uuid)

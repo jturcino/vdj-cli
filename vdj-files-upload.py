@@ -47,7 +47,7 @@ if __name__ == '__main__':
     # get uuid, exit if does not exist
     project_uuid = vdjpy.get_uuid(args.project, args.accesstoken)
     if project_uuid is None:
-        sys.exit()
+        sys.exit('Could not find specified project')
     kwargs['filePath'] = '/projects/' + project_uuid + '/files'
 
     # upload file
