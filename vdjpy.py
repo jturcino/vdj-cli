@@ -75,15 +75,21 @@ def json_serial(obj):
         return serial
     raise TypeError ("Type not serializable")
 
-def make_vdj_agave(access_token):
+def make_vdj_agave(accesstoken):
     """Make an Agave object at url with given access token."""
-    if access_token is None:
+    if accesstoken is None:
         dictionary = read_json(user_cache)
         if dictionary is None:
-            access_token = prompt_user('access_token')
+            accesstoken = prompt_user('access_token')
         else:
-            access_token = dictionary['access_token']
-    return Agave(api_server = base_url, token = access_token)
+            accesstoken = dictionary['access_token']
+    return Agave(api_server = base_url, token = accesstoken)
+
+def manage_files(accesstoken, systemID, path, data_change):
+    """Manage files with agavepy endpoint. Includes mkdir, rename, copy, name."""
+    my_agave = make_vdj_agave(accesstoken)
+    resp = my_agave.files.manage(systemId = systemID, filePath = path, body = data_change)
+    return resp
 
 def prompt_user(key):
     """Promp user to enter value for given key at command line."""
