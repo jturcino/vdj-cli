@@ -87,6 +87,8 @@ def make_vdj_agave(accesstoken):
 
 def manage_files(accesstoken, systemID, path, data_change):
     """Manage files with agavepy endpoint. Includes mkdir, rename, copy, name."""
+    if systemID is None:
+        systemID = data_url
     my_agave = make_vdj_agave(accesstoken)
     resp = my_agave.files.manage(systemId = systemID, filePath = path, body = data_change)
     return resp

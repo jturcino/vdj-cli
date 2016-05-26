@@ -15,10 +15,6 @@ if __name__ == '__main__':
     parser.add_argument('-v', '--verbose', dest = 'verbose', default = False, action = 'store_true')
     args = parser.parse_args()
 
-    # -s
-    if args.system is None:
-        args.system = vdjpy.prompt_user('system name')
-
     # -p
     if args.path is None:
         args.path = vdjpy.prompt_user('path to the file')
