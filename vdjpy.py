@@ -120,10 +120,15 @@ def sortbyquery(mylist, query):
         mylist.sort(key = itemgetter(query))
     return mylist
 
+def update_metadata(project_uuid, file_name, file_uuid, extras):
+    metadata_path = '/vdjZ/projects/' + project_uuid + '/files/' + file_name
+    metadata_url = 'https://vdjserver.org/api/v1/notifications/files/import?fileUuid=' + file_uuid + '&path=' + metadata_path + '&projectUuid=' + project_uuid + extras
+    resp = requests.post(metadata_url)
+    resp.raise_for_status()
+    return resp.json()
+
 def write_json(json_in, filename):
     """Write the given json to the given file. Changes from unicode to string."""
     with open(os.path.expanduser(filename), 'w') as json_file:
         json.dump(json_in, json_file)
     return
-
-
