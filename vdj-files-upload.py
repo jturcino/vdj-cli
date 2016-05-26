@@ -55,28 +55,28 @@ if __name__ == '__main__':
 
     # UPDATE METADATA SETUP
     file_uuid = str(upload['uuid'])
-    metadata_path = '/vdjZ/projects/' + project_uuid + '/files/' + args.file_name
+    extras = ''
     
     # -y
-    if args.file_type is None:
-        args.file_type = vdjpy.prompt_user('file type')
+    if args.file_type is not '':
+        if args.file_type is None:
+            args.file_type = vdjpy.prompt_user('file type')
+        extras += '&vdjFileType=' + args.file_type
 
     # -r
-    if args.read_direction is None:
-        args.read_direction = vdjpy.prompt_user('read_direction')
-
-    metadata_url = 'https://vdjserver.org/api/v1/notifications/files/import?fileUuid=' + file_uuid + '&path=' + metadata_path + '&projectUuid=' + project_uuid + '&vdjFileType=' + str(args.file_type) + '&readDirection=' + args.read_direction + '&tags='
+    if args.read_direction is not '':
+        if args.read_direction is None:
+            args.read_direction = vdjpy.prompt_user('read_direction')
+        extras += '&readDirection=' + args.read_direction
 
     # -t
     if args.tags:
         tag_string = vdjpy.prompt_user('tags as a comma-separated list')
         tag_string = urllib.quote(tag_string)
-        metadata_url += tag_string
+        extras += '&tags=' + tag_string
 
     # update metadata
-    resp = requests.post(metadata_url)
-    resp.raise_for_status()
-    resp = resp.json()
+    resp = vdjpy.update_metadata(project_uuid, args.file_name, file_uuid, extras)
 
     # if -v
     if args.verbose:
