@@ -18,11 +18,11 @@ files-list 			done
 files-upload 			done
 files-get 			done, BUT no recursion
 files-import - from URL to agave path
-files-pems-list
+files-pems-list			done
 files-pems-update
 files-pems-delete
 files-mkdir
-files-copy - from agave path to agave path
+files-copy			done 
 files-move - from agave path to agave path
 files-rename - essentially a special case of files-move
 files-history
