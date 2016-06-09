@@ -95,7 +95,7 @@ def manage_files(accesstoken, systemID, path, data_change):
 
 def prompt_user(key):
     """Promp user to enter value for given key at command line."""
-    print 'Enter your', key.replace('_', ' ') + ':',
+    print 'Enter', key.replace('_', ' ') + ':',
     return_key = raw_input('')
     return return_key
 
