@@ -25,7 +25,7 @@ files-mkdir
 files-copy			done 
 files-move - from agave path to agave path
 files-rename - essentially a special case of files-move
-files-history
+files-history			done
 files-delete			done
 
 jobs-list
