@@ -3,6 +3,7 @@
 import vdjpy
 import json
 import argparse
+import sys
 
 if __name__ == '__main__':
     
@@ -29,6 +30,8 @@ if __name__ == '__main__':
     if args.project is None:
         args.project = vdjpy.prompt_user('project')
     uuid = vdjpy.get_uuid(args.project, args.accesstoken)
+    if uuid is None:
+        sys.exit()
 
     # -f
     if args.file_name is None:
