@@ -19,8 +19,8 @@ files-upload 			done
 files-get 			done, BUT no recursion
 files-import - from URL to agave path
 files-pems-list			done
-files-pems-update
-files-pems-delete
+files-pems-update		done
+files-pems-delete		done
 files-mkdir
 files-copy			done 
 files-move - from agave path to agave path
