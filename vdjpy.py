@@ -93,6 +93,14 @@ def manage_files(accesstoken, systemID, path, data_change):
     resp = my_agave.files.manage(systemId = systemID, filePath = path, body = data_change)
     return resp
 
+def prompt_for_integer(key, default_value):
+    return_value = default_value
+    try:
+        return_value = int(prompt_user(key))
+    except:
+        print 'Not a valid integer. Using default value of', str(default_value) + '.'
+    return return_value
+
 def prompt_user(key):
     """Promp user to enter value for given key at command line."""
     print 'Enter', key.replace('_', ' ') + ':',
