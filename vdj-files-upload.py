@@ -3,11 +3,7 @@
 import vdjpy
 import argparse
 import json
-import os.path
 import urllib
-import requests
-
-system = 'data.vdjserver.org/'
 
 if __name__ == '__main__':
 
@@ -25,11 +21,15 @@ if __name__ == '__main__':
 
     # UPLOAD FILE SETUP
     kwargs = {}
-    kwargs['systemId'] = system
 
     # -p
     if args.project is None:
         args.project = vdjpy.prompt_user('project name')
+    project_uuid = vdjpy.get_uuid(args.project, args.accesstoken)
+    if project_uuid is None:
+        sys.exit('Could not find specified project')
+    kwargs['sourcefilePath'] = '/projects/' + project_uuid + '/files'
+
 
     # -f
     if args.file_upload is None:
@@ -43,15 +43,7 @@ if __name__ == '__main__':
 
     # make Agave object 
     my_agave = vdjpy.make_vdj_agave(args.accesstoken)
-
-    # get uuid, exit if does not exist
-    project_uuid = vdjpy.get_uuid(args.project, args.accesstoken)
-    if project_uuid is None:
-        sys.exit('Could not find specified project')
-    kwargs['filePath'] = '/projects/' + project_uuid + '/files'
-
-    # upload file
-    upload = my_agave.files.importData(**kwargs)
+    upload = my_agave.files.importToDefaultSystem(**kwargs)
 
     # UPDATE METADATA SETUP
     file_uuid = str(upload['uuid'])
