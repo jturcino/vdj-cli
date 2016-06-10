@@ -5,6 +5,7 @@ import argparse
 import json
 import os.path
 import urllib
+import sys
 
 if __name__ == '__main__':
 
@@ -25,27 +26,23 @@ if __name__ == '__main__':
     # -p
     if args.project is None:
         args.project = vdjpy.prompt_user('project name')
+    uuid = vdjpy.get_uuid(args.project, args.accesstoken)
+    if uuid is None:
+        sys.exit()
 
     # -l (for listMetadata)
     if args.limit is None:
-        args.limit = vdjpy.prompt_user('project limit')
+        args.limit = vdjpy.prompt_for_integer('limit', 5000)
     kwargs['limit'] = args.limit
 
     # -o (for listMetadata)
     if args.offset is None:
-        args.offset = vdjpy.prompt_user('offset value')
+        args.offset = vdjpy.prompt_for_integer('offset value', 0)
     kwargs['offset'] = args.offset
 
     # make Agave object 
     my_agave = vdjpy.make_vdj_agave(args.accesstoken)
 
-    # read cache
-    uuid = vdjpy.get_uuid(args.project, args.accesstoken)
-
-    # if args.project does not exist
-    if uuid is None:
-        sys.exit('Could not find specified project')
-    
     # if args.project exits
     uuid = str(uuid)
     files = vdjpy.get_project_files(uuid, args.accesstoken)

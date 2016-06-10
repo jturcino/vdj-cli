@@ -26,12 +26,12 @@ if __name__ == '__main__':
 
     # limit
     if args.limit is None:
-        args.limit = int(vdjpy.prompt_user('number of apps to return'))
+        args.limit = vdjpy.prompt_for_integer('limit', 250)
     kwargs['limit'] = args.limit
 
     # offset
     if args.offset is None:
-        args.offset = int(vdjpy.prompt_user('number to offset'))
+        args.offset = vdjpy.prompt_for_integer('offset', 0)
     kwargs['offset'] = args.offset
 
     # get systems

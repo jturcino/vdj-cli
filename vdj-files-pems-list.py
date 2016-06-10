@@ -34,20 +34,12 @@ if __name__ == '__main__':
 
     # -l
     if args.limit is None:
-        try:
-            args.limit = int(vdjpy.prompt_user('limit'))
-        except:
-            print 'Not a valid integer. Using default value of 250.'
-            args.limit = 250
+        args.limit = vdjpy.prompt_for_integer('limit', 250)
     kwargs['limit'] = args.limit
 
     # -o
     if args.offset is None:
-        try:
-            args.offset = int(vdjpy.prompt_user('offset value'))
-        except:
-            print 'Not a valid integer. Using default value of 0.'
-            args.offset = 0
+        args.offset = vdjpy.prompt_for_integer('offset', 0)
     kwargs['offset'] = args.offset
 
     # list permissions

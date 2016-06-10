@@ -15,8 +15,8 @@ if __name__ == '__main__':
     parser.add_argument('-d', '--default', dest = 'default', action = 'store_true')
     parser.add_argument('-q', '--private', dest = 'private', action = 'store_true')
     parser.add_argument('-p', '--public', dest = 'public', action = 'store_true')
-    parser.add_argument('-l', '--limit', dest = 'limit', default = 250, nargs = '?')
-    parser.add_argument('-o', '--offset', dest = 'offset', default = 0, nargs = '?')
+    parser.add_argument('-l', '--limit', dest = 'limit', type = int, default = 250, nargs = '?')
+    parser.add_argument('-o', '--offset', dest = 'offset', type = int, default = 0, nargs = '?')
     args = parser.parse_args()
 
     kwargs = {}
@@ -39,12 +39,12 @@ if __name__ == '__main__':
 
     # limit
     if args.limit is None:
-        args.limit = vdjpy.prompt_user('number of apps to return')
+        args.limit = vdjpy.prompt_for_integer('limit', 250)
     kwargs['limit'] = args.limit
 
     # offset
     if args.offset is None:
-        args.offset = vdjpy.prompt_user('offset value')
+        args.offset = vdjpy.prompt_for_integer('offset value', 0)
     kwargs['offset'] = args.offset
 
     # get systems

@@ -30,7 +30,7 @@ if __name__ == '__main__':
 
     # -l
     if args.limit is None:
-        args.limit = int(vdjpy.prompt_user('number of users to return'))
+        args.limit = vdjpy.prompt_for_integer('limit', 250)
     kwargs['limit'] = args.limit
 
     # get systems

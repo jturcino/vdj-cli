@@ -14,8 +14,8 @@ if __name__ == '__main__':
     parser.add_argument('-z', '--accesstoken', dest = 'accesstoken', default = None)
     parser.add_argument('-p', '--publiconly', dest = 'publiconly', default = False, action = 'store_true')
     parser.add_argument('-q', '--privateonly', dest = 'privateonly', default = False, action = 'store_true')
-    parser.add_argument('-l', '--limit', dest = 'limit', default = 250, nargs = '?')
-    parser.add_argument('-o', '--offset', dest = 'offset', default = 0, nargs = '?')
+    parser.add_argument('-l', '--limit', dest = 'limit', type = int, default = 250, nargs = '?')
+    parser.add_argument('-o', '--offset', dest = 'offset', type = int, default = 0, nargs = '?')
     parser.add_argument('-n', '--name', dest = 'name', default = '', nargs = '?')
     parser.add_argument('-s', '--system', dest = 'system', default = '', nargs = '?')
     args = parser.parse_args()
@@ -30,12 +30,12 @@ if __name__ == '__main__':
 
     # limit
     if args.limit is None:
-        args.limit = vdjpy.prompt_user('number of apps to return')
+        args.limit = vdjpy.prompt_for_integer('limit', 250)
     kwargs['limit'] = args.limit
 
     # offset
     if args.offset is None:
-        args.offset = vdjpy.prompt_user('number to offset')
+        args.offset = vdjpy.prompt_for_integer('offset', 0)
     kwargs['offset'] = args.offset
 
     # get systems

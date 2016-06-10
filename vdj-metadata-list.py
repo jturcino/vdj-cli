@@ -4,7 +4,6 @@ import urllib
 import argparse
 import vdjpy
 import json
-import requests
 import re
 
 if __name__ == '__main__':
@@ -28,12 +27,12 @@ if __name__ == '__main__':
 
     # -l
     if args.limit is None:
-        args.limit = vdjpy.prompt_user('project limit')
+        args.limit = vdjpy.prompt_for_integer('limit', 5000)
     kwargs['limit'] = args.limit
 
     # -o
     if args.offset is None:
-        args.offset = vdjpy.prompt_user('offset value')
+        args.offset = vdjpy.prompt_for_integer('offset value', 0)
     kwargs['offset'] = args.offset
 
     my_agave = vdjpy.make_vdj_agave(args.accesstoken)

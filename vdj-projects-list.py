@@ -3,7 +3,6 @@
 import vdjpy
 import argparse
 import json
-import os.path
 
 def sortbydatetime(jsonlist, query):
     """Takes a list of json dictionaries with a query by which to sort the list"""
@@ -26,11 +25,11 @@ if __name__ == '__main__':
 
     # -l
     if args.limit is None:
-        args.limit = vdjpy.prompt_user('project limit')
+        args.limit = vdjpy.prompt_for_integer('limit', 5000)
 
     # -o
     if args.offset is None:
-        args.offset = vdjpy.prompt_user('offset value')
+        args.offset = vdjpy.prompt_for_integer('offset value', 0)
 
     # make object
     projects = vdjpy.get_vdj_projects(args.accesstoken, args.limit, args.offset)
