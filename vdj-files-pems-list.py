@@ -20,14 +20,14 @@ if __name__ == '__main__':
     kwargs = {}
     kwargs['systemId'] = 'data.vdjserver.org'
 
-    # -f
+    # -p
     if args.project is None:
         args.project = vdjpy.prompt_user('project')
     project_uuid = vdjpy.get_uuid(args.project, args.accesstoken)
     if project_uuid is None:
         sys.exit()
 
-    # -p
+    # -f
     if args.file_name is None:
         args.file_name = vdjpy.prompt_user('file name')
     kwargs['filePath'] = '/projects/' + project_uuid + '/files/' + args.file_name

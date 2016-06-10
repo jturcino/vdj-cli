@@ -24,7 +24,7 @@ if __name__ == '__main__':
     if args.recursive:
         recursive = 'true'
 
-    # -f
+    # -s
     if args.systemID is None:
         args.systemID = vdjpy.prompt_user('system')
     kwargs['systemId'] = args.systemID

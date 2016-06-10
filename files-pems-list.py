@@ -18,7 +18,7 @@ if __name__ == '__main__':
 
     kwargs = {}
 
-    # -f
+    # -s
     if args.systemID is None:
         args.systemID = vdjpy.prompt_user('system')
     kwargs['systemId'] = args.systemID
