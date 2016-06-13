@@ -28,7 +28,9 @@ if __name__ == '__main__':
 
     # delete file
     my_agave = vdjpy.make_vdj_agave(args.accesstoken)
-    delete = my_agave.files.delete(**kwargs)
+    files_delete = my_agave.files.delete(**kwargs)
 
-    if delete is None:
+    if files_delete is None:
         print 'Successfully deleted file at path', args.path
+    else:
+        print 'Deletion was not successfull. The message returned from the request was:\n' + json.dumps(files_delete, default = vdjpy.json_serial, sort_keys = True, indent = 4, separators = (',', ': '))

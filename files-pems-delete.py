@@ -32,4 +32,4 @@ if __name__ == '__main__':
     if pems_delete is None:
         print 'Succesfully removed permissions for file at path', args.path
     else:
-        print 'Permission removal was not successful. Check listed permissions, and try again.'
+        print 'Permission removal was not successfull. The message returned from the request was:\n' + json.dumps(pems_delete, default = vdjpy.json_serial, sort_keys = True, indent = 4, separators = (',', ': '))
