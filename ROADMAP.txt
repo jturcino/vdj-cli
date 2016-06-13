@@ -5,9 +5,9 @@ apps-common.sh
 apps-delete
 apps-history
 apps-list 			done
-apps-pems-delete
+apps-pems-delete		done
 apps-pems-list			done
-apps-pems-update
+apps-pems-update		done
 apps-publish
 apps-search
 
