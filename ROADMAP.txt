@@ -28,9 +28,9 @@ files-rename - essentially a special case of files-move
 files-history			done
 files-delete			done
 
-jobs-list
+jobs-list			done
 jobs-delete
-jobs-history
+jobs-history			done
 jobs-output
 jobs-output-get
 jobs-output-list
