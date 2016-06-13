@@ -45,11 +45,11 @@ if __name__ == '__main__':
     # if no -v
     else:
         for item in pems_list:
-            user_pems = '\t'
+            user_pems = ''
             if item['permission']['read'] is True:
                 user_pems+='r'
             if item['permission']['write'] is True:
                 user_pems+='w'
             if item['permission']['execute'] is True:
                 user_pems+='x'
-            print item['username'] + ' ' + user_pems
+            print item['username'], user_pems
