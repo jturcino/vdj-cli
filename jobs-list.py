@@ -37,4 +37,4 @@ if __name__ == '__main__':
     # if no -v
     else:
         for item in jobs:
-            print item['name'], item['status']
+            print item['name'], '\n\tid:', item['id'], '\n\tstatus:', item['status']
