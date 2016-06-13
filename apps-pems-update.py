@@ -1,0 +1,46 @@
+#!/usr/bin/env python
+
+import vdjpy
+import json
+import argparse
+
+if __name__ == '__main__':
+    
+    # arguments
+    parser = argparse.ArgumentParser()
+    parser.add_argument('-a', '--appID', dest = 'appID', default = None, nargs = '?')
+    parser.add_argument('-u', '--username', dest = 'username', default = None, nargs = '?')
+    parser.add_argument('-p', '--permissions', dest = 'permissions', default = None, nargs = '?')
+    parser.add_argument('-z', '--accesstoken', dest = 'accesstoken', default = None, nargs = '?')
+    parser.add_argument('-v', '--verbose', dest = 'verbose', default = False, action = 'store_true')
+    args = parser.parse_args()
+
+    kwargs = {}
+
+    # -p
+    if args.appID is None:
+        args.appID = vdjpy.prompt_user('appID')
+    kwargs['appId'] = args.appID
+
+    # -u
+    if args.username is None:
+        args.username = vdjpy.prompt_user('username to update')
+    
+    if args.permissions is None:
+        print 'Valid permission options are as follows: \n\tREAD \n\tWRITE \n\tEXECUTE \n\tREAD_WRITE \n\tREAD_EXECUTE \n\tWRITE_EXECUTE \n\tALL \n\tNONE'
+        args.permissions = vdjpy.prompt_user('permission to set')
+
+    # build body
+    kwargs['body'] = "{\n\t\"username\":\"" + args.username + "\",\n\t\"permission\": \"" + args.permissions + "\"\n}"
+
+    # update permissions
+    my_agave = vdjpy.make_vdj_agave(args.accesstoken)
+    pems_update = my_agave.apps.updateApplicationPermissions(**kwargs)
+
+    # if -v
+    if args.verbose:
+         print json.dumps(pems_update, default = vdjpy.json_serial, sort_keys = True, indent = 4, separators = (',', ': '))
+
+    # if no -v
+    else:
+        print 'Permissions for', args.username, 'now set to \n\texecute:', pems_update['permission']['execute'], '\n\tread:', pems_update['permission']['read'], '\n\twrite:', pems_update['permission']['write']
