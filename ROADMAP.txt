@@ -35,7 +35,7 @@ jobs-output
 jobs-output-get
 jobs-output-list
 jobs-pems-list			done
-jobs-pems-update
+jobs-pems-update		done
 jobs-submit
 jobs-stop - not sure how this is different from jobs-delete
 jobs-status
