@@ -38,7 +38,7 @@ jobs-pems-list			done
 jobs-pems-update		done
 jobs-submit
 jobs-stop - not sure how this is different from jobs-delete
-jobs-status
+jobs-status			done
 
 metadata-addupdate
 metadata-delete
