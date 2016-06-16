@@ -43,8 +43,8 @@ jobs-status			done
 metadata-addupdate
 metadata-delete
 metadata-list 			done
-metadata-pems-addupdate
-metadata-pems-list
+metadata-pems-addupdate		done
+metadata-pems-list		limit/offset not working, otherwise done
 
 notifications-addupdate
 notifications-delete
