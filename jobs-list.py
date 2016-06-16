@@ -32,7 +32,7 @@ if __name__ == '__main__':
     
     # -v
     if args.verbose:
-        print json.dumps(jobs, default = json_serial, sort_keys = True, indent = 4, separators = (',', ': '))
+        print json.dumps(jobs, default = vdjpy.json_serial, sort_keys = True, indent = 4, separators = (',', ': '))
 
     # if no -v
     else:
