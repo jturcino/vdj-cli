@@ -3,7 +3,6 @@
 import vdjpy
 import json
 import argparse
-import sys
 
 if __name__ == '__main__':
     
