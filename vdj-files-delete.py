@@ -18,12 +18,15 @@ if __name__ == '__main__':
 
     args = parser.parse_args()
 
+    # make agave object
+    my_agave = vdjpy.make_vdj_agave(args.accesstoken)
+
     # -p
     if args.project is None:
         args.project = vdjpy.prompt_user('project name')
     
     # get project uuid
-    project_uuid = vdjpy.get_uuid(args.project, args.accesstoken)
+    project_uuid = vdjpy.get_uuid(args.project, my_agave)
     if project_uuid is None:
         sys.exit('Could not find specified project')
     project_uuid = str(project_uuid)
@@ -33,7 +36,7 @@ if __name__ == '__main__':
         args.file_to_delete = vdjpy.prompt_user('file to delete')
     
     # get file_to_delete metadata
-    files = vdjpy.get_project_files(project_uuid, args.accesstoken)
+    files = vdjpy.get_project_files(project_uuid, {}, my_agave)
     file_metadata = None
     for item in files:
         if str(item['value']['name']) == args.file_to_delete:
@@ -48,7 +51,6 @@ if __name__ == '__main__':
     kwargs = {}
     kwargs['uuid'] = str(file_metadata['uuid'])
     kwargs['body'] = file_metadata
-    my_agave = vdjpy.make_vdj_agave(args.accesstoken)
 #insert try/catch for HTTPError
     delete_resp = my_agave.meta.updateMetadata(**kwargs)
 

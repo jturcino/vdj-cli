@@ -16,12 +16,14 @@ if __name__ == '__main__':
     parser.add_argument('-z', '--accesstoken', dest = 'accesstoken', default = None, nargs = '?')
     args = parser.parse_args()
     
+    # make agave object and kwargs
+    my_agave = vdjpy.make_vdj_agave(args.accesstoken)
     kwargs = {}
 
     # -p
     if args.project is None:
         args.project = vdjpy.prompt_user('project')
-    uuid = vdjpy.get_uuid(args.project, args.accesstoken)
+    uuid = vdjpy.get_uuid(args.project, my_agave)
     if uuid is None:
         sys.exit()
 
@@ -41,6 +43,5 @@ if __name__ == '__main__':
     kwargs['offset'] = args.offset
 
     # get history
-    my_agave = vdjpy.make_vdj_agave(args.accesstoken)
     history = my_agave.files.getHistoryOnDefaultSystem(**kwargs)
     print json.dumps(history, default = vdjpy.json_serial, sort_keys = True, indent = 4, separators = (',', ': '))

@@ -18,15 +18,17 @@ if __name__ == '__main__':
     parser.add_argument('-v', '--verbose', dest = 'verbose', action = 'store_true')
     args = parser.parse_args()
 
-    kwargs = {}
-
     # cache and query
     projects_cache = './.vdjprojects'
+
+    # make Agave object and kwargs
+    my_agave = vdjpy.make_vdj_agave(args.accesstoken)
+    kwargs = {}
 
     # -p
     if args.project is None:
         args.project = vdjpy.prompt_user('project name')
-    uuid = vdjpy.get_uuid(args.project, args.accesstoken)
+    uuid = vdjpy.get_uuid(args.project, my_agave)
     if uuid is None:
         sys.exit()
 
@@ -39,9 +41,6 @@ if __name__ == '__main__':
     if args.offset is None:
         args.offset = vdjpy.prompt_for_integer('offset value', 0)
     kwargs['offset'] = args.offset
-
-    # make Agave object 
-    my_agave = vdjpy.make_vdj_agave(args.accesstoken)
 
     # if args.project exits
     uuid = str(uuid)

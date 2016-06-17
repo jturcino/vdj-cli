@@ -20,12 +20,13 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     # UPLOAD FILE SETUP
+    my_agave = vdjpy.make_vdj_agave(args.accesstoken)
     kwargs = {}
 
     # -p
     if args.project is None:
         args.project = vdjpy.prompt_user('project name')
-    project_uuid = vdjpy.get_uuid(args.project, args.accesstoken)
+    project_uuid = vdjpy.get_uuid(args.project, my_agave)
     if project_uuid is None:
         sys.exit('Could not find specified project')
     kwargs['sourcefilePath'] = '/projects/' + project_uuid + '/files'
@@ -41,8 +42,7 @@ if __name__ == '__main__':
         args.file_name = args.file_upload
     kwargs['fileName'] = args.file_name
 
-    # make Agave object 
-    my_agave = vdjpy.make_vdj_agave(args.accesstoken)
+    # upload file
     upload = my_agave.files.importToDefaultSystem(**kwargs)
 
     # UPDATE METADATA SETUP

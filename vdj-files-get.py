@@ -16,12 +16,14 @@ if __name__ == '__main__':
     parser.add_argument('-p', '--project', dest = 'project', default = None, nargs = '?')
     args = parser.parse_args()
     
+    # make Agave object and kwargs
+    my_agave = vdjpy.make_vdj_agave(args.accesstoken)
     kwargs = {}
 
     # -p
     if args.project is None:
         args.project = vdjpy.prompt_user('project name')
-    project_uuid = vdjpy.get_uuid(args.project, args.accesstoken)
+    project_uuid = vdjpy.get_uuid(args.project, my_agave)
     if project_uuid is None:
         sys.exit('Cancelling command because of invalid project name')
 
@@ -34,8 +36,7 @@ if __name__ == '__main__':
     if args.file_name is None:
         args.file_name = args.file_download
 
-    # make Agave object and download file
-    my_agave = vdjpy.make_vdj_agave(args.accesstoken)
+    # download file
     download = my_agave.files.downloadFromDefaultSystem(**kwargs)
     download.raise_for_status()
 

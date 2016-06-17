@@ -17,12 +17,14 @@ if __name__ == '__main__':
     parser.add_argument('-v', '--verbose', dest = 'verbose', default = False, action = 'store_true')
     args = parser.parse_args()
 
+    # make Agave object and kwargs
+    my_agave = vdjpy.make_vdj_agave(args.accesstoken)
     kwargs = {}
 
     # -p
     if args.project is None:
         args.project = vdjpy.prompt_user('project')
-    project_uuid = vdjpy.get_uuid(args.project, args.accesstoken)
+    project_uuid = vdjpy.get_uuid(args.project, my_agave)
     if project_uuid is None:
         sys.exit()
 
@@ -42,7 +44,6 @@ if __name__ == '__main__':
     kwargs['offset'] = args.offset
 
     # list permissions
-    my_agave = vdjpy.make_vdj_agave(args.accesstoken)
     permissions = my_agave.files.listPermissionsOnDefaultSystem(**kwargs)
 
     # if -v

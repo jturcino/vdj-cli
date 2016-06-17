@@ -3,6 +3,7 @@
 import vdjpy
 import json
 import argparse
+import sys
 
 if __name__ == '__main__':
     
@@ -15,6 +16,9 @@ if __name__ == '__main__':
     parser.add_argument('-v', '--verbose', dest = 'verbose', default = False, action = 'store_true')
     args = parser.parse_args()
 
+    # make agave
+    my_agave = vdjpy.make_vdj_agave(args.accesstoken)
+
     # -f
     if args.file_name is None:
         args.file_name = vdjpy.prompt_user('file name')
@@ -22,12 +26,16 @@ if __name__ == '__main__':
     # -p
     if args.current_project is None:
         args.current_project = vdjpy.prompt_user('file\'s current project')
-    current_uuid = vdjpy.get_uuid(args.current_project, args.accesstoken)
+    current_uuid = vdjpy.get_uuid(args.current_project, my_agave)
+    if current_uuid is None:
+        sys.exit()
 
     # -d
     if args.destination_project is None:
         args.destination_project = vdjpy.prompt_user('project to copy the file')
-    destination_uuid = vdjpy.get_uuid(args.destination_project, args.accesstoken)
+    destination_uuid = vdjpy.get_uuid(args.destination_project, my_agave)
+    if destination_uuid is None:
+        sys.exit()
 
     current_path = '/projects/' + current_uuid + '/files/' + args.file_name
     destination_path = '/projects/' + destination_uuid + '/files'
@@ -38,8 +46,7 @@ if __name__ == '__main__':
 
     # update metadata
     file_uuid = str(copy['uuid'])
-    extras = ''
-    resp = vdjpy.update_metadata(destination_uuid, args.file_name, file_uuid, extras)
+    resp = vdjpy.update_metadata(destination_uuid, args.file_name, file_uuid, '')
 
     # if -v
     if args.verbose:

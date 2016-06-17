@@ -14,13 +14,15 @@ if __name__ == '__main__':
     parser.add_argument('-z', '--accesstoken', dest = 'accesstoken', default = None, nargs = '?')
     args = parser.parse_args()
 
+    # make agave object and kwargs
+    my_agave = vdjpy.make_vdj_agave(args.accesstoken)
     kwargs = {}
     kwargs['systemId'] = 'data.vdjserver.org'
 
     # -p
     if args.project is None:
         args.project = vdjpy.prompt_user('project')
-    uuid = vdjpy.get_uuid(args.project, args.accesstoken)
+    uuid = vdjpy.get_uuid(args.project, my_agave)
     if uuid is None:
         sys.exit()
 
@@ -32,7 +34,6 @@ if __name__ == '__main__':
     kwargs['filePath'] = '/projects/' + uuid + '/files/' + args.file_name
 
     # delete permissions
-    my_agave = vdjpy.make_vdj_agave(args.accesstoken)
     pems_delete = my_agave.files.deletePermissions(**kwargs)
 
     if pems_delete is None:
