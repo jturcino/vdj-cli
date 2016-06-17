@@ -45,9 +45,7 @@ if __name__ == '__main__':
 
     # if args.project exits
     uuid = str(uuid)
-    files = vdjpy.get_project_files(uuid, args.accesstoken)
-    if args.limit < 5000:
-        files = files[:args.limit]
+    files = vdjpy.get_project_files(uuid, kwargs, my_agave)
 
     # if -v
     if args.verbose:
