@@ -8,7 +8,7 @@ apps-list 			done
 apps-pems-delete		done
 apps-pems-list			done
 apps-pems-update		done
-apps-publish
+apps-publish			done
 apps-search
 
 auth-tokens-create 		done in vdj-login
