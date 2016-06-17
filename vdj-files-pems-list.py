@@ -12,13 +12,12 @@ if __name__ == '__main__':
     parser.add_argument('-p', '--project', dest = 'project', default = None, nargs = '?')
     parser.add_argument('-f', '--file_name', dest = 'file_name', default = None, nargs = '?')
     parser.add_argument('-l', '--limit', dest = 'limit', default = 250, type = int, nargs = '?')
-    parser.add_argument('-o', '--offser', dest = 'offset', default = 0, type = int, nargs = '?')
+    parser.add_argument('-o', '--offset', dest = 'offset', default = 0, type = int, nargs = '?')
     parser.add_argument('-z', '--accesstoken', dest = 'accesstoken', default = None, nargs = '?')
     parser.add_argument('-v', '--verbose', dest = 'verbose', default = False, action = 'store_true')
     args = parser.parse_args()
 
     kwargs = {}
-    kwargs['systemId'] = 'data.vdjserver.org'
 
     # -p
     if args.project is None:
@@ -44,7 +43,7 @@ if __name__ == '__main__':
 
     # list permissions
     my_agave = vdjpy.make_vdj_agave(args.accesstoken)
-    permissions = my_agave.files.listPermissions(**kwargs)
+    permissions = my_agave.files.listPermissionsOnDefaultSystem(**kwargs)
 
     # if -v
     if args.verbose:

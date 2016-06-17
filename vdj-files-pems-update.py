@@ -19,7 +19,6 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     kwargs = {}
-    kwargs['systemId'] = 'data.vdjserver.org'
 
     # -r
     recursive = 'false'
@@ -51,7 +50,7 @@ if __name__ == '__main__':
 
     # update permissions
     my_agave = vdjpy.make_vdj_agave(args.accesstoken)
-    pems_update = my_agave.files.updatePermissions(**kwargs)
+    pems_update = my_agave.files.updatePermissionsOnDefaultSystem(**kwargs)
 
     # if -v
     if args.verbose:
