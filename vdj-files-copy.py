@@ -37,12 +37,17 @@ if __name__ == '__main__':
     if destination_uuid is None:
         sys.exit()
 
-    current_path = '/projects/' + current_uuid + '/files/' + args.file_name
+    # current path
+#    current_path = '/projects/' + current_uuid + '/files/' + args.file_name
+    kwargs['filePath'] = '/projects/' + current_uuid + '/files/' + args.file_name
+
+    # build body
     destination_path = '/projects/' + destination_uuid + '/files'
-    data_change = "{\"action\":\"copy\",\"path\": \"" + destination_path + "\"}"
+#    data_change = "{\"action\":\"copy\",\"path\": \"" + destination_path + "\"}"
+    kwargs['body'] = "{\"action\":\"copy\",\"path\": \"" + destination_path + "\"}"
 
     # copy file
-    copy = vdjpy.manage_files(args.accesstoken, None, current_path, data_change)
+    copy = vdjpy.manage_files(my_agave, None, kwargs)
 
     # update metadata
     file_uuid = str(copy['uuid'])

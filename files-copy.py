@@ -15,6 +15,10 @@ if __name__ == '__main__':
     parser.add_argument('-v', '--verbose', dest = 'verbose', default = False, action = 'store_true')
     args = parser.parse_args()
 
+    # make agave object and kwargs
+    my_agave = vdjpy.make_vdj_agave(args.accesstoken)
+    kwargs = {}
+
     # -s
     if args.system is None:
         args.system = vdjpy.prompt_user('system')
@@ -22,14 +26,15 @@ if __name__ == '__main__':
     # -p
     if args.path is None:
         args.path = vdjpy.prompt_user('path')
+    kwargs['filePath'] = args.path
 
     # -d
     if args.destination is None:
         args.destination = vdjpy.prompt_user('destination of the file')
-    data_change = "{\"action\":\"copy\",\"path\": \"" + args.destination + "\"}"
+    kwargs['body']  = "{\"action\":\"copy\",\"path\": \"" + args.destination + "\"}"
 
     # copy file
-    copy = vdjpy.manage_files(args.accesstoken, args.system, args.path, data_change)
+    copy = vdjpy.manage_files(my_agave, args.system, kwargs)
 
     # if -v
     if args.verbose:
