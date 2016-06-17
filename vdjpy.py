@@ -28,10 +28,9 @@ def get_dictionary_value(dictionary, key):
     """Returns value of given key for given dictionary"""
     return dictionary[key]
 
-def get_project_files(project_uuid, accesstoken):
-    files_query = '{' + '"name": { $in: ["projectFile", "projectJobFile"]},"value.projectUuid": "' + project_uuid + '", "value.isDeleted": false}'
-    my_agave = make_vdj_agave(accesstoken)
-    files = my_agave.meta.listMetadata(q = urllib.quote(files_query), limit = 5000)
+def get_project_files(uuid, kwargs, agave_object):
+    kwargs['q'] = '{' + '"name": { $in: ["projectFile", "projectJobFile"]},"value.projectUuid": "' + uuid + '", "value.isDeleted": false}'
+    files = agave_object.meta.listMetadata(**kwargs)
     return files
 
 def get_token(username, refresh, password):
@@ -46,13 +45,14 @@ def get_token(username, refresh, password):
     resp = resp.json()
     return resp
 
-def get_uuid(project_name, accesstoken):
+def get_uuid(project_name, agave_object):
     uuid = None
     if os.path.isfile(os.path.expanduser(projects_cache)) is True:
         projects = read_json(projects_cache)
         uuid = check_for_project_name(projects, project_name)
     if uuid is None:
-        projects = get_vdj_projects(accesstoken, 5000, 0)
+        kwargs = {'limit': 5000, 'offset': 0}
+        projects = get_vdj_projects(agave_object, kwargs)
         uuid = check_for_project_name(projects, project_name)
     if uuid is None:
         print 'The project', project_name, 'does not exist. \nHere are your current projects and uuids:'
@@ -60,11 +60,10 @@ def get_uuid(project_name, accesstoken):
             print item['value']['name'] + ' ' + item['uuid']
     return uuid
 
-def get_vdj_projects(accesstoken, limit_in, offset_in):
+def get_vdj_projects(agave_object, kwargs):
     """Hits VDJ projects metadata endpoint. Returns reponse after writing response to projects cache."""
-    projects_query = '{"name":"project"}'
-    my_agave = make_vdj_agave(accesstoken)
-    projects = my_agave.meta.listMetadata(q = projects_query, limit = limit_in, offset = offset_in)
+    kwargs['q'] = '{"name":"project"}'
+    projects = agave_object.meta.listMetadata(**kwargs)
     write_json(projects, projects_cache)
     return projects
 
@@ -85,12 +84,12 @@ def make_vdj_agave(accesstoken):
             accesstoken = dictionary['access_token']
     return Agave(api_server = base_url, token = accesstoken)
 
-def manage_files(accesstoken, systemID, path, data_change):
+def manage_files(agave_object, systemID, kwargs):
     """Manage files with agavepy endpoint. Includes mkdir, rename, copy, name."""
     if systemID is None:
         systemID = data_url
-    my_agave = make_vdj_agave(accesstoken)
-    resp = my_agave.files.manage(systemId = systemID, filePath = path, body = data_change)
+    kwargs['systemId'] = systemID
+    resp = agave_object.files.manage(**kwargs)
     return resp
 
 def prompt_for_integer(key, default_value):
