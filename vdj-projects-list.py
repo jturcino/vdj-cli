@@ -4,11 +4,6 @@ import vdjpy
 import argparse
 import json
 
-def sortbydatetime(jsonlist, query):
-    """Takes a list of json dictionaries with a query by which to sort the list"""
-    jsonlist = sorted(jsonlist, key = itemgetter(query))
-    return jsonlist
-
 if __name__ == '__main__':
 
     # arguments
@@ -20,19 +15,24 @@ if __name__ == '__main__':
     parser.add_argument('-s', '--sort', dest = 'sort', default = '', nargs = '?')
     args = parser.parse_args()
 
+    kwargs = {}
+
     # cache
     projects_cache = './.vdjprojects'
 
     # -l
     if args.limit is None:
         args.limit = vdjpy.prompt_for_integer('limit', 5000)
+    kwargs['limit'] = args.limit
 
     # -o
     if args.offset is None:
         args.offset = vdjpy.prompt_for_integer('offset value', 0)
+    kwargs['offset'] = args.offset
 
     # make object
-    projects = vdjpy.get_vdj_projects(args.accesstoken, args.limit, args.offset)
+    my_agave = vdjpy.make_vdj_agave(args.accesstoken)
+    projects = vdjpy.get_vdj_projects(my_agave, kwargs)
     
     # if -t
     if args.sort is not '':
