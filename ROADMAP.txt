@@ -1,6 +1,6 @@
 coverage for essentially a v1 release:
 
-apps-addupdate
+apps-addupdate			done
 apps-common.sh
 apps-delete			ERROR with resp; otherwise working
 apps-history
