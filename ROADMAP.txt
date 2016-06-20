@@ -2,7 +2,7 @@ coverage for essentially a v1 release:
 
 apps-addupdate
 apps-common.sh
-apps-delete
+apps-delete			ERROR with resp; otherwise working
 apps-history
 apps-list 			done
 apps-pems-delete		done
