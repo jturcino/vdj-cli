@@ -57,7 +57,7 @@ postits-list
 profiles-list
 
 systems-addupdate
-systems-delete
+systems-delete			done
 systems-disable
 systems-enable
 systems-list 			done
@@ -68,7 +68,7 @@ systems-setdefault
 systems-unpublish
 systems-unsetdefault
 systems-history
-systems-publish
+systems-publish			done
 
 
 
