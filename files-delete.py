@@ -11,7 +11,7 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('-p', '--path', dest = 'path', default = None, nargs = '?')
     parser.add_argument('-z', '--accesstoken', dest = 'accesstoken', default = None, nargs = '?')
-    parser.add_argument('-s', '--system', dest = 'system', default = None, nargs = '?')
+    parser.add_argument('-s', '--system', dest = 'system', default = 'data.vdjserver.org', nargs = '?')
     args = parser.parse_args()
 
     kwargs = {}

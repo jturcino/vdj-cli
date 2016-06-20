@@ -9,7 +9,7 @@ if __name__ == '__main__':
     # arguments
     parser = argparse.ArgumentParser()
     parser.add_argument('-p', '--path', dest = 'path', default = None, nargs = '?')
-    parser.add_argument('-s', '--systemID', dest = 'systemID', default = None, nargs = '?')
+    parser.add_argument('-s', '--systemID', dest = 'systemID', default = 'data.vdjserver.org', nargs = '?')
     parser.add_argument('-l', '--limit', dest = 'limit', default = 250, type = int, nargs = '?')
     parser.add_argument('-o', '--offser', dest = 'offset', default = 0, type = int, nargs = '?')
     parser.add_argument('-z', '--accesstoken', dest = 'accesstoken', default = None, nargs = '?')
