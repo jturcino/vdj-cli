@@ -29,7 +29,7 @@ files-history			done
 files-delete			done
 
 jobs-list			done
-jobs-delete
+jobs-delete			done
 jobs-history			done
 jobs-output
 jobs-output-get
