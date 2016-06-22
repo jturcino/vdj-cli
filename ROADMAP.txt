@@ -64,9 +64,9 @@ systems-list 			done
 systems-roles-addupdate 	done
 systems-roles-delete 		done
 systems-roles-list 		done
-systems-setdefault
+systems-setdefault		done
 systems-unpublish
-systems-unsetdefault
+systems-unsetdefault		done
 systems-history
 systems-publish			done
 
