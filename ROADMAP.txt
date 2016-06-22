@@ -56,7 +56,7 @@ postits-list
 
 profiles-list
 
-systems-addupdate
+systems-addupdate		done
 systems-delete			done
 systems-disable
 systems-enable
