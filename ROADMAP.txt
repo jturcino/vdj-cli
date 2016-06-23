@@ -1,14 +1,33 @@
+lacks agavepy endpoint:
+
+apps-search
+systems-disable
+systems-enable
+
+
+throws error:
+
+apps-delete                     created work-around
+files-mkdir			FileOperationRequest
+files-copy                      FileOperationRequest; working
+files-move			FileOperationRequest
+files-rename			FileOperationRequest
+jobs-output-list		jobs.listOutputs (may be using wrong path; need example)
+jobs-output-get			jobs.downloadOutput (may be using wrong path; need example)
+notifications-delete		no error, but doesn't work
+notifications-addupdate		
+systems-unpublish		SystemOperationRequest
+
+
 coverage for essentially a v1 release:
 
 apps-addupdate			done
 apps-common.sh
-apps-delete			ERROR with resp; otherwise working
 apps-list 			done
 apps-pems-delete		done
 apps-pems-list			done
 apps-pems-update		done
 apps-publish			done
-apps-search
 
 auth-tokens-create 		done in vdj-login
 auth-tokens-refresh 		done in vdj-login
@@ -20,22 +39,15 @@ files-import - from URL to agave path
 files-pems-list			done
 files-pems-update		done
 files-pems-delete		done
-files-mkdir
-files-copy			done 
-files-move - from agave path to agave path
-files-rename - essentially a special case of files-move
 files-history			done
 files-delete			done
 
 jobs-list			done
 jobs-delete			done
 jobs-history			done
-jobs-output-get
-jobs-output-list
 jobs-pems-list			done
 jobs-pems-update		done
 jobs-submit			done
-jobs-stop - not sure how this is different from jobs-delete
 jobs-status			done
 
 metadata-addupdate
@@ -44,9 +56,7 @@ metadata-list 			done
 metadata-pems-addupdate		done
 metadata-pems-list		limit/offset not working, otherwise done
 
-notifications-addupdate
 notifications-add		done
-notifications-delete
 notifications-list		done
 
 postits-create
@@ -57,14 +67,11 @@ profiles-list			done
 
 systems-addupdate		done
 systems-delete			done
-systems-disable
-systems-enable
 systems-list 			done
 systems-roles-addupdate 	done
 systems-roles-delete 		done
 systems-roles-list 		done
 systems-setdefault		done
-systems-unpublish
 systems-unsetdefault		done
 systems-publish			done
 
