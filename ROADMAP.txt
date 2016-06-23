@@ -30,7 +30,6 @@ files-delete			done
 jobs-list			done
 jobs-delete			done
 jobs-history			done
-jobs-output
 jobs-output-get
 jobs-output-list
 jobs-pems-list			done
