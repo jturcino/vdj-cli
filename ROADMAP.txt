@@ -54,7 +54,7 @@ postits-create
 postits-delete
 postits-list
 
-profiles-list
+profiles-list			done
 
 systems-addupdate		done
 systems-delete			done
