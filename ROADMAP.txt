@@ -47,8 +47,9 @@ metadata-pems-addupdate		done
 metadata-pems-list		limit/offset not working, otherwise done
 
 notifications-addupdate
+notifications-add		done
 notifications-delete
-notifications-list
+notifications-list		done
 
 postits-create
 postits-delete
