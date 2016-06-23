@@ -19,9 +19,6 @@ if __name__ == '__main__':
     parser.add_argument('-v', '--verbose', dest = 'verbose', action = 'store_true')
     args = parser.parse_args()
 
-    # cache and query
-    projects_cache = './.vdjprojects'
-
     # make Agave object and kwargs
     my_agave = vdjpy.make_vdj_agave(args.accesstoken)
     kwargs = {}
@@ -36,12 +33,12 @@ if __name__ == '__main__':
         args.systemID = vdjpy.prompt_user('system ID')
     kwargs['systemId'] = args.systemID
 
-    # -l (for listMetadata)
+    # -l
     if args.limit is None:
         args.limit = vdjpy.prompt_for_integer('limit', 5000)
     kwargs['limit'] = args.limit
 
-    # -o (for listMetadata)
+    # -o 
     if args.offset is None:
         args.offset = vdjpy.prompt_for_integer('offset value', 0)
     kwargs['offset'] = args.offset
