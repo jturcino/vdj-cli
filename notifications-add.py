@@ -21,8 +21,10 @@ if __name__ == '__main__':
     kwargs = {}
 
     # if -f
-    if args.info_file is not None:
-        kwargs['body'] = json.dumps(vdjpy.read_json(args.info_file))
+    body_contents = vdjpy.read_json(args.info_file)
+    if body_contents is None:
+        sys.exit('Not a valid file path or does not contain a valid notification description.')
+    kwargs['body'] = json.dumps(body_contents)
 
     else:
         # -e
