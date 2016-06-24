@@ -50,8 +50,8 @@ jobs-pems-update		done
 jobs-submit			done
 jobs-status			done
 
-metadata-addupdate
-metadata-delete
+metadata-addupdate		done
+metadata-delete			done
 metadata-list 			done
 metadata-pems-addupdate		done
 metadata-pems-list		limit/offset not working, otherwise done
