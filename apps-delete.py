@@ -10,7 +10,6 @@ if __name__ == '__main__':
     # arguments
     parser = argparse.ArgumentParser()
     parser.add_argument('-a', '--appID', dest = 'appID', default = None)
-#    parser.add_argument('-v', '--verbose', dest = 'verbose', action = 'store_true')
     parser.add_argument('-z', '--accesstoken', dest = 'accesstoken', default = None)
     args = parser.parse_args()
 
