@@ -59,9 +59,9 @@ metadata-pems-list		limit/offset not working, otherwise done
 notifications-add		done
 notifications-list		done
 
-postits-create
-postits-delete
-postits-list
+postits-create			done
+postits-delete			done
+postits-list			done
 
 profiles-list			done
 
