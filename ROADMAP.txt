@@ -24,7 +24,7 @@ apps-pems-delete		done
 apps-pems-list			done
 apps-pems-update		done
 apps-publish			done
-apps-search
+apps-search			done
 
 auth-tokens-create 		done in vdj-login
 auth-tokens-refresh 		done in vdj-login
