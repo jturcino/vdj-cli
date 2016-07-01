@@ -84,14 +84,6 @@ def make_vdj_agave(accesstoken):
             accesstoken = dictionary['access_token']
     return Agave(api_server = base_url, token = accesstoken)
 
-def manage_files(agave_object, systemID, kwargs):
-    """Manage files with agavepy endpoint. Includes mkdir, rename, copy, name."""
-    if systemID is None:
-        systemID = data_url
-    kwargs['systemId'] = systemID
-    resp = agave_object.files.manage(**kwargs)
-    return resp
-
 def prompt_for_integer(key, default_value):
     return_value = default_value
     try:
