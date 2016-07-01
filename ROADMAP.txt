@@ -1,6 +1,5 @@
 lacks agavepy endpoint:
 
-apps-search
 systems-disable
 systems-enable
 
@@ -8,10 +7,7 @@ systems-enable
 throws error:
 
 apps-delete                     created work-around
-files-mkdir			FileOperationRequest
-files-copy                      FileOperationRequest; working
-files-move			FileOperationRequest
-files-rename			FileOperationRequest
+files-move			erro other than FileOperationRequest
 jobs-output-list		jobs.listOutputs (may be using wrong path; need example)
 jobs-output-get			jobs.downloadOutput (may be using wrong path; need example)
 notifications-delete		no error, but doesn't work
@@ -28,6 +24,7 @@ apps-pems-delete		done
 apps-pems-list			done
 apps-pems-update		done
 apps-publish			done
+apps-search
 
 auth-tokens-create 		done in vdj-login
 auth-tokens-refresh 		done in vdj-login
@@ -41,6 +38,9 @@ files-pems-update		done
 files-pems-delete		done
 files-history			done
 files-delete			done
+files-mkdir
+files-copy
+files-rename
 
 jobs-list			done
 jobs-delete			done
