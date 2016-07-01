@@ -16,8 +16,10 @@ if __name__ == '__main__':
     parser.add_argument('-v', '--verbose', dest = 'verbose', default = False, action = 'store_true')
     args = parser.parse_args()
 
-    # make agave
+    # make agave object and kwargs
     my_agave = vdjpy.make_vdj_agave(args.accesstoken)
+    kwargs = {}
+    kwargs['systemId'] = 'data.vdjserver.org'
 
     # -f
     if args.file_name is None:
@@ -25,29 +27,29 @@ if __name__ == '__main__':
 
     # -p
     if args.current_project is None:
-        args.current_project = vdjpy.prompt_user('file\'s current project')
+        args.current_project = vdjpy.prompt_user('current project')
     current_uuid = vdjpy.get_uuid(args.current_project, my_agave)
     if current_uuid is None:
         sys.exit()
 
     # -d
     if args.destination_project is None:
-        args.destination_project = vdjpy.prompt_user('project to copy the file')
+        args.destination_project = vdjpy.prompt_user('destination project')
     destination_uuid = vdjpy.get_uuid(args.destination_project, my_agave)
     if destination_uuid is None:
         sys.exit()
 
     # current path
-#    current_path = '/projects/' + current_uuid + '/files/' + args.file_name
     kwargs['filePath'] = '/projects/' + current_uuid + '/files/' + args.file_name
+    print kwargs['filePath']
 
     # build body
-    destination_path = '/projects/' + destination_uuid + '/files'
-#    data_change = "{\"action\":\"copy\",\"path\": \"" + destination_path + "\"}"
-    kwargs['body'] = "{\"action\":\"copy\",\"path\": \"" + destination_path + "\"}"
+    destination_path = '/projects/' + destination_uuid + '/files/'
+    kwargs['body'] = {'action': 'copy', 'path': destination_path}
+    print kwargs['body']
 
     # copy file
-    copy = vdjpy.manage_files(my_agave, None, kwargs)
+    copy = my_agave.files.manage(**kwargs)
 
     # update metadata
     file_uuid = str(copy['uuid'])
