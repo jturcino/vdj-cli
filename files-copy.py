@@ -22,6 +22,7 @@ if __name__ == '__main__':
     # -s
     if args.system is None:
         args.system = vdjpy.prompt_user('system')
+    kwargs['systemId'] = args.system
 
     # -p
     if args.path is None:
@@ -31,10 +32,10 @@ if __name__ == '__main__':
     # -d
     if args.destination is None:
         args.destination = vdjpy.prompt_user('destination of the file')
-    kwargs['body']  = "{\"action\":\"copy\",\"path\": \"" + args.destination + "\"}"
+    kwargs['body']  = {'action': 'copy', 'path': args.destination}
 
     # copy file
-    copy = vdjpy.manage_files(my_agave, args.system, kwargs)
+    copy = my_agave.files.manage(**kwargs)
 
     # if -v
     if args.verbose:
