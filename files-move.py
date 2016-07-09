@@ -21,20 +21,21 @@ if __name__ == '__main__':
 
     # -s
     if args.system is None:
-        args.system = vdjpy.prompt_user('system name')
+        args.system = vdjpy.prompt_user('system')
+    kwargs['systemId'] = args.system
 
     # -p
     if args.path is None:
-        args.path = vdjpy.prompt_user('path to the file')
+        args.path = vdjpy.prompt_user('path')
     kwargs['filePath'] = args.path
 
     # -d
     if args.destination is None:
         args.destination = vdjpy.prompt_user('destination of the file')
-    kwargs['body'] = "{\"action\":\"move\",\"newPath\": \"" + args.destination + "\"}"
+    kwargs['body']  = {'action': 'move', 'path': args.destination}
 
-    # copy file
-    move = vdjpy.manage_files(args.accesstoken, args.system, args.path, data_change)
+    # move file
+    move = my_agave.files.manage(**kwargs)
 
     # if -v
     if args.verbose:
