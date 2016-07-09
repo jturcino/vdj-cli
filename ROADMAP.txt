@@ -1,10 +1,15 @@
+need example:
+
+jobs-output-list                jobs.listOutputs (may be using wrong path)
+jobs-output-get                 jobs.downloadOutput (may be using wrong path)
+files-import - from URL to agave path
+
 throws error:
 
 systems-disable/enable		HTTPError: 500 Server Error: Internal Server Error (agave error)
-apps-delete                     created work-around
-files-move			erro other than FileOperationRequest
-jobs-output-list		jobs.listOutputs (may be using wrong path; need example)
-jobs-output-get			jobs.downloadOutput (may be using wrong path; need example)
+apps-delete                     ValueError: No JSON object could be decoded
+					however, app deleted
+					created work-around
 notifications-delete		no error, but doesn't work
 notifications-addupdate		
 systems-unpublish		SystemOperationRequest
@@ -26,7 +31,6 @@ auth-tokens-refresh 		done in vdj-login
 files-list 			done
 files-upload 			done
 files-get 			done, BUT no recursion
-files-import - from URL to agave path
 files-pems-list			done
 files-pems-update		done
 files-pems-delete		done
@@ -35,6 +39,7 @@ files-delete			done
 files-mkdir			needs vdj metadata update
 files-copy			needs vdj metadata update
 files-rename			needs vdj metadata update
+files-move			needs vdj metadata update
 
 jobs-list			done
 jobs-delete			done
