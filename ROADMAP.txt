@@ -11,7 +11,6 @@ apps-delete                     ValueError: No JSON object could be decoded
 					however, app deleted
 					created work-around
 notifications-delete		no error, but doesn't work
-notifications-addupdate		
 systems-unpublish		SystemOperationRequest
 
 
@@ -55,7 +54,7 @@ metadata-list 			done
 metadata-pems-addupdate		done
 metadata-pems-list		limit/offset not working, otherwise done
 
-notifications-add		done
+notifications-addupdate		done
 notifications-list		done
 
 postits-create			done
