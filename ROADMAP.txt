@@ -11,7 +11,7 @@ apps-delete                     ValueError: No JSON object could be decoded
 					however, app deleted
 					created work-around
 notifications-delete		no error, but doesn't work
-systems-unpublish		SystemOperationRequest
+system-unpublish		SystemOperationRequest
 
 
 coverage for essentially a v1 release:
