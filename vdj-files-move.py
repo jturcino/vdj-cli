@@ -10,8 +10,8 @@ if __name__ == '__main__':
     # arguments
     parser = argparse.ArgumentParser()
     parser.add_argument('-p', '--current_project', dest = 'current_project', default = None, nargs = '?')
-    parser.add_argument('-f', '--file_name', dest = 'file_name', default = None, nargs = '?')
     parser.add_argument('-d', '--destination_project', dest = 'destination_project', default = None, nargs = '?')
+    parser.add_argument('-f', '--file_name', dest = 'file_name', default = None, nargs = '?')
     parser.add_argument('-z', '--accesstoken', dest = 'accesstoken', default = None, nargs = '?')
     parser.add_argument('-v', '--verbose', dest = 'verbose', default = False, action = 'store_true')
     args = parser.parse_args()
@@ -30,6 +30,7 @@ if __name__ == '__main__':
     current_uuid = vdjpy.get_uuid(args.current_project, my_agave)
     if current_uuid is None:
         sys.exit()
+    kwargs['sourcefilePath'] = '/projects/' + current_uuid + '/files/' + args.file_name
 
     # -d
     if args.destination_project is None:
@@ -37,26 +38,17 @@ if __name__ == '__main__':
     destination_uuid = vdjpy.get_uuid(args.destination_project, my_agave)
     if destination_uuid is None:
         sys.exit()
+    kwargs['body']  = {'action': 'move', 'path': '/projects/' + destination_uuid + '/files/' + args.file_name}
 
-    # current path
-    kwargs['sourcefilePath'] = '/projects/' + current_uuid + '/files/' + args.file_name
+    # move file
+    move = my_agave.files.manageOnDefaultSystem(**kwargs)
 
-    # build body
-    destination_path = '/projects/' + destination_uuid + '/files/'
-    kwargs['body'] = {'action': 'copy', 'path': destination_path}
-
-    # copy file
-    copy = my_agave.files.manageOnDefaultSystem(**kwargs)
-
-    # update metadata
-    file_uuid = str(copy['uuid'])
-    resp = vdjpy.update_metadata(destination_uuid, args.file_name, file_uuid, '')
+    # ADD WORKING METADATA UPDATE
 
     # if -v
     if args.verbose:
-         print json.dumps(copy, default = vdjpy.json_serial, sort_keys = True, indent = 4, separators = (',', ': '))
-         print json.dumps(resp, default = vdjpy.json_serial, sort_keys = True, indent = 4, separators = (',', ': '))
+         print json.dumps(move, default = vdjpy.json_serial, sort_keys = True, indent = 4, separators = (',', ': '))
 
     # if no -v
     else:
-        print 'Now copying', str(copy['name']), 'from', args.current_project, 'to', args.destination_project
+        print 'Now moving', str(move['name']), 'from project', args.current_project, 'to project', args.destination_project 
