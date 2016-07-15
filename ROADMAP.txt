@@ -2,7 +2,6 @@ need example:
 
 jobs-output-list                jobs.listOutputs (may be using wrong path)
 jobs-output-get                 jobs.downloadOutput (may be using wrong path)
-files-import - from URL to agave path
 
 throws error:
 
@@ -29,6 +28,7 @@ auth-tokens-refresh 		done in vdj-login
 
 files-list 			done
 files-upload 			done
+files-import			done
 files-get 			done, BUT no recursion
 files-pems-list			done
 files-pems-update		done
