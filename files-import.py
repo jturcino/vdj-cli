@@ -3,7 +3,6 @@
 import vdjpy
 import argparse
 import json
-import urllib
 
 if __name__ == '__main__':
 
