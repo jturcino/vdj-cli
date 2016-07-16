@@ -35,10 +35,10 @@ files-pems-update		done
 files-pems-delete		done
 files-history			done
 files-delete			done
-files-mkdir			no metadata update needed; not vdj specific; done?
-files-copy			create new metadata entry through webhook
-files-rename			get existing metadata through Agave, edit name, update the metadata with new info
-files-move			get existing metadata through Agave, edit name and project, update the metadata with new info
+files-mkdir			done
+files-copy			done
+files-rename			done
+files-move			done
 
 jobs-list			done
 jobs-delete			done
