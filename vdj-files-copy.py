@@ -38,25 +38,40 @@ if __name__ == '__main__':
     if destination_uuid is None:
         sys.exit()
 
-    # current path
-    kwargs['sourcefilePath'] = '/projects/' + current_uuid + '/files/' + args.file_name
+    # get metadata for file
+    project_files = vdjpy.get_project_files(current_uuid, {}, my_agave)
+    file_metadata = None
+    for item in project_files:
+        if item['value']['name'] == args.file_name:
+            file_metadata = item
 
-    # build body
-    destination_path = '/projects/' + destination_uuid + '/files/'
-    kwargs['body'] = {'action': 'copy', 'path': destination_path}
+    # if file metadata not found, exit
+    if file_metadata is None:
+        print 'The file', args.file_name, 'does not exist in project', args.current_project + '. \nHere are the files currently in the project:'
+        for item in project_files:
+            print item['value']['name']
+        sys.exit()
 
-    # copy file
-    copy = my_agave.files.manageOnDefaultSystem(**kwargs)
+    # copy file with agave
+    agave_copy = my_agave.files.manageOnDefaultSystem(sourcefilePath = '/projects/' + current_uuid + '/files/' + args.file_name,
+						      body = {'action': 'copy', 'path': '/projects/' + destination_uuid + '/files/'})
 
-    # update metadata
-    file_uuid = str(copy['uuid'])
-    resp = vdjpy.update_metadata(destination_uuid, args.file_name, file_uuid, '')
+    # create new metadata and add
+    file_metadata['value']['projectUuid'] = destination_uuid
+    new_metadata = {
+        'associationIds': [agave_copy['uuid']],
+        'name': 'projectFile',
+        'schemaId': None,
+        'value': file_metadata['value']
+    }
+    metadata_create = my_agave.meta.addMetadata(body = json.dumps(new_metadata))
+
 
     # if -v
     if args.verbose:
-         print json.dumps(copy, default = vdjpy.json_serial, sort_keys = True, indent = 4, separators = (',', ': '))
-         print json.dumps(resp, default = vdjpy.json_serial, sort_keys = True, indent = 4, separators = (',', ': '))
+         print json.dumps(agave_copy, default = vdjpy.json_serial, sort_keys = True, indent = 4, separators = (',', ': '))
+         print json.dumps(metadata_create, default = vdjpy.json_serial, sort_keys = True, indent = 4, separators = (',', ': '))
 
     # if no -v
     else:
-        print 'Now copying', str(copy['name']), 'from', args.current_project, 'to', args.destination_project
+        print 'Now copying', str(agave_copy['name']), 'from', args.current_project, 'to', args.destination_project
