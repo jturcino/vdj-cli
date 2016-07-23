@@ -20,6 +20,7 @@ if __name__ == '__main__':
     # make Agave object and kwargs
     my_agave = vdjpy.make_vdj_agave(args.accesstoken)
     kwargs = {}
+    kwargs['systemId'] = 'data.vdjserver.org'
 
     # -p
     if args.project is None:
@@ -44,7 +45,7 @@ if __name__ == '__main__':
     kwargs['offset'] = args.offset
 
     # list permissions
-    permissions = my_agave.files.listPermissionsOnDefaultSystem(**kwargs)
+    permissions = my_agave.files.listPermissions(**kwargs)
 
     # if -v
     if args.verbose:

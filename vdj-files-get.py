@@ -19,6 +19,7 @@ if __name__ == '__main__':
     # make Agave object and kwargs
     my_agave = vdjpy.make_vdj_agave(args.accesstoken)
     kwargs = {}
+    kwargs['systemId'] = 'data.vdjserver.org'
 
     # -p
     if args.project is None:
@@ -30,14 +31,14 @@ if __name__ == '__main__':
     # -f
     if args.file_download is None:
         args.file_download = vdjpy.prompt_user('file to download')
-    kwargs['sourcefilePath'] = '/projects/' + project_uuid + '/files/' + args.file_download
+    kwargs['filePath'] = '/projects/' + project_uuid + '/files/' + args.file_download
 
     # -n
     if args.file_name is None:
         args.file_name = args.file_download
 
     # download file
-    download = my_agave.files.downloadFromDefaultSystem(**kwargs)
+    download = my_agave.files.download(**kwargs)
     download.raise_for_status()
 
     # write correct contents to file

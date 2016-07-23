@@ -16,9 +16,8 @@ if __name__ == '__main__':
     parser.add_argument('-v', '--verbose', dest = 'verbose', default = False, action = 'store_true')
     args = parser.parse_args()
 
-    # make agave object and kwargs
+    # make agave object 
     my_agave = vdjpy.make_vdj_agave(args.accesstoken)
-    kwargs = {}
 
     # -f
     if args.file_name is None:
@@ -53,8 +52,9 @@ if __name__ == '__main__':
     file_metadata['value']['name'] = unicode(args.new_name)
 
     # rename in agave and via metadata update
-    agave_rename = my_agave.files.manageOnDefaultSystem(sourcefilePath = '/projects/' + uuid + '/files/' + args.file_name, 
-						        body = {'action': 'rename', 'path': args.new_name})
+    agave_rename = my_agave.files.manage(systemId = 'data.vdjserver.org',
+					 filePath = '/projects/' + uuid + '/files/' + args.file_name, 
+					 body = {'action': 'rename', 'path': args.new_name})
     metadata_update = my_agave.meta.updateMetadata(uuid = file_metadata['uuid'], 
 						   body = json.dumps(file_metadata))
 

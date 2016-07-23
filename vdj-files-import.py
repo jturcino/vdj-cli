@@ -24,6 +24,7 @@ if __name__ == '__main__':
     # UPLOAD FILE SETUP
     my_agave = vdjpy.make_vdj_agave(args.accesstoken)
     kwargs = {}
+    kwargs['systemId'] = 'data.vdjserver.org'
     extras = ''
 
     # -u
@@ -37,7 +38,7 @@ if __name__ == '__main__':
     project_uuid = vdjpy.get_uuid(args.project, my_agave)
     if project_uuid is None:
         sys.exit()
-    kwargs['sourcefilePath'] = '/projects/' + project_uuid + '/files'
+    kwargs['filePath'] = '/projects/' + project_uuid + '/files'
 
     # -n
     if args.file_name is None:
@@ -58,7 +59,7 @@ if __name__ == '__main__':
         kwargs['callbackURL'] = args.email_or_webhook
 
     # import file
-    import_resp = my_agave.files.importToDefaultSystem(**kwargs)
+    import_resp = my_agave.files.importData(**kwargs)
 
     # UPDATE METADATA SETUP
     file_uuid = str(import_resp['uuid'])

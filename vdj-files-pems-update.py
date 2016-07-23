@@ -21,6 +21,7 @@ if __name__ == '__main__':
     # make Agave object and kwargs
     my_agave = vdjpy.make_vdj_agave(args.accesstoken)
     kwargs = {}
+    kwargs['systemId'] = 'data.vdjserver.org'
 
     # -r
     recursive = 'false'
@@ -49,7 +50,7 @@ if __name__ == '__main__':
 
     # build body and update permissions
     kwargs['body'] = "{\n\t\"username\":\"" + args.username + "\",\n\t\"permission\": \"" + args.access + "\",\n\t\"recursive\":" + recursive + "\n}"
-    pems_update = my_agave.files.updatePermissionsOnDefaultSystem(**kwargs)
+    pems_update = my_agave.files.updatePermissions(**kwargs)
 
     # if -v
     if args.verbose:

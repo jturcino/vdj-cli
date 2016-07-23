@@ -16,9 +16,8 @@ if __name__ == '__main__':
     parser.add_argument('-v', '--verbose', dest = 'verbose', default = False, action = 'store_true')
     args = parser.parse_args()
 
-    # make agave object and kwargs
+    # make agave object
     my_agave = vdjpy.make_vdj_agave(args.accesstoken)
-    kwargs = {}
 
     # -f
     if args.file_name is None:
@@ -53,8 +52,9 @@ if __name__ == '__main__':
         sys.exit()
 
     # copy file with agave
-    agave_copy = my_agave.files.manageOnDefaultSystem(sourcefilePath = '/projects/' + current_uuid + '/files/' + args.file_name,
-						      body = {'action': 'copy', 'path': '/projects/' + destination_uuid + '/files/'})
+    agave_copy = my_agave.files.manage(systemId = 'data.vdjserver.org', 
+				       filePath = '/projects/' + current_uuid + '/files/' + args.file_name,
+				       body = {'action': 'copy', 'path': '/projects/' + destination_uuid + '/files/'})
 
     # create new metadata and add
     file_metadata['value']['projectUuid'] = destination_uuid

@@ -16,9 +16,8 @@ if __name__ == '__main__':
     parser.add_argument('-v', '--verbose', dest = 'verbose', default = False, action = 'store_true')
     args = parser.parse_args()
 
-    # make agave object and kwargs
+    # make agave object 
     my_agave = vdjpy.make_vdj_agave(args.accesstoken)
-    kwargs = {}
 
     # -f
     if args.file_name is None:
@@ -57,8 +56,9 @@ if __name__ == '__main__':
     file_metadata['value']['projectUuid'] = unicode(destination_uuid)
 
     # move in agave and metadata update
-    agave_move = my_agave.files.manageOnDefaultSystem(sourcefilePath = '/projects/' + current_uuid + '/files/' + args.file_name, 
-						      body = {'action': 'move', 'path': '/projects/' + destination_uuid + '/files/' + args.file_name})
+    agave_move = my_agave.files.manage(systemId = 'data.vdjserver.org',
+				       filePath = '/projects/' + current_uuid + '/files/' + args.file_name, 
+				       body = {'action': 'move', 'path': '/projects/' + destination_uuid + '/files/' + args.file_name})
     metadata_update = my_agave.meta.updateMetadata(uuid = file_metadata['uuid'], body = json.dumps(file_metadata))
 
     # if -v
