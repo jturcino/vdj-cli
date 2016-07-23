@@ -16,12 +16,14 @@ if __name__ == '__main__':
     parser.add_argument('-y', '--file_type', dest = 'file_type', default = '', nargs = '?')
     parser.add_argument('-r', '--read_direction', dest = 'read_direction', default = '', nargs = '?')
     parser.add_argument('-t', '--tags', dest = 'tags', default = False, action = 'store_true')
+    parser.add_argument('-w', '--email_or_webhook', dest = 'email_or_webhook', default = '', nargs = '?')
     parser.add_argument('-v', '--verbose', dest = 'verbose', action = 'store_true')
     args = parser.parse_args()
 
     # UPLOAD FILE SETUP
     my_agave = vdjpy.make_vdj_agave(args.accesstoken)
     kwargs = {}
+    kwargs['systemId'] = 'data.vdjserver.org'
 
     # -p
     if args.project is None:
@@ -29,7 +31,7 @@ if __name__ == '__main__':
     project_uuid = vdjpy.get_uuid(args.project, my_agave)
     if project_uuid is None:
         sys.exit('Could not find specified project')
-    kwargs['sourcefilePath'] = '/projects/' + project_uuid + '/files'
+    kwargs['filePath'] = '/projects/' + project_uuid + '/files'
 
 
     # -f
@@ -42,8 +44,14 @@ if __name__ == '__main__':
         args.file_name = args.file_upload
     kwargs['fileName'] = args.file_name
 
+    # -w
+    if args.email_or_webhook is not '':
+        if args.email_or_webhook is None:
+            args.email_or_webhook = vdjpy.prompt_user('email or webhook')
+        kwargs['callbackURL'] = args.email_or_webhook
+
     # upload file
-    upload = my_agave.files.importToDefaultSystem(**kwargs)
+    upload = my_agave.files.importData(**kwargs)
 
     # UPDATE METADATA SETUP
     file_uuid = str(upload['uuid'])
