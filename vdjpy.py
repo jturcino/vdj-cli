@@ -17,6 +17,19 @@ projects_cache = './.vdjprojects'
 user_cache = '~/.vdjapi'
 data_url = 'data.vdjserver.org/'
 
+def build_vdj_path(project_uuid, project_file, project_job_file):
+    """Build vdj path to file based on whether the file is a projecFile or projectJobFile"""
+    path = '/projects/' + project_uuid
+    if project_file is not '' or project_job_file is '':
+        path += '/files/'
+        if project_file is not None:
+            path += project_file
+    elif project_job_file is not '':
+        path += '/analyses/'
+        if project_job_file is not None:
+            path += project_job_file
+    return path
+
 def check_for_project_name(json_object, name):
     """Checks for a entries with a given name in a given json dictionary"""
     for item in json_object:
