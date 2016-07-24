@@ -12,6 +12,7 @@ if __name__ == '__main__':
     # arguments
     parser = argparse.ArgumentParser()
     parser.add_argument('-p', '--project', dest = 'project', default = None, nargs = '?')
+    parser.add_argument('-f', '--file_name', dest = 'file_name', default = None, nargs = '?')
     parser.add_argument('-z', '--accesstoken', dest = 'accesstoken', default = None, nargs = '?')
     parser.add_argument('-l', '--limit', dest = 'limit', type = int, default = 5000, nargs = '?')
     parser.add_argument('-o', '--offset', dest = 'offset', type = int, default = 0, nargs = '?')
@@ -45,6 +46,12 @@ if __name__ == '__main__':
     # if args.project exits
     uuid = str(uuid)
     files = vdjpy.get_project_files(uuid, kwargs, my_agave)
+
+    # -f
+    if args.file_name is not None:
+        files = vdjpy.get_file_metadata(files, args.file_name)
+        if files is None:
+            sys.exit()
 
     # if -v
     if args.verbose:
