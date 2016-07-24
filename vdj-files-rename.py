@@ -53,7 +53,7 @@ if __name__ == '__main__':
 
     # rename in agave and via metadata update
     agave_rename = my_agave.files.manage(systemId = 'data.vdjserver.org',
-					 filePath = '/projects/' + uuid + '/files/' + args.file_name, 
+					 filePath = vdjpy.build_vdj_path(uuid, args.file_name, ''), 
 					 body = {'action': 'rename', 'path': args.new_name})
     metadata_update = my_agave.meta.updateMetadata(uuid = file_metadata['uuid'], 
 						   body = json.dumps(file_metadata))

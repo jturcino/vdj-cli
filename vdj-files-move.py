@@ -52,13 +52,13 @@ if __name__ == '__main__':
         sys.exit()
 
     # change project uuid to destination uuid
-    file_metadata['_links']['file']['href'] = unicode('https://vdj-agave-api.tacc.utexas.edu/files/v2/media/system/data.vdjserver.org//projects/' + destination_uuid + '/files/' + args.file_name)
+    file_metadata['_links']['file']['href'] = unicode('https://vdj-agave-api.tacc.utexas.edu/files/v2/media/system/data.vdjserver.org/' + vdjpy.build_vdj_path(destination_uuid, args.file_name, ''))
     file_metadata['value']['projectUuid'] = unicode(destination_uuid)
 
     # move in agave and metadata update
     agave_move = my_agave.files.manage(systemId = 'data.vdjserver.org',
-				       filePath = '/projects/' + current_uuid + '/files/' + args.file_name, 
-				       body = {'action': 'move', 'path': '/projects/' + destination_uuid + '/files/' + args.file_name})
+				       filePath = vdjpy.build_vdj_path(current_uuid, args.file_name, ''), 
+				       body = {'action': 'move', 'path': vdjpy.build_vdj_path(destination_uuid, args.file_name, '')})
     metadata_update = my_agave.meta.updateMetadata(uuid = file_metadata['uuid'], body = json.dumps(file_metadata))
 
     # if -v
