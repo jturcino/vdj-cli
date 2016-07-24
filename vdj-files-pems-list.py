@@ -10,7 +10,8 @@ if __name__ == '__main__':
     # arguments
     parser = argparse.ArgumentParser()
     parser.add_argument('-p', '--project', dest = 'project', default = None, nargs = '?')
-    parser.add_argument('-f', '--file_name', dest = 'file_name', default = None, nargs = '?')
+    parser.add_argument('-f', '--file_name', dest = 'file_name', default = '', nargs = '?')
+    parser.add_argument('-j', '--jobfile_name', dest = 'jobfile_name', default = '', nargs = '?')
     parser.add_argument('-l', '--limit', dest = 'limit', default = 250, type = int, nargs = '?')
     parser.add_argument('-o', '--offset', dest = 'offset', default = 0, type = int, nargs = '?')
     parser.add_argument('-z', '--accesstoken', dest = 'accesstoken', default = None, nargs = '?')
@@ -30,9 +31,14 @@ if __name__ == '__main__':
         sys.exit()
 
     # -f
-    if args.file_name is None:
+    if args.file_name is None or args.jobfile_name is '':
         args.file_name = vdjpy.prompt_user('file name')
-    kwargs['filePath'] = '/projects/' + project_uuid + '/files/' + args.file_name
+
+    # -j (only if no -f)
+    if args.jobfile_name is None and args.file_name is '':
+        args.jobfile_name = vdjpy.prompt_user('jobfile name')
+
+    kwargs['filePath'] = vdjpy.build_vdj_path(project_uuid, args.file_name, args.jobfile_name)
 
     # -l
     if args.limit is None:

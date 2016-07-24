@@ -10,7 +10,8 @@ if __name__ == '__main__':
     # arguments
     parser = argparse.ArgumentParser()
     parser.add_argument('-p', '--current_project', dest = 'current_project', default = None, nargs = '?')
-    parser.add_argument('-f', '--file_name', dest = 'file_name', default = None, nargs = '?')
+    parser.add_argument('-f', '--file_name', dest = 'file_name', default = '', nargs = '?')
+    parser.add_argument('-j', '--jobfile_name', dest = 'jobfile_name', default = '', nargs = '?')
     parser.add_argument('-d', '--destination_project', dest = 'destination_project', default = None, nargs = '?')
     parser.add_argument('-z', '--accesstoken', dest = 'accesstoken', default = None, nargs = '?')
     parser.add_argument('-v', '--verbose', dest = 'verbose', default = False, action = 'store_true')
@@ -19,16 +20,20 @@ if __name__ == '__main__':
     # make agave object
     my_agave = vdjpy.make_vdj_agave(args.accesstoken)
 
-    # -f
-    if args.file_name is None:
-        args.file_name = vdjpy.prompt_user('file name')
-
     # -p
     if args.current_project is None:
         args.current_project = vdjpy.prompt_user('current project')
     current_uuid = vdjpy.get_uuid(args.current_project, my_agave)
     if current_uuid is None:
         sys.exit()
+
+    # -f
+    if args.file_name is None or args.jobfile_name is '':
+        args.file_name = vdjpy.prompt_user('file name')
+
+    # -j (only if no -f)
+    if args.jobfile_name is None and args.file_name is '':
+        args.jobfile_name = vdjpy.prompt_user('jobfile name')
 
     # -d
     if args.destination_project is None:
@@ -53,8 +58,8 @@ if __name__ == '__main__':
 
     # copy file with agave
     agave_copy = my_agave.files.manage(systemId = 'data.vdjserver.org', 
-				       filePath = '/projects/' + current_uuid + '/files/' + args.file_name,
-				       body = {'action': 'copy', 'path': '/projects/' + destination_uuid + '/files/'})
+				       filePath = vdjpy.build_vdj_path(current_uuid, args.file_name, args.jobfile_name),
+				       body = {'action': 'copy', 'path': vdjpy.build_vdj_path(destination_uuid, args.file_name, args.jobfile_name)})
 
     # create new metadata and add
     file_metadata['value']['projectUuid'] = destination_uuid
