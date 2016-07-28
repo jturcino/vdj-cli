@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+
+case "$1" in
+  apps)				break;
+  files)			break ;;
+  jobs)				break ;;
+  login)			break ;;
+  metadata)			break ;;
+  postits)			break ;;
+  projects)	shift;
+		case $1 in
+		    ls|list)	shift; vdj-projects-list.py $@;;
+		    create)	shift; echo "Project creation through CLI not yet added";;
+		    rm|delete)	shift; echo "Project deletion through CLI not yet added";;
+		    *) 		vdj-projects-list.py $@;;  	
+		esac;;
+
+  systems)			break ;;
+  -h|--help|-help)		break ;;
+  --) break;;
+  *) break;;
+esac
+
+
