@@ -1,6 +1,6 @@
 need example:
 
-jobs-output-list                jobs.listOutputs (may be using wrong path)
+obs-output-list                jobs.listOutputs (may be using wrong path)
 jobs-output-get                 jobs.downloadOutput (may be using wrong path)
 
 throws error:
@@ -10,7 +10,6 @@ apps-delete                     ValueError: No JSON object could be decoded
 					however, app deleted
 					created work-around
 notifications-delete		no error, but doesn't work
-system-unpublish		SystemOperationRequest
 
 
 coverage for essentially a v1 release:
@@ -27,7 +26,7 @@ auth-tokens-create 		done in vdj-login
 auth-tokens-refresh 		done in vdj-login
 
 files-list 			done
-files-upload 			done
+files-upload 			done (recursion optional)
 files-import			done
 files-get 			done, BUT no recursion
 files-pems-list			done
