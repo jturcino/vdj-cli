@@ -1,122 +1,122 @@
 #!/usr/bin/env bash
 
 case "$1" in
-  apps)		shift;
-		case $1 in
-		    addupdate)		shift; apps-addupdate.py $@;;
-		    clone)		shift; apps-clone.py $@;;
-		    disable)		shift; echo "Not currently implemented";;
-		    enable)		shift; echo "Not currently implemented";;
-		    erase)		shift; echo "Not currently implemented";;
-		    history)		shift; echo "Not currently implemented";;
-		    ls|list)		shift; apps-list.py $@;;
-		    pems)		break;; # insert new branch here
-		    publish)		shift; apps-publish.py $@;;
-                    rm|delete)          shift; apps-delete.py $@;;
-		    search)		shift; apps-search.py $@;;
-		    *)			apps-list.py $@;;
-		esac;;
+  apps)     shift;
+        case $1 in
+            addupdate)      shift; apps-addupdate.py "$@";;
+            clone)          shift; apps-clone.py "$@";;
+            disable)        shift; echo "Not currently implemented";;
+            enable)         shift; echo "Not currently implemented";;
+            erase)          shift; echo "Not currently implemented";;
+            history)        shift; echo "Not currently implemented";;
+            ls|list)        shift; apps-list.py "$@";;
+            pems)           break;; # insert new branch here
+            publish)        shift; apps-publish.py "$@";;
+            rm|delete)      shift; apps-delete.py "$@";;
+            search)         shift; apps-search.py "$@";;
+            *)              apps-list.py "$@";;
+        esac;;
 
-  files)	shift;
-		case $1 in
-		    cp|copy)		shift; vdj-files-copy.py $@;;
-		    dl|download)	shift; vdj-files-get.py $@;;
-		    history)		shift; vdj-files-history.py $@;;
-		    import)		shift; vdj-files-import.py $@;;
-		    index)		shift; echo "Not currently implemented";;
-		    ls|list)		shift; vdj-files-list.py $@;;
-		    mv|move)		shift; vdj-files-move.py $@;;
-		    pems)		break;; # insert new branch here
-		    publish)		shift; echo "Not currently implemented";;
-		    rn|rename)		shift; vdj-files-rename.py $@;;
-		    rm|delete)		shift; vdj-files-delete.py $@;;
-		    ul|upload)		shift; vdj-files-upload.py $@;;
-		    *)			vdj-files-list.py $@;;
-		esac;;
+  files)    shift;
+        case $1 in
+            cp|copy)        shift; vdj-files-copy.py "$@";;
+            dl|download)    shift; vdj-files-get.py "$@";;
+            history)        shift; vdj-files-history.py "$@";;
+            import)         shift; vdj-files-import.py "$@";;
+            index)          shift; echo "Not currently implemented";;
+            ls|list)        shift; vdj-files-list.py "$@";;
+            mv|move)        shift; vdj-files-move.py "$@";;
+            pems)           break;; # insert new branch here
+            publish)        shift; echo "Not currently implemented";;
+            rn|rename)      shift; vdj-files-rename.py "$@";;
+            rm|delete)      shift; vdj-files-delete.py "$@";;
+            ul|upload)      shift; vdj-files-upload.py "$@";;
+            *)              vdj-files-list.py "$@";;
+        esac;;
 
-  jobs)		shift;
-		case $1 in
-		    history)		shift; jobs-history.py $@;;
-		    ls|list)		shift; jobs-list.py $@;;
-		    out|output)		shift; echo "Not currently implemented";;
-		    pems)		break;; # insert new branch here
-		    resubmit)		shift; echo "Not currently implemented";;
-		    rm|delete)		shift; jobs-delete.py $@;;
-		    run)		shift; echo "Not currently implemented";;
-		    search)		shift; echo "Not currently implemented";;
-		    status)		shift; jobs-status.py $@;;
-		    submit)		shift; jobs-submit.py $@;;
-		    template)		shift; echo "Not currently implemented";;
-		    *)			jobs-list.py $@;;
-		esac;;
+  jobs)     shift;
+        case $1 in
+            history)        shift; jobs-history.py "$@";;
+            ls|list)        shift; jobs-list.py "$@";;
+            out|output)     shift; echo "Not currently implemented";;
+            pems)           break;; # insert new branch here
+            resubmit)       shift; echo "Not currently implemented";;
+            rm|delete)      shift; jobs-delete.py "$@";;
+            run)            shift; echo "Not currently implemented";;
+            search)         shift; echo "Not currently implemented";;
+            status)         shift; jobs-status.py "$@";;
+            submit)         shift; jobs-submit.py "$@";;
+            template)       shift; echo "Not currently implemented";;
+            *)              jobs-list.py "$@";;
+        esac;;
 
-  login)	shift; vdj-login.py $@;;
+  login)    shift; vdj-login.py "$@";;
 
-  metadata)	shift;
-		case $1 in
-		    addupdate)		shift; metadata-addupdate.py $@;;
-		    ls|list)		shift; metadata-list.py $@;;
-		    pems)		break;; # insert new branch here
-		    schema)		shift; echo "Not currently implemented";;
-		    rm|remove)		shift; metadata-delete.py $@;;
-		    *)			metadata-list.py $@;;
-		esac;;
+  metadata) shift;
+        case $1 in
+            addupdate)      shift; metadata-addupdate.py "$@";;
+            ls|list)        shift; metadata-list.py "$@";;
+            pems)           break;; # insert new branch here
+            schema)         shift; echo "Not currently implemented";;
+            rm|remove)      shift; metadata-delete.py "$@";;
+            *)              metadata-list.py "$@";;
+        esac;;
 
-  monitors)	shift;
-		case $1 in
-		    addupdate)		shift; echo "Not currently implemented";;
-		    checks)		shift; echo "Not currently implemented";;
-		    ls|list)		shift; monitors-list.py $@;;
-		    rm|delete)		shift; echo "Not currently implemented";;
-		    *)			monitors-list.py $@;;
-		esac;;
+  monitors) shift;
+        case $1 in
+            addupdate)      shift; echo "Not currently implemented";;
+            checks)         shift; echo "Not currently implemented";;
+            ls|list)        shift; monitors-list.py "$@";;
+            rm|delete)      shift; echo "Not currently implemented";;
+            *)              monitors-list.py "$@";;
+        esac;;
 
   notifications)shift;
-		case $1 in
-		    addupdate)		shift; notifications-addupdate.py $@;;
-		    ls|list)		shift; notifications-list.py $@;;
-		    rm|delete)		shift; notifications-delete.py $@;;
-		    search)		shift; echo "Not currently implemented";;
-		    *)			notifications-list.py $@;;
-		esac;;
+        case $1 in
+            addupdate)      shift; notifications-addupdate.py "$@";;
+            ls|list)        shift; notifications-list.py "$@";;
+            rm|delete)      shift; notifications-delete.py "$@";;
+            search)         shift; echo "Not currently implemented";;
+            *)              notifications-list.py "$@";;
+        esac;;
 
-  profiles)	shift; profiles-list.py $@;;
+  profiles) shift; profiles-list.py "$@";;
 
-  projects)	shift;
-		case $1 in
-                    create)     	shift; echo "Project creation through CLI not yet added";;
-		    ls|list)		shift; vdj-projects-list.py $@;;
-		    rm|delete)		shift; echo "Project deletion through CLI not yet added";;
-		    *) 			vdj-projects-list.py $@;;  	
-		esac;;
+  projects) shift;
+        case $1 in
+            create)         shift; echo "Project creation through CLI not yet added";;
+            ls|list)        shift; vdj-projects-list.py "$@";;
+            rm|delete)      shift; echo "Project deletion through CLI not yet added";;
+            *)              vdj-projects-list.py "$@";;     
+        esac;;
 
-  postits)	shift;
-		case $1 in
-		    create)		shift; postits-create.py $@;;
-		    ls|list)		shift; postits-list.py $@;;
-		    rm|delete)		shift; postits-delete.py $@;;
-		    *)			postits-list.py $@;;
-		esac;;
+  postits)  shift;
+        case $1 in
+            create)         shift; postits-create.py "$@";;
+            ls|list)        shift; postits-list.py "$@";;
+            rm|delete)      shift; postits-delete.py "$@";;
+            *)              postits-list.py "$@";;
+        esac;;
 
-  systems)	shift;
-		case $1 in
-		    addupdate)		shift; systems-addupdate.py $@;;
-		    clone)		shift; echo "Not currently implemented";;
-		    disable)		shift; systems-disable.py $@;;
-		    enable)		shift; systems-enable.py $@;;
-		    history)		shift; echo "Not currently implemented";;
-		    ls|list)		shift; systems-list.py $@;;
-		    publish)		shift; systems-publish.py $@;;
-		    queues)		shift; echo "Not currently implemented";;
-		    rm|delete)		shift; systems-delete.py $@;;
-		    roles)		break;; # insert new branch here
-		    search)		shift; echo "Not currently implemented";;
-		    setdefault)		shift; systems-setdefault.py $@;;
-		    unsetdefault)	shift; systems-unsetdefault.py $@;;
-		    *)			systems-list.py $@;;
-		esac;;
+  systems)  shift;
+        case $1 in
+            addupdate)      shift; systems-addupdate.py "$@";;
+            clone)          shift; echo "Not currently implemented";;
+            disable)        shift; systems-disable.py "$@";;
+            enable)         shift; systems-enable.py "$@";;
+            history)        shift; echo "Not currently implemented";;
+            ls|list)        shift; systems-list.py "$@";;
+            publish)        shift; systems-publish.py "$@";;
+            queues)         shift; echo "Not currently implemented";;
+            rm|delete)      shift; systems-delete.py "$@";;
+            roles)          break;; # insert new branch here
+            search)         shift; echo "Not currently implemented";;
+            setdefault)     shift; systems-setdefault.py "$@";;
+            unsetdefault)   shift; systems-unsetdefault.py "$@";;
+            *)              systems-list.py "$@";;
+        esac;;
 
-  -h|--help|-help)		break ;;
+  -h|--help|-help)      break ;;
   --) break;;
   *) break;;
 esac
