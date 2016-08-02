@@ -6,29 +6,6 @@ import json
 import urllib
 import sys
 
-import os.path
-from os import listdir
-def recursive_file_upload(filepath, destfilepath, agave_object, systemID):
-    filename = os.path.basename(filepath)
-    if destfilepath[len(destfilepath) - 1] != '/':
-        destfilepath += '/'
-    if os.path.isdir(filepath) is True:
-        agave_object.files.manage(systemId = systemID,
-                                  filePath = destfilepath,
-                                  body = {'action': 'mkdir',
-                                          'path': filename})
-        destfilepath += filename + '/'
-        print 'made dir', filename, 'at', destfilepath
-        for item in os.listdir(filepath):
-            recursive_file_upload(filepath + '/' + item, destfilepath, agave_object, systemID)
-    else:
-        agave_object.files.importData(systemId = systemID,
-                                      filePath = destfilepath,
-                                      fileToUpload = open(filepath),
-                                      fileName = filename)
-        print 'uploaded file', filename, 'at', destfilepath
-        return
-
 if __name__ == '__main__':
 
     # arguments
@@ -60,13 +37,15 @@ if __name__ == '__main__':
     # -f
     if args.file_upload is None:
         args.file_upload = vdjpy.prompt_user('file to upload')
-    if args.recursive is False:
+    try:
         kwargs['fileToUpload'] = open(args.file_upload)
+    except IOError:
+	print args.file_upload, 'is a directory. Beginning recursive upload'
+	args.recursive = True
 
     # -r
     if args.recursive:
-        recursive_file_upload(args.file_upload, args.path, my_agave, args.systemID)
-        print 'uploaded', args.file_upload, 'recursively to', args.path
+        vdjpy.recursive_file_upload(args.file_upload, args.path, args.systemID, my_agave, args.verbose)
         sys.exit()
 
     # -n
