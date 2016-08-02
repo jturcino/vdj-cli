@@ -4,6 +4,7 @@ import json
 import requests
 from agavepy.agave import Agave
 import os.path
+from os import listdir
 from datetime import datetime
 import argparse
 import urllib
@@ -116,7 +117,7 @@ def prompt_for_integer(key, default_value):
     return return_value
 
 def prompt_user(key):
-    """Promp user to enter value for given key at command line."""
+    """Prompt user to enter value for given key at command line."""
     print 'Enter', key.replace('_', ' ') + ':',
     return_key = raw_input('')
     return return_key
@@ -131,6 +132,34 @@ def read_json(filename):
             except ValueError:
                 print "JSON could not be parsed in " + filename
     return None
+
+def recursive_file_upload(filepath, destfilepath, systemID, agave_object, verbose):
+    """Recursively upload contents of a directory. Prints verbose or concise output as files are uploaded. No metadata updates."""
+    filename = os.path.basename(filepath)
+    if destfilepath[len(destfilepath) - 1] != '/':
+        destfilepath += '/'
+    if os.path.isdir(filepath) is True:
+        mkdir = agave_object.files.manage(systemId = systemID,
+                                  filePath = destfilepath,
+                                  body = {'action': 'mkdir',
+                                          'path': filename})
+        if verbose:
+            print json.dumps(mkdir, default = vdjpy.json_serial, sort_keys = True, indent = 4, separators = (',', ': '))
+        else:
+            print 'Made directory', filename, 'at path', destfilepath
+        destfilepath += filename + '/'
+        for item in os.listdir(filepath):
+            recursive_file_upload(filepath + '/' + item, destfilepath, systemID, agave_object, verbose)
+    else:
+        file_upload = agave_object.files.importData(systemId = systemID,
+                                      filePath = destfilepath,
+                                      fileToUpload = open(filepath),
+                                      fileName = filename)
+        if verbose:
+            print json.dumps(file_upload, default = vdjpy.json_serial, sort_keys = True, indent = 4, separators = (',', ': '))
+        else:
+            print 'Uploaded', filename, 'to', destfilepath
+        return
 
 def sortbyquery(mylist, query):
     """Sorts a list of dictionaries with the given query"""
