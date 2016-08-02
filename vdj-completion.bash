@@ -5,7 +5,7 @@ _vdj () {
     local prev cur
     cur=${COMP_WORDS[COMP_CWORD]}
 
-    local commands="apps files jobs login metadata postits projects systems"
+    local commands="apps files jobs login metadata monitors notifications profiles projects postits systems"
 
     if [ $COMP_CWORD -eq 1 ]; then
         COMPREPLY=( $(compgen -W "$commands" -- $cur) )
@@ -19,10 +19,15 @@ _vdj () {
 
 
         case "$prev" in
-            apps) COMPREPLY=( $(compgen -W "addupdate clone rm ls pems publish search" -- $cur) ) ;;
-            files) COMPREPLY=( $(compgen -W "cp download history import mv pems rename rm upload" -- $cur) ) ;;
-            jobs) COMPREPLY=( $(compgen -W "history ls pems rm status submit" -- $cur) ) ;;
-            project|projects|p) COMPREPLY=( $(compgen -W "create ls rm" -- $cur) ) ;;
+            app|apps) COMPREPLY=( $(compgen -W "addupdate clone disable enable erase history ls pems publish rm search" -- $cur) ) ;;
+            file|files) COMPREPLY=( $(compgen -W "cp download history import index ls mv pems publish rename rm upload" -- $cur) ) ;;
+            job|jobs) COMPREPLY=( $(compgen -W "history ls output pems resubmit rm run search status submit template" -- $cur) ) ;;
+	    metadata) COMPREPLY=( $(compgen -W "addupdate ls pems schema rm" -- $cur) ) ;;
+	    monitor|monitors) COMPREPLY=( $(compgen -W "addupdate checks ls rm" -- $cur) ) ;;
+	    notification|notifications) COMPREPLY=( $(compgen -W "addupdate ls rm search" -- $cur) ) ;;
+            project|projects) COMPREPLY=( $(compgen -W "create ls rm" -- $cur) ) ;;
+	    postit|postits) COMPREPLY=( $(compgen -W "create ls rm" -- $cur) ) ;;
+	    system|systems|s) COMPREPLY=( $(compgen -W "addupdate clone disable enable history ls publish queues rm roles search setdefault unsetdefault" -- $cur) ) ;; 
 
             
         esac
