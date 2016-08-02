@@ -29,7 +29,7 @@ if __name__ == '__main__':
         sys.exit()
 
     # -f
-    if args.file_name is None or args.jobfile_name is '':
+    if args.file_name is None or args.file_name is '' and args.jobfile_name is '':
         args.file_name = vdjpy.prompt_user('file name')
 
     # -j (only if no -f)
