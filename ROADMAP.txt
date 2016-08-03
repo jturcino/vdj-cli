@@ -19,7 +19,7 @@ apps-list 			done
 apps-pems-delete		done
 apps-pems-list			done
 apps-pems-update		done
-apps-publish			done
+apps-publish			done CANNOT TEST
 apps-search			done
 
 auth-tokens-create 		done in vdj-login
