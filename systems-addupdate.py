@@ -10,7 +10,7 @@ if __name__ == '__main__':
     
     # arguments
     parser = argparse.ArgumentParser()
-    parser.add_argument('-s', '--systemID', dest = 'systemID', default = '')
+    parser.add_argument('-s', '--systemID', dest = 'systemID', default = '', nargs = '?')
     parser.add_argument('-f', '--description_file', dest = 'description_file', default = None)
     parser.add_argument('-v', '--verbose', dest = 'verbose', action = 'store_true')
     parser.add_argument('-z', '--accesstoken', dest = 'accesstoken', default = None)
