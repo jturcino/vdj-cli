@@ -25,7 +25,7 @@ if __name__ == '__main__':
         args.systemID = vdjpy.prompt_user('system ID')
     kwargs['systemId'] = args.systemID
 
-    # publish system
+    # unpublish system
     unpublish = my_agave.systems.manage(**kwargs)
 
     # if -v
