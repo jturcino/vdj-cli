@@ -1,6 +1,6 @@
 need example:
 
-obs-output-list                jobs.listOutputs (may be using wrong path)
+jobs-output-list                jobs.listOutputs (may be using wrong path)
 jobs-output-get                 jobs.downloadOutput (may be using wrong path)
 
 throws error:
@@ -70,7 +70,8 @@ systems-roles-delete 		done
 systems-roles-list 		done
 systems-setdefault		done
 systems-unsetdefault		done
-systems-publish			done
+systems-publish			done CANNOT TEST
+systems-unpublish		done CANNOT TEST
 
 
 
