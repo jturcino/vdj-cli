@@ -10,7 +10,7 @@ if __name__ == '__main__':
     
     # arguments
     parser = argparse.ArgumentParser()
-    parser.add_argument('-f', '--description_file', dest = 'description_file', default = None)
+    parser.add_argument('-s', '--systemID', dest = 'systemID', default = None, nargs = '?')
     parser.add_argument('-v', '--verbose', dest = 'verbose', action = 'store_true')
     parser.add_argument('-z', '--accesstoken', dest = 'accesstoken', default = None)
     args = parser.parse_args()
@@ -18,19 +18,15 @@ if __name__ == '__main__':
     # make agave object and kwargs
     my_agave = vdjpy.make_vdj_agave(args.accesstoken)
     kwargs = {}
+    kwargs['body'] = {'action': 'PUBLISH'}
 
-    # -f
-    if args.description_file is None:
-        args.description_file = vdjpy.prompt_user('path to file containing app description')
-    
-    # open -f and use as body
-    body_contents = vdjpy.read_json(args.description_file)
-    if body_contents is None:
-        sys.exit('Not a valid file path or does not contain a valid system description.')
-    kwargs['body'] = json.dumps(body_contents)
+    # -s
+    if args.systemID is None:
+        args.systemID = vdjpy.prompt_user('system ID')
+    kwargs['systemId'] = args.systemID
 
-    # publish app
-    publish = my_agave.systems.add(**kwargs)
+    # publish system
+    publish = my_agave.systems.manage(**kwargs)
 
     # if -v
     if args.verbose is True:
@@ -38,4 +34,4 @@ if __name__ == '__main__':
 
     # if no -v
     else:
-        print 'Successfully added system', publish['id']
+        print 'Successfully published system', publish['id']
