@@ -12,10 +12,6 @@ _vdj () {
     elif [ $COMP_CWORD -eq 2 ]; then
         prev=${COMP_WORDS[COMP_CWORD-1]}
 
-#        case "$prev" in
-#            list|ls) COMPREPLY=( $(compgen -W "-p" -- $cur) ) ;;
-#            *) ;;
-
         case "$prev" in
             app|apps) COMPREPLY=( $(compgen -W "addupdate clone disable enable erase history ls pems publish rm search" -- $cur) ) ;;
             file|files) COMPREPLY=( $(compgen -W "cp download history import index ls mv pems publish rename rm upload" -- $cur) ) ;;
@@ -33,6 +29,7 @@ _vdj () {
 
         case "$prev" in
             -p) local IFS=$'\n'; COMPREPLY=($(compgen -W "$(vdj-projects-list.py | awk '{$NF=""; print "\x27" $0 }' | sed "s/ $/\x27/" | sed "s/ /\\ /g" )" -- $cur)) ;;
+#	    -f) local IFS=$'\n'; COMPREPLY=($(compgen -W "$(vdj-files-list.py )" -- $cur)) ;;
         esac
     fi
 
