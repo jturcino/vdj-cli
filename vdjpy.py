@@ -31,10 +31,10 @@ data_url = 'data.vdjserver.org/'
 #            path += project_job_file
 #    return path
 
-def build_vdj_path(project_uuid, file_name, jobfile_boolean, extra_path):
+def build_vdj_path(project_uuid, file_name, filetype, extra_path):
     """Build vdj path to file based on whether the file is a projecFile or projectJobFile"""
     path = '/projects/' + project_uuid
-    if jobfile_boolean:
+    if filetype == 'projectJobFile':
 	path += '/analyses/'
     else:
 	path += '/files/'
