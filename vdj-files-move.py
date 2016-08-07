@@ -11,7 +11,8 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('-p', '--current_project', dest = 'current_project', default = None, nargs = '?')
     parser.add_argument('-d', '--destination_project', dest = 'destination_project', default = None, nargs = '?')
-    parser.add_argument('-f', '--file_name', dest = 'file_name', default = None, nargs = '?')
+    parser.add_argument('-f', '--file_name', dest = 'file_name', default = '', nargs = '?')
+    parser.add_argument('-j', '--jobfile_name', dest = 'jobfile_name', default = '', nargs = '?')
     parser.add_argument('-z', '--accesstoken', dest = 'accesstoken', default = None, nargs = '?')
     parser.add_argument('-v', '--verbose', dest = 'verbose', default = False, action = 'store_true')
     args = parser.parse_args()
@@ -19,9 +20,20 @@ if __name__ == '__main__':
     # make agave object 
     my_agave = vdjpy.make_vdj_agave(args.accesstoken)
 
-    # -f
-    if args.file_name is None:
-        args.file_name = vdjpy.prompt_user('file name')
+    # -f (default file type)
+    if args.file_name is not '' or args.jobfile_name is '':
+	if args.file_name is None:
+            args.file_name = vdjpy.prompt_user('file name')
+	filetype = 'projectFile'
+	jobfile_boolean = False
+    # -j (only used if given)
+    else:
+	if args.jobfile_name is None:
+	    args.jobfile_name = vdjpy.prompt_user('jobfile name')
+	filetype = 'projectJobFile'
+	jobfile_boolean = True
+	# consolidate file name to args.file_name
+	args.jobfile_name = args.file_name
 
     # -p
     if args.current_project is None:
@@ -37,29 +49,28 @@ if __name__ == '__main__':
     if destination_uuid is None:
         sys.exit()
 
-    # get metadata for file
-    project_files = vdjpy.get_project_files(current_uuid, {}, my_agave)
-    file_metadata = None
-    for item in project_files:
-        if item['value']['name'] == args.file_name:
-            file_metadata = item
-
-    # if file metadata not found, exit
+    # get metadata for file; exit if file not found
+    project_files = vdjpy.get_project_files(current_uuid, filetype, {}, my_agave)
+    file_metadata = vdjpy.get_file_metadata(project_files, args.file_name)
     if file_metadata is None:
-        print 'The file', args.file_name, 'does not exist in project', args.current_project + '. \nHere are the files currently in the project:'
-        for item in project_files:
-            print item['value']['name']
         sys.exit()
 
+    # get extra path if is jobfile
+    extra_path = ''
+    if jobfile_boolean:
+	extra_path += str(file_metadata['value']['relativeArchivePath']) + '/'
+
     # change project uuid to destination uuid
-    file_metadata['_links']['file']['href'] = unicode('https://vdj-agave-api.tacc.utexas.edu/files/v2/media/system/data.vdjserver.org/' + vdjpy.build_vdj_path(destination_uuid, args.file_name, ''))
+    file_metadata['_links']['file']['href'] = unicode('https://vdj-agave-api.tacc.utexas.edu/files/v2/media/system/data.vdjserver.org/' + vdjpy.build_vdj_path(destination_uuid, args.file_name, jobfile_boolean, extra_path))
     file_metadata['value']['projectUuid'] = unicode(destination_uuid)
 
     # move in agave and metadata update
     agave_move = my_agave.files.manage(systemId = 'data.vdjserver.org',
-				       filePath = vdjpy.build_vdj_path(current_uuid, args.file_name, ''), 
-				       body = {'action': 'move', 'path': vdjpy.build_vdj_path(destination_uuid, args.file_name, '')})
-    metadata_update = my_agave.meta.updateMetadata(uuid = file_metadata['uuid'], body = json.dumps(file_metadata))
+				       filePath = vdjpy.build_vdj_path(current_uuid, args.file_name, jobfile_boolean, extra_path), 
+				       body = {'action': 'move', 
+					       'path': vdjpy.build_vdj_path(destination_uuid, args.file_name, False, '')}) # JOBFILE DEST NOT AVAILABLE
+    metadata_update = my_agave.meta.updateMetadata(uuid = file_metadata['uuid'], 
+						   body = json.dumps(file_metadata))
 
     # if -v
     if args.verbose:
