@@ -52,8 +52,18 @@ def get_file_metadata(files_list, file_name):
     print 'The file', file_name, 'does not exist. \nHere are your current files: \n' + files_names
     return None
 
-def get_project_files(uuid, kwargs, agave_object):
-    kwargs['q'] = '{' + '"name": { $in: ["projectFile", "projectJobFile"]},"value.projectUuid": "' + uuid + '", "value.isDeleted": false}'
+#def get_project_files(uuid, kwargs, agave_object):
+#    kwargs['q'] = '{' + '"name": { $in: ["projectFile", "projectJobFile"]},"value.projectUuid": "' + uuid + '", "value.isDeleted": false}'
+#    files = agave_object.meta.listMetadata(**kwargs)
+#    return files
+
+def get_project_files(uuid, filetype, kwargs, agave_object):
+    kwargs['q'] = '{"name": ' 
+    if filetype is None:
+        kwargs['q'] += '{ $in: ["projectFile", "projectJobFile"]}'
+    else:
+        kwargs['q'] += '"' + filetype + '"'
+    kwargs['q'] += ', "value.projectUuid": "' + uuid + '", "value.isDeleted": false}'
     files = agave_object.meta.listMetadata(**kwargs)
     return files
 
