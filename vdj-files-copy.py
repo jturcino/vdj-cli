@@ -28,12 +28,19 @@ if __name__ == '__main__':
         sys.exit()
 
     # -f
-    if args.file_name is None or args.jobfile_name is '':
-        args.file_name = vdjpy.prompt_user('file name')
-
-    # -j (only if no -f)
-    if args.jobfile_name is None and args.file_name is '':
-        args.jobfile_name = vdjpy.prompt_user('jobfile name')
+    if args.file_name is not '' or args.jobfile_name is '':
+	if args.file_name is None or '':
+            args.file_name = vdjpy.prompt_user('file name')
+	filetype = 'projectFile'
+	jobfile_boolean = False
+    # -j (only if flag given)
+    else:
+	if args.jobfile_name is None:
+            args.jobfile_name = vdjpy.prompt_user('jobfile name')
+	filetype = 'projectJobFile'
+	jobfile_boolean = True
+	# MOVING FORWARD, ARGS.FILE_NAME HOLDS THE GIVEN FILE NAME
+	args.file_name = args.jobfile_name
 
     # -d
     if args.destination_project is None:
@@ -42,27 +49,29 @@ if __name__ == '__main__':
     if destination_uuid is None:
         sys.exit()
 
-    # get metadata for file
-    project_files = vdjpy.get_project_files(current_uuid, {}, my_agave)
-    file_metadata = None
-    for item in project_files:
-        if item['value']['name'] == args.file_name:
-            file_metadata = item
-
-    # if file metadata not found, exit
+    # get metadata for file; exit if metadata not found
+    project_files = vdjpy.get_project_files(current_uuid, filetype, {}, my_agave)
+    file_metadata = vdjpy.get_file_metadata(project_files, args.file_name)
     if file_metadata is None:
-        print 'The file', args.file_name, 'does not exist in project', args.current_project + '. \nHere are the files currently in the project:'
-        for item in project_files:
-            print item['value']['name']
         sys.exit()
+
+    # if jobfile, get extra path
+    extra_path = ''
+    if jobfile_boolean:
+	extra_path += str(file_metadata['value']['relativeArchivePath']) + '/'
 
     # copy file with agave
     agave_copy = my_agave.files.manage(systemId = 'data.vdjserver.org', 
-				       filePath = vdjpy.build_vdj_path(current_uuid, args.file_name, args.jobfile_name),
-				       body = {'action': 'copy', 'path': vdjpy.build_vdj_path(destination_uuid, args.file_name, args.jobfile_name)})
+				       filePath = vdjpy.build_vdj_path(current_uuid, args.file_name, jobfile_boolean, extra_path),
+				       body = {'action': 'copy', 'path': vdjpy.build_vdj_path(destination_uuid, args.file_name, False, '')}) # CANNOT COPY TO JOBFILE DEST
 
-    # create new metadata and add
+
+    # update project uuid and remove relativeArchivePath if jobfile
     file_metadata['value']['projectUuid'] = destination_uuid
+    if jobfile_boolean:
+	del file_metadata['relativeArchivePath']
+
+    # create new metadata
     new_metadata = {
         'associationIds': [agave_copy['uuid']],
         'name': 'projectFile',
@@ -70,7 +79,6 @@ if __name__ == '__main__':
         'value': file_metadata['value']
     }
     metadata_create = my_agave.meta.addMetadata(body = json.dumps(new_metadata))
-
 
     # if -v
     if args.verbose:
