@@ -12,7 +12,8 @@ if __name__ == '__main__':
     # arguments
     parser = argparse.ArgumentParser()
     parser.add_argument('-p', '--project', dest = 'project', default = None, nargs = '?')
-    parser.add_argument('-f', '--file_name', dest = 'file_name', default = None, nargs = '?')
+    parser.add_argument('-f', '--projectfile', dest = 'projectfile', default = '', nargs = '?')
+    parser.add_argument('-j', '--jobfile', dest = 'jobfile', default = '', nargs = '?')
     parser.add_argument('-z', '--accesstoken', dest = 'accesstoken', default = None, nargs = '?')
     parser.add_argument('-l', '--limit', dest = 'limit', type = int, default = 5000, nargs = '?')
     parser.add_argument('-o', '--offset', dest = 'offset', type = int, default = 0, nargs = '?')
@@ -32,6 +33,7 @@ if __name__ == '__main__':
     uuid = vdjpy.get_uuid(args.project, my_agave)
     if uuid is None:
         sys.exit()
+    uuid = str(uuid)
 
     # -l (for listMetadata)
     if args.limit is None:
@@ -43,21 +45,30 @@ if __name__ == '__main__':
         args.offset = vdjpy.prompt_for_integer('offset value', 0)
     kwargs['offset'] = args.offset
 
-    # if args.project exits
-    uuid = str(uuid)
-    files = vdjpy.get_project_files(uuid, kwargs, my_agave)
+    # set filetype to None; replace with projectFile or projectJobFile if -f or -j specified
+    filetype = None
+    if args.projectfile is not '':
+	filetype = 'projectFile'
+    elif args.jobfile is not '':
+	filetype = 'projectJobFile'
 
-    # -f
-    if args.file_name is not None:
-        files = vdjpy.get_file_metadata(files, args.file_name)
-        if files is None:
-            sys.exit()
+    # get files for metadata
+    files = vdjpy.get_project_files(uuid, filetype, kwargs, my_agave)
 
-    # if -v
-    if args.verbose:
+
+    # filter to one file if name specified; quit if file not found
+    if args.projectfile is not None and filetype == 'projectFile':
+	files = vdjpy.get_file_metadata(files, args.projectfile)
+    elif args.jobfile is not None and filetype == 'projectJobFile':
+	files = vdjpy.get_file_metadata(files, args.jobfile)
+    if files is None:
+	sys.exit()
+
+    # if -v or specific file given
+    if args.verbose is True or type(files) is not list:
         print json.dumps(files, default = vdjpy.json_serial, sort_keys = True, indent = 4, separators = (',', ': '))
 
-    # if no -v
+    # if no -v and files is a list
     else:
         for item in files:
             print item['value']['name']
