@@ -12,10 +12,9 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('-z', '--accesstoken', dest = 'accesstoken', default = None, nargs = '?')
     parser.add_argument('-p', '--project', dest = 'project', default = None, nargs = '?')
-    parser.add_argument('-f', '--file_to_delete', dest = 'file_to_delete', default = None, nargs = '?')
+    parser.add_argument('-f', '--file_to_delete', dest = 'file_to_delete', default = '', nargs = '?')
+    parser.add_argument('-j', '--jobfile_to_delete', dest = 'jobfile_to_delete', default = '', nargs = '?')
     parser.add_argument('-v', '--verbose', dest = 'verbose', action = 'store_true')
-
-
     args = parser.parse_args()
 
     # make agave object
@@ -24,35 +23,39 @@ if __name__ == '__main__':
     # -p
     if args.project is None:
         args.project = vdjpy.prompt_user('project name')
-    
-    # get project uuid
     project_uuid = vdjpy.get_uuid(args.project, my_agave)
     if project_uuid is None:
-        sys.exit('Could not find specified project')
+        sys.exit()
     project_uuid = str(project_uuid)
 
-    # -f
-    if args.file_to_delete is None:
-        args.file_to_delete = vdjpy.prompt_user('file to delete')
+    # -f (default file type; used if -j not called)
+    if args.file_to_delete is not '' or args.jobfile_to_delete is '':
+	if args.file_to_delete is None:
+            args.file_to_delete = vdjpy.prompt_user('file to delete')
+	filetype = 'projectFile'
+    # -j (only used if specified)
+    else:
+	if args.jobfile_to_delete is None:
+	    args.jobfile_to_delte = vdjpy.prompt_user('jobfile to delete')
+	filetype = 'projectJobFile'
+	# consolidate file name to args.file_to_delete no matter file type
+	args.file_to_delete = args.jobfile_to_delete
     
     # get file_to_delete metadata
-    files = vdjpy.get_project_files(project_uuid, {}, my_agave)
-    file_metadata = None
-    for item in files:
-        if str(item['value']['name']) == args.file_to_delete:
-            file_metadata = item
+    files = vdjpy.get_project_files(project_uuid, filetype, {}, my_agave)
+    file_metadata = vdjpy.get_file_metadata(files, args.file_to_delete) 
     if file_metadata is None:
-        sys.exit('Could not find specified file in project')
+        sys.exit()
    
     # change isDeleted to true
     file_metadata['value']['isDeleted'] = True
 
     # delete file via metadata update
     kwargs = {}
-    kwargs['uuid'] = str(file_metadata['uuid'])
+    kwargs['uuid'] = file_metadata['uuid']
     kwargs['body'] = file_metadata
-#insert try/catch for HTTPError
-    delete_resp = my_agave.meta.updateMetadata(**kwargs)
+    delete_resp = my_agave.meta.updateMetadata(uuid = file_metadata['uuid'],
+					       body = json.dumps(file_metadata))
 
     # if -v
     if args.verbose:
