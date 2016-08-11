@@ -3,19 +3,32 @@
 import json
 import argparse
 import vdjpy
+import sys
 
 if __name__ == '__main__':
 
     # arguments
     parser = argparse.ArgumentParser()
     parser.add_argument('-v', '--verbose', dest = 'verbose', action = 'store_true')
-    parser.add_argument('-z', '--accesstoken', dest = 'accesstoken', required = False, default = None, nargs = '?')
+    parser.add_argument('-z', '--accesstoken', dest = 'accesstoken', default = None)
+    parser.add_argument('-j', '--jobID', dest = 'jobID', default = '', nargs = '?') 
     parser.add_argument('-l', '--limit', dest = 'limit', type = int, default = 250, nargs = '?')
     parser.add_argument('-o', '--offset', dest = 'offset', type = int, default = 0, nargs = '?')
     args = parser.parse_args()
 
+    # make agave object and kwargs
+    my_agave = vdjpy.make_vdj_agave(args.accesstoken)
     kwargs = {}
 
+    # IF JOBID, GET JOB INFO, PRINT, AND EXIT
+    if args.jobID is not '':
+	if args.jobID is None:
+	    args.jobID = vdjpy.prompt_user('job ID')
+	resp = my_agave.jobs.get(jobId = args.jobID)
+        print json.dumps(resp, default = vdjpy.json_serial, sort_keys = True, indent = 4, separators = (',', ': '))
+	sys.exit()
+
+    # IF NO APPID, LIST JOBS
     # -l
     if args.limit is None:
         args.limit = vdjpy.prompt_for_integer('limit', 250)
@@ -27,8 +40,7 @@ if __name__ == '__main__':
     kwargs['offset'] = args.offset
 
     # list jobs
-    my_agave = vdjpy.make_vdj_agave(None)
-    jobs = my_agave.jobs.list()
+    jobs = my_agave.jobs.list(**kwargs)
     
     # -v
     if args.verbose:
@@ -37,5 +49,4 @@ if __name__ == '__main__':
     # if no -v
     else:
         for item in jobs:
-#            print item['name'], '\n\tid:', item['id'], '\n\tstatus:', item['status']
             print item['name'], '\t\t', item['id']
