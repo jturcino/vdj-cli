@@ -24,18 +24,17 @@ if __name__ == '__main__':
         args.description_file = vdjpy.prompt_user('path to file containing app description')
     
     # open -f and use as body
-    if os.path.isfile(os.path.expanduser(args.description_file)) is True:
-        with open(os.path.expanduser(args.description_file), 'r') as description_file:
-            kwargs['body'] = json.dumps(json.load(description_file))
-    else:
-        sys.exit('Not a valid file path.')
+    body_contents = vdjpy.read_json(args.description_file)
+    if body_contents is None:
+        sys.exit('Not a valid file path or does not contain a valid app description.')
+    kwargs['body'] = json.dumps(body_contents)
 
-    # publish app
+    # submit job
     submit = my_agave.jobs.submit(**kwargs)
 
     # if -v
     if args.verbose is True:
-        print json.dumps(publish, default = vdjpy.json_serial, sort_keys = True, indent = 4, separators = (',', ': '))
+        print json.dumps(submit, default = vdjpy.json_serial, sort_keys = True, indent = 4, separators = (',', ': '))
 
     # if no -v
     else:
