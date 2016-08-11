@@ -29,7 +29,6 @@ _vdj () {
 
         case "$prev" in
             -p) local IFS=$'\n'; COMPREPLY=($(compgen -W "$(vdj-projects-list.py | awk '{$NF=""; print "\x27" $0 }' | sed "s/ $/\x27/" | sed "s/ /\\ /g" )" -- $cur)) ;;
-#	    -f) local IFS=$'\n'; COMPREPLY=($(compgen -W "$(vdj-files-list.py )" -- $cur)) ;;
         esac
     fi
 
