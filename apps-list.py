@@ -2,9 +2,8 @@
 
 import argparse
 import json
-import os.path
-from agavepy.agave import Agave
 import vdjpy
+import sys
 
 if __name__ == '__main__':
     
@@ -12,6 +11,7 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('-v', '--verbose', dest = 'verbose', action = 'store_true')
     parser.add_argument('-z', '--accesstoken', dest = 'accesstoken', default = None)
+    parser.add_argument('-a', '--appID', dest = 'appID', default = '', nargs = '?')
     parser.add_argument('-p', '--publiconly', dest = 'publiconly', default = False, action = 'store_true')
     parser.add_argument('-q', '--privateonly', dest = 'privateonly', default = False, action = 'store_true')
     parser.add_argument('-l', '--limit', dest = 'limit', type = int, default = 250, nargs = '?')
@@ -20,8 +20,19 @@ if __name__ == '__main__':
     parser.add_argument('-s', '--system', dest = 'system', default = '', nargs = '?')
     args = parser.parse_args()
 
+    # make agave object and kwargs
+    my_agave = vdjpy.make_vdj_agave(args.accesstoken)
     kwargs = {}
 
+    # IF APPID, GET APP INFO, PRINT, AND EXIT
+    if args.appID is not '':
+	if args.appID is None:
+	    args.appID = vdjpy.prompt_user('app ID')
+	resp = my_agave.apps.get(appId = args.appID)
+	print json.dumps(resp, default = vdjpy.json_serial, sort_keys = True, indent = 4, separators = (',', ': '))
+	sys.exit()
+
+    # IF NO APPID, LIST APPS
     # public/private
     if args.publiconly is True and args.privateonly is False:
         kwargs['publicOnly'] = args.publiconly
@@ -38,8 +49,7 @@ if __name__ == '__main__':
         args.offset = vdjpy.prompt_for_integer('offset', 0)
     kwargs['offset'] = args.offset
 
-    # get systems
-    my_agave = vdjpy.make_vdj_agave(args.accesstoken)
+    # get apps
     apps = my_agave.apps.list(**kwargs)
 
     # name
