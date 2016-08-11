@@ -3,14 +3,16 @@
 import json
 import argparse
 import vdjpy
+import sys
 
 if __name__ == '__main__':
     
     # arguments
     parser = argparse.ArgumentParser()
     parser.add_argument('-v', '--verbose', dest = 'verbose', action = 'store_true')
-    parser.add_argument('-z', '--accesstoken', dest = 'accesstoken', required = False, default = None, nargs = '?')
-    parser.add_argument('-s', '--storageonly', dest = 'storageonly', action = 'store_true')
+    parser.add_argument('-z', '--accesstoken', dest = 'accesstoken', default = None, nargs = '?')
+    parser.add_argument('-s', '--systemID', dest = 'systemID', default = '', nargs = '?')
+    parser.add_argument('-x', '--storageonly', dest = 'storageonly', action = 'store_true')
     parser.add_argument('-e', '--executiononly', dest = 'executiononly', action = 'store_true')
     parser.add_argument('-d', '--default', dest = 'default', action = 'store_true')
     parser.add_argument('-q', '--private', dest = 'private', action = 'store_true')
@@ -19,8 +21,19 @@ if __name__ == '__main__':
     parser.add_argument('-o', '--offset', dest = 'offset', type = int, default = 0, nargs = '?')
     args = parser.parse_args()
 
+    # make agave object and kwargs
+    my_agave = vdjpy.make_vdj_agave(args.accesstoken)
     kwargs = {}
 
+    # IF SYSTEMID, GET SYSTEM INFO, PRINT, AND EXIT
+    if args.systemID is not '':
+	if args.systemID is None:
+	    args.systemID = vdjpy.prompt_user('system ID')
+	resp = my_agave.systems.get(systemId = args.systemID)
+	print json.dumps(resp, default = vdjpy.json_serial, sort_keys = True, indent = 4, separators = (',', ': '))
+	sys.exit()
+
+    # IF NO SYSTEMID, LIST SYSTEMS
     # storage/execution
     if args.storageonly and not args.executiononly:
         kwargs['type'] = 'STORAGE'
