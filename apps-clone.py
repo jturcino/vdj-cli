@@ -5,6 +5,7 @@ import json
 import os.path
 import vdjpy
 import sys
+import urllib
 
 if __name__ == '__main__':
     
@@ -12,8 +13,8 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('-a', '--appID', dest = 'appID', default = None, nargs = '?')
     parser.add_argument('-n', '--clone_name', dest = 'clone_name', default = '', nargs = '?')
-    parser.add_argument('-s', '--storage_system', dest = 'storage_system', default = None, nargs = '?')
-    parser.add_argument('-e', '--execution_system', dest = 'execution_system', default = '', nargs = '?')
+    parser.add_argument('-s', '--deployment_system', dest = 'deployment_system', default = None, nargs = '?')
+    parser.add_argument('-e', '--execution_system', dest = 'execution_system', default = None, nargs = '?')
     parser.add_argument('-x', '--version', dest = 'version', default = '', nargs = '?')
     parser.add_argument('-d', '--deployment_path', dest = 'deployment_path', default = None, nargs = '?')
     parser.add_argument('-f', '--description_file', dest = 'description_file', default = '', nargs = '?')
@@ -37,7 +38,7 @@ if __name__ == '__main__':
         body_contents = vdjpy.read_json(args.description_file)
         if body_contents is None:
             sys.exit()
-        kwargs['body'] = body_contents #DOES IT NEED TO BE STRING???
+        kwargs['body'] = json.dumps(body_contents)
 
     # -n, -s, -e, -x, and -d used if no -f
     else:
@@ -49,7 +50,7 @@ if __name__ == '__main__':
                 if app['id'] == args.appID:
                     app_info = app
             if app_info is None:
-                sys.exit('Could not find given app in your apps')
+                sys.exit('Could not find app to be cloned')
         # -n
         if args.clone_name is '':
             vdjapi_contents = vdjpy.read_json('~/.vdjapi')
@@ -62,9 +63,7 @@ if __name__ == '__main__':
             args.clone_name = vdjpy.prompt_user('name of cloned app')
 
         # -e
-        if args.execution_system is '':
-            args.execution_system = app_info['executionSystem']
-        elif args.execution_system is None:
+        if args.execution_system is None:
             args.execution_system = vdjpy.prompt_user('execution system')
 
         # -x
@@ -74,21 +73,20 @@ if __name__ == '__main__':
             args.version = vdjpy.prompt_user('version of cloned app')
 
         # -s
-        if args.storage_system is None:
-            args.storage_system = vdjpy.prompt_user('storage system')
+        if args.deployment_system is None:
+            args.deployment_system = vdjpy.prompt_user('deployment system')
 
         # -d
         if args.deployment_path is None:
             args.deployment_path = vdjpy.prompt_user('deployment path')
 
-
         # build body
-        kwargs['body'] = {'action': 'clone',
-			  'name': args.clone_name,
-			  'storageSystem': args.storage_system,
-			  'executionSystem': args.execution_system,
-			  'version': args.version,
-			  'deploymentPath': args.deployment_path}
+        kwargs['body'] = json.dumps({'action': 'clone',
+			  'name': str(args.clone_name),
+			  'deploymentSystem': str(args.deployment_system),
+			  'executionSystem': str(args.execution_system),
+			  'version': str(args.version),
+			  'deploymentPath': str(args.deployment_path)})
 
     # clone app
     clone = my_agave.apps.manage(**kwargs)
