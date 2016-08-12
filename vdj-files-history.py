@@ -56,12 +56,13 @@ if __name__ == '__main__':
         args.offset = vdjpy.prompt_for_integer('offset', 0)
     kwargs['offset'] = args.offset
 
-    # if jobfile, get extra path
+    # if jobfile, get extra path; then build filepath
     extra_path = ''
     if filetype == 'projectJobFile':
         extra_path += str(file_metadata['value']['relativeArchivePath']) + '/'
+    kwargs['filePath'] = vdjpy.build_vdj_path(project_uuid, args.file_name, filetype, extra_path)
 
     # get history
-    kwargs['filePath'] = vdjpy.build_vdj_path(project_uuid, args.file_name, filetype, extra_path)
     history = my_agave.files.getHistoryOnDefaultSystem(**kwargs)
+
     print json.dumps(history, default = vdjpy.json_serial, sort_keys = True, indent = 4, separators = (',', ': '))

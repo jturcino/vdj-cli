@@ -58,13 +58,13 @@ if __name__ == '__main__':
         if file_metadata is None:
             sys.exit()
 
-    # if jobfile, get extra path
+    # if jobfile, get extra path; then build file path
     extra_path = ''
     if filetype == 'projectJobFile':
         extra_path += str(file_metadata['value']['relativeArchivePath']) + '/'
-
-    # build filepath and list permissions
     kwargs['filePath'] = vdjpy.build_vdj_path(project_uuid, args.file_name, filetype, extra_path)
+
+    # list permissions
     permissions = my_agave.files.listPermissions(**kwargs)
 
     # if -v

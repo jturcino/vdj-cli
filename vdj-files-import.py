@@ -38,7 +38,7 @@ if __name__ == '__main__':
     project_uuid = vdjpy.get_uuid(args.project, my_agave)
     if project_uuid is None:
         sys.exit()
-    kwargs['filePath'] = vdjpy.build_vdj_path(project_uuid, '', '')
+    kwargs['filePath'] = vdjpy.build_vdj_path(project_uuid, '', 'projectFile', '')
 
     # -n
     if args.file_name is None:

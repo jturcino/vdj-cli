@@ -43,14 +43,15 @@ if __name__ == '__main__':
         if file_metadata is None:
             sys.exit()
    
-    # if jobfile, get extra path
+    # if jobfile, get extra path; then build file path
     extra_path = ''
     if filetype == 'projectJobFile':
         extra_path += str(file_metadata['value']['relativeArchivePath']) + '/'
+    file_path = vdjpy.build_vdj_path(project_uuid, args.file_name, filetype, extra_path)
 
     # build path and delete permissions
     pems_delete = my_agave.files.deletePermissions(systemId = 'data.vdjserver.org',
-						   filePath = vdjpy.build_vdj_path(project_uuid, args.file_name, filetype, extra_path))
+						   filePath = file_path)
 
     if pems_delete is None:
         print 'Succesfully removed permissions for file', args.file_name, 'in project', args.project

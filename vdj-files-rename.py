@@ -50,14 +50,15 @@ if __name__ == '__main__':
     if file_metadata is None:
         sys.exit()
 
-    # if jobfile, get extra path
+    # if jobfile, get extra path; then build file path
     extra_path = ''
     if filetype == 'projectJobFile':
         extra_path += str(file_metadata['value']['relativeArchivePath']) + '/'
+    file_path = vdjpy.build_vdj_path(uuid, args.file_name, filetype, extra_path)
 
     # rename in agave
     agave_rename = my_agave.files.manage(systemId = 'data.vdjserver.org',
-					 filePath = vdjpy.build_vdj_path(uuid, args.file_name, filetype, extra_path), 
+					 filePath = file_path, 
 					 body = {'action': 'rename', 'path': args.new_name})
 
     # change value.name to desired name

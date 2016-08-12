@@ -50,14 +50,15 @@ if __name__ == '__main__':
     elif args.newfile_name is None:
 	args.newfile_name = vdjpy.prompt_user('name of file once downloaded')
     
-    # if jobfile, get extra path
+    # if jobfile, get extra path; then build path
     extra_path = ''
     if filetype == 'projectJobFile':
         extra_path += str(file_metadata['value']['relativeArchivePath']) + '/'
+    file_path = vdjpy.build_vdj_path(project_uuid, args.file_name, filetype, extra_path)
 
     # download file
     download = my_agave.files.download(systemId = 'data.vdjserver.org',
-				       filePath = vdjpy.build_vdj_path(project_uuid, args.file_name, filetype, extra_path))
+				       filePath = file_path)
     download.raise_for_status()
 
     # write contents to file

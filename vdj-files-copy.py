@@ -53,15 +53,17 @@ if __name__ == '__main__':
     if file_metadata is None:
         sys.exit()
 
-    # if jobfile, get extra path
+    # if jobfile, get extra path; then build paths
     extra_path = ''
     if filetype == 'projectJobFile':
 	extra_path += str(file_metadata['value']['relativeArchivePath']) + '/'
+    current_path = vdjpy.build_vdj_path(current_uuid, args.file_name, filetype, extra_path)
+    destination_path = vdjpy.build_vdj_path(destination_uuid, args.file_name, 'projectFile', '')
 
     # copy file with agave (cannot copy to jobfile destination)
     agave_copy = my_agave.files.manage(systemId = 'data.vdjserver.org', 
-				       filePath = vdjpy.build_vdj_path(current_uuid, args.file_name, filetype, extra_path),
-				       body = {'action': 'copy', 'path': vdjpy.build_vdj_path(destination_uuid, args.file_name, 'projectFile', '')})
+				       filePath = current_path,
+				       body = {'action': 'copy', 'path': destination_path})
 
 
     # update project uuid and remove unnecessary metadata if jobfile
