@@ -28,6 +28,7 @@ if __name__ == '__main__':
         sys.exit()
     project_uuid = str(project_uuid)
 
+    # SET UP FILETYPE AND GET FILE NAME IN ARGS.FILE_NAME
     # -f (default file type; used if -j not called)
     if args.file_to_delete is not '' or args.jobfile_to_delete is '':
 	if args.file_to_delete is None:
@@ -51,9 +52,6 @@ if __name__ == '__main__':
     file_metadata['value']['isDeleted'] = True
 
     # delete file via metadata update
-    kwargs = {}
-    kwargs['uuid'] = file_metadata['uuid']
-    kwargs['body'] = file_metadata
     delete_resp = my_agave.meta.updateMetadata(uuid = file_metadata['uuid'],
 					       body = json.dumps(file_metadata))
 

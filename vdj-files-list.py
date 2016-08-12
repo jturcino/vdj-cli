@@ -30,10 +30,9 @@ if __name__ == '__main__':
     # -p
     if args.project is None:
         args.project = vdjpy.prompt_user('project name')
-    uuid = vdjpy.get_uuid(args.project, my_agave)
-    if uuid is None:
+    project_uuid = vdjpy.get_uuid(args.project, my_agave)
+    if project_uuid is None:
         sys.exit()
-    uuid = str(uuid)
 
     # -l (for listMetadata)
     if args.limit is None:
@@ -45,21 +44,23 @@ if __name__ == '__main__':
         args.offset = vdjpy.prompt_for_integer('offset value', 0)
     kwargs['offset'] = args.offset
 
-    # set filetype to None; replace with projectFile or projectJobFile if -f or -j specified
-    filetype = None
-    if args.projectfile is not '':
-	filetype = 'projectFile'
-    elif args.jobfile is not '':
-	filetype = 'projectJobFile'
+    # SET UP FILETYPE
+    # -f
+    if args.projectfile is not '' and args.jobfile is '':
+        filetype = 'projectFile'
+    # -j
+    elif args.jobfile is not '' and args.projectfile is '':
+        filetype = 'projectJobFile'
+    else:
+	filetype = None
 
     # get files for metadata
-    files = vdjpy.get_project_files(uuid, filetype, kwargs, my_agave)
-
+    files = vdjpy.get_project_files(project_uuid, filetype, kwargs, my_agave)
 
     # filter to one file if name specified; quit if file not found
-    if args.projectfile is not None and filetype == 'projectFile':
+    if filetype == 'projectFile' and args.projectfile is not None:
 	files = vdjpy.get_file_metadata(files, args.projectfile)
-    elif args.jobfile is not None and filetype == 'projectJobFile':
+    elif filetype == 'projectJobFile' and args.jobfile is not None:
 	files = vdjpy.get_file_metadata(files, args.jobfile)
     if files is None:
 	sys.exit()

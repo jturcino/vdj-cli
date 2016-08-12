@@ -24,8 +24,8 @@ if __name__ == '__main__':
     # -p
     if args.project is None:
         args.project = vdjpy.prompt_user('project')
-    uuid = vdjpy.get_uuid(args.project, my_agave)
-    if uuid is None:
+    project_uuid = vdjpy.get_uuid(args.project, my_agave)
+    if project_uuid is None:
         sys.exit()
 
     # SET UP FILETYPE AND GET FILE NAME IN ARGS.FILE_NAME
@@ -40,6 +40,11 @@ if __name__ == '__main__':
             args.jobfile_name = vdjpy.prompt_user('jobfile name')
         filetype = 'projectJobFile'
         args.file_name = args.jobfile_name
+        # get metadata for extra path; exit if file not found
+        project_files = vdjpy.get_project_files(project_uuid, filetype, {}, my_agave)
+        file_metadata = vdjpy.get_file_metadata(project_files, args.file_name)
+        if file_metadata is None:
+            sys.exit()
 
     # -l
     if args.limit is None:
@@ -51,17 +56,12 @@ if __name__ == '__main__':
         args.offset = vdjpy.prompt_for_integer('offset', 0)
     kwargs['offset'] = args.offset
 
-    # get extra path
-    project_files = vdjpy.get_project_files(uuid, filetype, {}, my_agave)
-    file_metadata = vdjpy.get_file_metadata(project_files, args.file_name)
-    if file_metadata is None: # exit if file not found
-        sys.exit()
-    try:
-        extra_path = str(file_metadata['value']['relativeArchivePath']) + '/'
-    except KeyError:
-        extra_path = ''
+    # if jobfile, get extra path
+    extra_path = ''
+    if filetype == 'projectJobFile':
+        extra_path += str(file_metadata['value']['relativeArchivePath']) + '/'
 
     # get history
-    kwargs['filePath'] = vdjpy.build_vdj_path(uuid, args.file_name, filetype, extra_path)
+    kwargs['filePath'] = vdjpy.build_vdj_path(project_uuid, args.file_name, filetype, extra_path)
     history = my_agave.files.getHistoryOnDefaultSystem(**kwargs)
     print json.dumps(history, default = vdjpy.json_serial, sort_keys = True, indent = 4, separators = (',', ': '))

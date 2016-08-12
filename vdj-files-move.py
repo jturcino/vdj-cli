@@ -20,19 +20,6 @@ if __name__ == '__main__':
     # make agave object 
     my_agave = vdjpy.make_vdj_agave(args.accesstoken)
 
-    # -f (default file type)
-    if args.file_name is not '' or args.jobfile_name is '':
-	if args.file_name is None:
-            args.file_name = vdjpy.prompt_user('file name')
-	filetype = 'projectFile'
-    # -j (only used if given)
-    else:
-	if args.jobfile_name is None:
-	    args.jobfile_name = vdjpy.prompt_user('jobfile name')
-	filetype = 'projectJobFile'
-	# consolidate file name to args.file_name
-	args.jobfile_name = args.file_name
-
     # -p
     if args.current_project is None:
         args.current_project = vdjpy.prompt_user('current project')
@@ -47,26 +34,46 @@ if __name__ == '__main__':
     if destination_uuid is None:
         sys.exit()
 
+    # SET UP FILETYPE AND GET FILE NAME IN ARGS.FILE_NAME
+    # -f (default file type)
+    if args.file_name is not '' or args.jobfile_name is '':
+        if args.file_name is None:
+            args.file_name = vdjpy.prompt_user('file name')
+        filetype = 'projectFile'
+    # -j (only used if given)
+    else:
+        if args.jobfile_name is None:
+            args.jobfile_name = vdjpy.prompt_user('jobfile name')
+        filetype = 'projectJobFile'
+        args.file_name = args.jobfile_name
+
     # get metadata for file; exit if file not found
     project_files = vdjpy.get_project_files(current_uuid, filetype, {}, my_agave)
     file_metadata = vdjpy.get_file_metadata(project_files, args.file_name)
     if file_metadata is None:
         sys.exit()
 
-    # get extra path if is jobfile
+    # if jobfile, get extra path
     extra_path = ''
     if filetype == 'projectJobFile':
 	extra_path += str(file_metadata['value']['relativeArchivePath']) + '/'
 
-    # change project uuid to destination uuid
-    file_metadata['_links']['file']['href'] = unicode('https://vdj-agave-api.tacc.utexas.edu/files/v2/media/system/data.vdjserver.org/' + vdjpy.build_vdj_path(destination_uuid, args.file_name, filetype, extra_path))
-    file_metadata['value']['projectUuid'] = unicode(destination_uuid)
-
-    # move in agave and metadata update
+    # move in agave (cannot move to jobfile destination)
     agave_move = my_agave.files.manage(systemId = 'data.vdjserver.org',
 				       filePath = vdjpy.build_vdj_path(current_uuid, args.file_name, filetype, extra_path), 
 				       body = {'action': 'move', 
-					       'path': vdjpy.build_vdj_path(destination_uuid, args.file_name, 'projectFile', '')}) # JOBFILE DEST NOT AVAILABLE
+					       'path': vdjpy.build_vdj_path(destination_uuid, args.file_name, 'projectFile', '')})
+
+    # update filepath, project uuid, and remove unnecessary metadata if jobfile
+    file_metadata['_links']['file']['href'] = unicode('https://vdj-agave-api.tacc.utexas.edu/files/v2/media/system/data.vdjserver.org/' + vdjpy.build_vdj_path(destination_uuid, args.file_name, 'projectFile', ''))
+    file_metadata['value']['projectUuid'] = unicode(destination_uuid)
+    if filetype == 'projectJobFile':
+	file_metadata['name'] = 'projectFile'
+        del file_metadata['value']['relativeArchivePath']
+        del file_metadata['value']['jobName']
+        del file_metadata['value']['jobUuid']
+
+    # update metadata
     metadata_update = my_agave.meta.updateMetadata(uuid = file_metadata['uuid'], 
 						   body = json.dumps(file_metadata))
 

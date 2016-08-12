@@ -16,10 +16,8 @@ if __name__ == '__main__':
     parser.add_argument('-p', '--project', dest = 'project', default = None, nargs = '?')
     args = parser.parse_args()
     
-    # make Agave object and kwargs
+    # make Agave object 
     my_agave = vdjpy.make_vdj_agave(args.accesstoken)
-    kwargs = {}
-    kwargs['systemId'] = 'data.vdjserver.org'
 
     # -p
     if args.project is None:
@@ -40,6 +38,11 @@ if __name__ == '__main__':
             args.jobfile_name = vdjpy.prompt_user('jobfile name')
         filetype = 'projectJobFile'
         args.file_name = args.jobfile_name
+	# get metadata for extra path; exit if file not found
+	project_files = vdjpy.get_project_files(project_uuid, filetype, {}, my_agave)
+	file_metadata = vdjpy.get_file_metadata(project_files, args.file_name)
+	if file_metadata is None:
+	    sys.exit()
 
     # -n; use args.file_name if flag not used
     if args.newfile_name is '':
@@ -47,25 +50,18 @@ if __name__ == '__main__':
     elif args.newfile_name is None:
 	args.newfile_name = vdjpy.prompt_user('name of file once downloaded')
     
-
-    # get extra path
-    project_files = vdjpy.get_project_files(project_uuid, filetype, {}, my_agave)
-    file_metadata = vdjpy.get_file_metadata(project_files, args.file_name)
-    if file_metadata is None: # exit if file not found
-	sys.exit()
-    try:
-	extra_path = str(file_metadata['value']['relativeArchivePath']) + '/'
-    except KeyError:
-	extra_path = ''
+    # if jobfile, get extra path
+    extra_path = ''
+    if filetype == 'projectJobFile':
+        extra_path += str(file_metadata['value']['relativeArchivePath']) + '/'
 
     # download file
-
-    kwargs['filePath'] = vdjpy.build_vdj_path(project_uuid, args.file_name, filetype, extra_path)
-    download = my_agave.files.download(**kwargs)
+    download = my_agave.files.download(systemId = 'data.vdjserver.org',
+				       filePath = vdjpy.build_vdj_path(project_uuid, args.file_name, filetype, extra_path))
     download.raise_for_status()
 
-    # write correct contents to file
+    # write contents to file
     with open(os.path.expanduser(args.newfile_name), 'w') as download_file:
         download_file.write(download.text)
 
-    print 'Successfully downloaded', args.file_name, 'as', args.file_name, 'to the current directory.'
+    print 'Successfully downloaded', args.file_name, 'as', args.newfile_name

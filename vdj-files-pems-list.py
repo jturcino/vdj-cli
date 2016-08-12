@@ -30,16 +30,6 @@ if __name__ == '__main__':
     if project_uuid is None:
         sys.exit()
 
-    # -f
-    if args.file_name is None or args.jobfile_name is '':
-        args.file_name = vdjpy.prompt_user('file name')
-
-    # -j (only if no -f)
-    if args.jobfile_name is None and args.file_name is '':
-        args.jobfile_name = vdjpy.prompt_user('jobfile name')
-
-    kwargs['filePath'] = vdjpy.build_vdj_path(project_uuid, args.file_name, args.jobfile_name)
-
     # -l
     if args.limit is None:
         args.limit = vdjpy.prompt_for_integer('limit', 250)
@@ -50,7 +40,31 @@ if __name__ == '__main__':
         args.offset = vdjpy.prompt_for_integer('offset', 0)
     kwargs['offset'] = args.offset
 
-    # list permissions
+    # SET UP FILETYPE AND GET FILE NAME IN ARGS.FILE_NAME
+    # -f (default)
+    if args.file_name is not '' or args.jobfile_name is '':
+        if args.file_name is None or '':
+            args.file_name = vdjpy.prompt_user('file name')
+        filetype = 'projectFile'
+    # -j (only if flag given)
+    else:
+        if args.jobfile_name is None:
+            args.jobfile_name = vdjpy.prompt_user('jobfile name')
+        filetype = 'projectJobFile'
+        args.file_name = args.jobfile_name
+        # get metadata for extra path; exit if file not found
+        project_files = vdjpy.get_project_files(project_uuid, filetype, {}, my_agave)
+        file_metadata = vdjpy.get_file_metadata(project_files, args.file_name)
+        if file_metadata is None:
+            sys.exit()
+
+    # if jobfile, get extra path
+    extra_path = ''
+    if filetype == 'projectJobFile':
+        extra_path += str(file_metadata['value']['relativeArchivePath']) + '/'
+
+    # build filepath and list permissions
+    kwargs['filePath'] = vdjpy.build_vdj_path(project_uuid, args.file_name, filetype, extra_path)
     permissions = my_agave.files.listPermissions(**kwargs)
 
     # if -v

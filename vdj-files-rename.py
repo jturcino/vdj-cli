@@ -27,6 +27,7 @@ if __name__ == '__main__':
     if uuid is None:
         sys.exit()
 
+   # SET UP FILETYPE AND GET FILE NAME IN ARGS.FILE_NAME
     # -f (default)
     if args.file_name is not '' or args.jobfile_name is '':
 	if args.file_name is None:
@@ -37,10 +38,9 @@ if __name__ == '__main__':
 	if args.jobfile_name is None:
 	    args.jobfile_name = vdjpy.prompt_user('current jobfile name')
 	filetype = 'projectJobFile'
-	# consolidate file name to args.file_name
 	args.file_name = args.jobfile_name
 
-    # -d
+    # -n
     if args.new_name is None:
         args.new_name = vdjpy.prompt_user('new name')
 
@@ -55,13 +55,15 @@ if __name__ == '__main__':
     if filetype == 'projectJobFile':
         extra_path += str(file_metadata['value']['relativeArchivePath']) + '/'
 
-    # change value.name to desired name
-    file_metadata['value']['name'] = unicode(args.new_name)
-
-    # rename in agave and via metadata update
+    # rename in agave
     agave_rename = my_agave.files.manage(systemId = 'data.vdjserver.org',
 					 filePath = vdjpy.build_vdj_path(uuid, args.file_name, filetype, extra_path), 
 					 body = {'action': 'rename', 'path': args.new_name})
+
+    # change value.name to desired name
+    file_metadata['value']['name'] = unicode(args.new_name)
+
+    # update metadata
     metadata_update = my_agave.meta.updateMetadata(uuid = file_metadata['uuid'], 
 						   body = json.dumps(file_metadata))
 

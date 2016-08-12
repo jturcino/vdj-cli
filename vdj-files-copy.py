@@ -27,6 +27,13 @@ if __name__ == '__main__':
     if current_uuid is None:
         sys.exit()
 
+    # -d
+    if args.destination_project is None:
+        args.destination_project = vdjpy.prompt_user('destination project')
+    destination_uuid = vdjpy.get_uuid(args.destination_project, my_agave)
+    if destination_uuid is None:
+        sys.exit()
+
     # SET UP FILETYPE AND GET FILE NAME IN ARGS.FILE_NAME
     # -f (default)
     if args.file_name is not '' or args.jobfile_name is '':
@@ -40,13 +47,6 @@ if __name__ == '__main__':
 	filetype = 'projectJobFile'
 	args.file_name = args.jobfile_name
 
-    # -d
-    if args.destination_project is None:
-        args.destination_project = vdjpy.prompt_user('destination project')
-    destination_uuid = vdjpy.get_uuid(args.destination_project, my_agave)
-    if destination_uuid is None:
-        sys.exit()
-
     # get metadata for file; exit if metadata not found
     project_files = vdjpy.get_project_files(current_uuid, filetype, {}, my_agave)
     file_metadata = vdjpy.get_file_metadata(project_files, args.file_name)
@@ -58,24 +58,24 @@ if __name__ == '__main__':
     if filetype == 'projectJobFile':
 	extra_path += str(file_metadata['value']['relativeArchivePath']) + '/'
 
-    # copy file with agave
+    # copy file with agave (cannot copy to jobfile destination)
     agave_copy = my_agave.files.manage(systemId = 'data.vdjserver.org', 
 				       filePath = vdjpy.build_vdj_path(current_uuid, args.file_name, filetype, extra_path),
-				       body = {'action': 'copy', 'path': vdjpy.build_vdj_path(destination_uuid, args.file_name, 'projectFile', '')}) # CANNOT COPY TO JOBFILE DEST
+				       body = {'action': 'copy', 'path': vdjpy.build_vdj_path(destination_uuid, args.file_name, 'projectFile', '')})
 
 
-    # update project uuid and remove relativeArchivePath if jobfile
+    # update project uuid and remove unnecessary metadata if jobfile
     file_metadata['value']['projectUuid'] = destination_uuid
     if filetype == 'projectJobFile':
-	file_metadata['relativeArchivePath']
+	del file_metadata['value']['relativeArchivePath']
+	del file_metadata['value']['jobName']
+	del file_metadata['value']['jobUuid']
 
     # create new metadata
-    new_metadata = {
-        'associationIds': [agave_copy['uuid']],
-        'name': 'projectFile',
-        'schemaId': None,
-        'value': file_metadata['value']
-    }
+    new_metadata = {'associationIds': [agave_copy['uuid']],
+		    'name': 'projectFile',
+		    'schemaId': None,
+		    'value': file_metadata['value']}
     metadata_create = my_agave.meta.addMetadata(body = json.dumps(new_metadata))
 
     # if -v
