@@ -25,7 +25,7 @@ if __name__ == '__main__':
     # open -f and use as body
     body_contents = vdjpy.read_json(args.metadata_filepath)
     if body_contents is None:
-        sys.exit('Not a valid file path or does not contain a valid app description.')
+        sys.exit('Not a valid file path or does not contain valid JSON.')
     kwargs['body'] = json.dumps(body_contents)
     
     # if -u given, use update
