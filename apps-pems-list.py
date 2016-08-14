@@ -10,11 +10,11 @@ if __name__ == '__main__':
 
     # arguments
     parser = argparse.ArgumentParser()
-    parser.add_argument('-a', '--appID', dest = 'appID', default = None, nargs = '?')
+    parser.add_argument('-a', '--appID', dest = 'appID', nargs = '?')
     parser.add_argument('-l', '--limit', dest = 'limit', default = 250, nargs = '?', type = int)
     parser.add_argument('-o', '--offset', dest = 'offset', default = 0, nargs = '?', type = int)
-    parser.add_argument('-z', '--accesstoken', dest = 'accesstoken', default = None, nargs = '?')
     parser.add_argument('-v', '--verbose', dest = 'verbose', action = 'store_true')
+    parser.add_argument('-z', '--accesstoken', dest = 'accesstoken', nargs = '?')
     args = parser.parse_args()
 
     kwargs = {}

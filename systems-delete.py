@@ -9,8 +9,8 @@ if __name__ == '__main__':
     
     # arguments
     parser = argparse.ArgumentParser()
-    parser.add_argument('-s', '--systemID', dest = 'systemID', default = None)
-    parser.add_argument('-z', '--accesstoken', dest = 'accesstoken', default = None)
+    parser.add_argument('-s', '--systemID', dest = 'systemID', nargs = '?')
+    parser.add_argument('-z', '--accesstoken', dest = 'accesstoken', nargs = '?')
     args = parser.parse_args()
 
     # make agave object and kwargs

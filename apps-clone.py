@@ -11,15 +11,15 @@ if __name__ == '__main__':
     
     # arguments
     parser = argparse.ArgumentParser()
-    parser.add_argument('-a', '--appID', dest = 'appID', default = None, nargs = '?')
+    parser.add_argument('-a', '--appID', dest = 'appID', nargs = '?')
     parser.add_argument('-n', '--clone_name', dest = 'clone_name', default = '', nargs = '?')
-    parser.add_argument('-s', '--deployment_system', dest = 'deployment_system', default = None, nargs = '?')
-    parser.add_argument('-e', '--execution_system', dest = 'execution_system', default = None, nargs = '?')
+    parser.add_argument('-s', '--deployment_system', dest = 'deployment_system', nargs = '?')
+    parser.add_argument('-e', '--execution_system', dest = 'execution_system', nargs = '?')
     parser.add_argument('-x', '--version', dest = 'version', default = '', nargs = '?')
-    parser.add_argument('-d', '--deployment_path', dest = 'deployment_path', default = None, nargs = '?')
+    parser.add_argument('-d', '--deployment_path', dest = 'deployment_path', nargs = '?')
     parser.add_argument('-f', '--description_file', dest = 'description_file', default = '', nargs = '?')
     parser.add_argument('-v', '--verbose', dest = 'verbose', action = 'store_true')
-    parser.add_argument('-z', '--accesstoken', dest = 'accesstoken', default = None)
+    parser.add_argument('-z', '--accesstoken', dest = 'accesstoken', nargs = '?')
     args = parser.parse_args()
 
     # make agave object and kwargs

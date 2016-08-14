@@ -16,10 +16,10 @@ if __name__ == '__main__':
 
     # arguments
     parser = argparse.ArgumentParser()
-    parser.add_argument('-u', '--username', required = False, dest = 'username', default = None, nargs = '?')
-    parser.add_argument('-p', '--password', required = False, dest = 'password', default = None, nargs = '?')
-    parser.add_argument('-r', '--refresh', required = False, dest = 'refresh', default = '', nargs = '?', type = str)
-    parser.add_argument('-s', '--save', required = False, dest = 'save', default = False, action = 'store_true')
+    parser.add_argument('-u', '--username', required = False, dest = 'username', nargs = '?')
+    parser.add_argument('-p', '--password', required = False, dest = 'password', nargs = '?')
+    parser.add_argument('-r', '--refresh', required = False, dest = 'refresh', default = '', nargs = '?')
+    parser.add_argument('-s', '--save', required = False, dest = 'save', action = 'store_true')
     args = parser.parse_args()
 
     # get username and load cache if to be saved

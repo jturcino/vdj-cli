@@ -11,9 +11,9 @@ if __name__ == '__main__':
 
     # arguments
     parser = argparse.ArgumentParser()
-    parser.add_argument('-n', '--notification_uuid', dest = 'notification_uuid', default = None, nargs = '?')
-    parser.add_argument('-z', '--accesstoken', dest = 'accesstoken', default = None, nargs = '?')
+    parser.add_argument('-n', '--notification_uuid', dest = 'notification_uuid', nargs = '?')
     parser.add_argument('-v', '--verbose', dest = 'verbose', action = 'store_true')
+    parser.add_argument('-z', '--accesstoken', dest = 'accesstoken', nargs = '?')
     args = parser.parse_args()
 
     # make Agave object and kwargs

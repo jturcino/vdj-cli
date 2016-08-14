@@ -11,13 +11,13 @@ if __name__ == '__main__':
     # arguments
     parser = argparse.ArgumentParser()
     parser.add_argument('-s', '--systemID', dest = 'systemID', default = 'data.vdjserver.org', nargs = '?')
-    parser.add_argument('-p', '--path', dest = 'path', default = None, nargs = '?')
-    parser.add_argument('-z', '--accesstoken', dest = 'accesstoken', default = None, nargs = '?')
-    parser.add_argument('-f', '--file_upload', dest = 'file_upload', default = None, nargs = '?')
+    parser.add_argument('-p', '--path', dest = 'path', nargs = '?')
+    parser.add_argument('-f', '--file_upload', dest = 'file_upload', nargs = '?')
     parser.add_argument('-r', '--recursive', dest = 'recursive', action = 'store_true')
-    parser.add_argument('-n', '--file_name', dest = 'file_name', default = None, nargs = '?')
+    parser.add_argument('-n', '--file_name', dest = 'file_name', nargs = '?')
     parser.add_argument('-w', '--email_or_webhook', dest = 'email_or_webhook', default = '', nargs = '?')
     parser.add_argument('-v', '--verbose', dest = 'verbose', action = 'store_true')
+    parser.add_argument('-z', '--accesstoken', dest = 'accesstoken', nargs = '?')
     args = parser.parse_args()
 
     # UPLOAD FILE SETUP

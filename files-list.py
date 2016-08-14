@@ -11,12 +11,12 @@ if __name__ == '__main__':
 
     # arguments
     parser = argparse.ArgumentParser()
-    parser.add_argument('-p', '--path', dest = 'path', default = None, nargs = '?')
+    parser.add_argument('-p', '--path', dest = 'path', nargs = '?')
     parser.add_argument('-s', '--systemID', dest = 'systemID', default = 'data.vdjserver.org', nargs = '?')
-    parser.add_argument('-z', '--accesstoken', dest = 'accesstoken', default = None, nargs = '?')
     parser.add_argument('-l', '--limit', dest = 'limit', type = int, default = 5000, nargs = '?')
     parser.add_argument('-o', '--offset', dest = 'offset', type = int, default = 0, nargs = '?')
     parser.add_argument('-v', '--verbose', dest = 'verbose', action = 'store_true')
+    parser.add_argument('-z', '--accesstoken', dest = 'accesstoken', nargs = '?')
     args = parser.parse_args()
 
     # make Agave object and kwargs

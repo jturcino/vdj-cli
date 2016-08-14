@@ -9,14 +9,14 @@ if __name__ == '__main__':
     
     # arguments
     parser = argparse.ArgumentParser()
-    parser.add_argument('-p', '--project', dest = 'project', default = None, nargs = '?')
+    parser.add_argument('-p', '--project', dest = 'project', nargs = '?')
     parser.add_argument('-f', '--file_name', dest = 'file_name', default = '', nargs = '?')
     parser.add_argument('-j', '--jobfile_name', dest = 'jobfile_name', default = '', nargs = '?')
-    parser.add_argument('-u', '--username', dest = 'username', default = None, nargs = '?')
-    parser.add_argument('-r', '--recursive', dest = 'recursive', default = False, action = 'store_true')
-    parser.add_argument('-a', '--access', dest = 'access', default = None, nargs = '?')
-    parser.add_argument('-z', '--accesstoken', dest = 'accesstoken', default = None, nargs = '?')
-    parser.add_argument('-v', '--verbose', dest = 'verbose', default = False, action = 'store_true')
+    parser.add_argument('-u', '--username', dest = 'username', nargs = '?')
+    parser.add_argument('-r', '--recursive', dest = 'recursive', action = 'store_true')
+    parser.add_argument('-a', '--access', dest = 'access', nargs = '?')
+    parser.add_argument('-v', '--verbose', dest = 'verbose', action = 'store_true')
+    parser.add_argument('-z', '--accesstoken', dest = 'accesstoken', nargs = '?')
     args = parser.parse_args()
 
     # make Agave object 

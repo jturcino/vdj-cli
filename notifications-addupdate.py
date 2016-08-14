@@ -9,12 +9,12 @@ if __name__ == '__main__':
     # arguments
     parser = argparse.ArgumentParser()
     parser.add_argument('-u', '--notification_uuid', dest = 'notification_uuid', default = '', nargs = '?')
-    parser.add_argument('-e', '--email_or_url', dest = 'email_or_url', default = None, nargs = '?')
-    parser.add_argument('-a', '--associated_uuid', dest = 'associated_uuid', default = None, nargs = '?')
-    parser.add_argument('-p', '--persistent', dest = 'persistent', default = False, action = 'store_true')
-    parser.add_argument('-f', '--info_file', dest = 'info_file', default = None, nargs = '?')
-    parser.add_argument('-z', '--accesstoken', dest = 'accesstoken', default = None, nargs = '?')
-    parser.add_argument('-v', '--verbose', dest = 'verbose', default = False, action = 'store_true')
+    parser.add_argument('-e', '--email_or_url', dest = 'email_or_url', nargs = '?')
+    parser.add_argument('-a', '--associated_uuid', dest = 'associated_uuid', nargs = '?')
+    parser.add_argument('-p', '--persistent', dest = 'persistent', action = 'store_true')
+    parser.add_argument('-f', '--info_file', dest = 'info_file', nargs = '?')
+    parser.add_argument('-v', '--verbose', dest = 'verbose', action = 'store_true')
+    parser.add_argument('-z', '--accesstoken', dest = 'accesstoken', nargs = '?')
     args = parser.parse_args()
 
     # make agave object and kwargs

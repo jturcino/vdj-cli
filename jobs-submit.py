@@ -10,9 +10,9 @@ if __name__ == '__main__':
     
     # arguments
     parser = argparse.ArgumentParser()
-    parser.add_argument('-f', '--description_file', dest = 'description_file', default = None)
+    parser.add_argument('-f', '--description_file', dest = 'description_file', nargs = '?')
     parser.add_argument('-v', '--verbose', dest = 'verbose', action = 'store_true')
-    parser.add_argument('-z', '--accesstoken', dest = 'accesstoken', default = None)
+    parser.add_argument('-z', '--accesstoken', dest = 'accesstoken', nargs = '?')
     args = parser.parse_args()
 
     # make agave object and kwargs

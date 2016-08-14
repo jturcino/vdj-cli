@@ -8,11 +8,11 @@ if __name__ == '__main__':
     
     # arguments
     parser = argparse.ArgumentParser()
-    parser.add_argument('-s', '--systemID', dest = 'systemID', default = None, nargs = '?')
+    parser.add_argument('-s', '--systemID', dest = 'systemID', nargs = '?')
     parser.add_argument('-u', '--username', dest = 'username', default = '', nargs = '?')
-    parser.add_argument('-v', '--verbose', dest = 'verbose', action = 'store_true')
-    parser.add_argument('-z', '--accesstoken', dest = 'accesstoken', default = None, nargs = '?')
     parser.add_argument('-l', '--limit', dest = 'limit', type = int, default = 250, nargs = '?')
+    parser.add_argument('-v', '--verbose', dest = 'verbose', action = 'store_true')
+    parser.add_argument('-z', '--accesstoken', dest = 'accesstoken', nargs = '?')
     args = parser.parse_args()
 
     kwargs = {}

@@ -9,11 +9,11 @@ if __name__ == '__main__':
 
     # arguments
     parser = argparse.ArgumentParser()
-    parser.add_argument('-z', '--accesstoken', dest = 'accesstoken', default = None, nargs = '?')
     parser.add_argument('-n', '--newfile_name', dest = 'newfile_name', default = '', nargs = '?')
     parser.add_argument('-f', '--file_name', dest = 'file_name', default = '', nargs = '?')
     parser.add_argument('-j', '--jobfile_name', dest = 'jobfile_name', default = '', nargs = '?')
-    parser.add_argument('-p', '--project', dest = 'project', default = None, nargs = '?')
+    parser.add_argument('-p', '--project', dest = 'project', nargs = '?')
+    parser.add_argument('-z', '--accesstoken', dest = 'accesstoken', nargs = '?')
     args = parser.parse_args()
     
     # make Agave object 

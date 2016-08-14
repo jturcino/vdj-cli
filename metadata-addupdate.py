@@ -10,8 +10,8 @@ if __name__ == '__main__':
     # arguments
     parser = argparse.ArgumentParser()
     parser.add_argument('-u', '--uuid', dest = 'uuid', default = '', nargs = '?')
-    parser.add_argument('-f', '--metadata_filepath', dest = 'metadata_filepath', default = None, nargs = '?')
-    parser.add_argument('-z', '--accesstoken', dest = 'accesstoken', default = None, nargs = '?')
+    parser.add_argument('-f', '--metadata_filepath', dest = 'metadata_filepath', nargs = '?')
+    parser.add_argument('-z', '--accesstoken', dest = 'accesstoken', nargs = '?')
     args = parser.parse_args()
 
     # make agave object and kwargs

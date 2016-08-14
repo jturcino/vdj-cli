@@ -9,9 +9,9 @@ if __name__ == '__main__':
     
     # arguments
     parser = argparse.ArgumentParser()
-    parser.add_argument('-j', '--jobID', dest = 'jobID', default = None, nargs = '?')
-    parser.add_argument('-z', '--accesstoken', dest = 'accesstoken', default = None, nargs = '?')
-    parser.add_argument('-v', '--verbose', dest = 'verbose', default = False, action = 'store_true')
+    parser.add_argument('-j', '--jobID', dest = 'jobID', nargs = '?')
+    parser.add_argument('-v', '--verbose', dest = 'verbose', action = 'store_true')
+    parser.add_argument('-z', '--accesstoken', dest = 'accesstoken', nargs = '?')
     args = parser.parse_args()
     
     kwargs = {}
