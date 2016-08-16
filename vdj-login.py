@@ -9,41 +9,42 @@ import time
 
 user_cache = '~/.vdjapi'
 template_cache = './cache-template.json'
-token_url = 'https://vdjserver.org:443/api/v1/token'
-is_cache = False
 
 if __name__ == '__main__':
 
     # arguments
     parser = argparse.ArgumentParser()
-    parser.add_argument('-u', '--username', required = False, dest = 'username', nargs = '?')
-    parser.add_argument('-p', '--password', required = False, dest = 'password', nargs = '?')
-    parser.add_argument('-r', '--refresh', required = False, dest = 'refresh', default = '', nargs = '?')
-    parser.add_argument('-s', '--save', required = False, dest = 'save', action = 'store_true')
+    parser.add_argument('-u', '--username', dest = 'username', nargs = '?')
+    parser.add_argument('-p', '--password', dest = 'password', nargs = '?')
+    parser.add_argument('-r', '--refresh', dest = 'refresh', default = '', nargs = '?')
+    parser.add_argument('-s', '--save', dest = 'save', action = 'store_true')
     args = parser.parse_args()
 
-    # get username and load cache if to be saved
-    if args.username is None or args.save is True:
-        cache_dict = vdjpy.read_json(user_cache)
-        if cache_dict is None or cache_dict.get('username') is None or cache_dict.get('username') is unicode(''):
-            args.username = vdjpy.prompt_user('username')
-            if args.save is True:
-                cache_dict = vdjpy.read_json(template_cache)
-        else:
-            is_cache = True
-            args.username = cache_dict.get('username')
-    print 'Username:', args.username
+    # load cache
+    cache_dict = vdjpy.read_json(user_cache)
+    if cache_dict is None:
+	if args.save:
+	    cache_dict = vdjpy.read_json(template_cache)
+	else:
+	    cache_dict = {}
 
-    # if -r, but no value given
+    # -u
+    if args.username is None:
+	args.username = cache_dict.get('username')
+	if args.username is None or args.username == unicode(''):
+	    print 'Username in cache does not exist or is empty'
+	    args.username = vdjpy.prompt_user('username')
+
+    # -r
     if args.refresh is None:
-        if is_cache:
-            args.refresh = cache_dict.get('refresh_token')
-        else:
-            args.refresh = vdjpy.prompt_user('refresh token')
+	args.refresh = cache_dict.get('refresh_token')
+	if args.refresh is None or args.refresh == unicode(''):
+	    print 'Refresh token in cache does not exist or is empty'
+	    args.refresh = vdjpy.prompt_user('refresh token')
 
-    # if no -r and no -p given
+    # -p
     if args.refresh is '' and args.password is None:
-        args.password = getpass.getpass('Enter your password: ')
+	args.password = getpass.getpass('Enter password: ')
 
     # get token
     try:
@@ -52,7 +53,7 @@ if __name__ == '__main__':
     except requests.exceptions.HTTPError:
         sys.exit('The username, password, or refresh token is not valid. Please try again.')
 
-    # if -S, insert correct values and write to user_cache
+    # if -s, insert correct values and write to user_cache
     if args.save:
         cache_dict['username'] = args.username
         cache_dict['access_token'] = response['result']['access_token']
