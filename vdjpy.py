@@ -163,16 +163,6 @@ def recursive_file_upload(filepath, destfilepath, systemID, agave_object, verbos
             print 'Uploaded', filename, 'to', destfilepath
         return
 
-def sortbyquery(mylist, query):
-    """Sorts a list of dictionaries with the given query"""
-    if query is None:
-        query = prompt_user("key by which to sort")
-    if query == 'value.name':
-        mylist.sort(key = lambda e: e['value']['name'])
-    else:
-        mylist.sort(key = itemgetter(query))
-    return mylist
-
 def update_metadata(project_uuid, file_name, file_uuid, extras):
     metadata_path = '/vdjZ/projects/' + project_uuid + '/files/' + file_name
     metadata_url = 'https://vdjserver.org/api/v1/notifications/files/import?fileUuid=' + file_uuid + '&path=' + metadata_path + '&projectUuid=' + project_uuid + extras
