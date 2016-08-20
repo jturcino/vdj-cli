@@ -7,12 +7,13 @@ import vdjpy
 if __name__ == '__main__':
     
     # arguments
-    parser = argparse.ArgumentParser()
-    parser.add_argument('-s', '--systemID', dest = 'systemID', nargs = '?')
-    parser.add_argument('-u', '--username', dest = 'username', default = '', nargs = '?')
-    parser.add_argument('-l', '--limit', dest = 'limit', type = int, default = 250, nargs = '?')
-    parser.add_argument('-v', '--verbose', dest = 'verbose', action = 'store_true')
-    parser.add_argument('-z', '--accesstoken', dest = 'accesstoken', nargs = '?')
+    parser = argparse.ArgumentParser(description = 'List user roles on a system. Results can be filtered by username.')
+    parser.add_argument('-s', '--systemID', dest = 'systemID', nargs = '?', help = 'system ID')
+    parser.add_argument('-u', '--username', dest = 'username', default = '', nargs = '?', help = 'user whose roles should be listed')
+    parser.add_argument('-l', '--limit', dest = 'limit', type = int, default = 250, nargs = '?', help = 'maximum number of results to return')
+    parser.add_argument('-o', '--offset', dest = 'offset', type = int, default = 0, nargs = '?', help = 'number of results to skip from the start')
+    parser.add_argument('-v', '--verbose', dest = 'verbose', action = 'store_true', help = 'verbose output')
+    parser.add_argument('-z', '--accesstoken', dest = 'accesstoken', nargs = '?', help = 'access token')
     args = parser.parse_args()
 
     kwargs = {}
@@ -32,6 +33,11 @@ if __name__ == '__main__':
     if args.limit is None:
         args.limit = vdjpy.prompt_for_integer('limit', 250)
     kwargs['limit'] = args.limit
+
+    # -o
+    if args.offset is None:
+	args.offset = vdjpy.prompt_for_integer('offset', 0)
+    kwargs['offset'] = args.offset
 
     # get systems
     my_agave = vdjpy.make_vdj_agave(args.accesstoken)

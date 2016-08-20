@@ -9,15 +9,15 @@ import sys
 if __name__ == '__main__':
 
     # arguments
-    parser = argparse.ArgumentParser()
-    parser.add_argument('-s', '--systemID', dest = 'systemID', default = 'data.vdjserver.org', nargs = '?')
-    parser.add_argument('-p', '--path', dest = 'path', nargs = '?')
-    parser.add_argument('-f', '--file_upload', dest = 'file_upload', nargs = '?')
-    parser.add_argument('-r', '--recursive', dest = 'recursive', action = 'store_true')
-    parser.add_argument('-n', '--file_name', dest = 'file_name', nargs = '?')
-    parser.add_argument('-w', '--email_or_webhook', dest = 'email_or_webhook', default = '', nargs = '?')
-    parser.add_argument('-v', '--verbose', dest = 'verbose', action = 'store_true')
-    parser.add_argument('-z', '--accesstoken', dest = 'accesstoken', nargs = '?')
+    parser = argparse.ArgumentParser(description = 'Upload a file to a remote system. System defaults to data.vdjserver.org. This command does not update metadata. If you wish to see the uploaded file on vdjserver.org, use the vdj files upload command. Recursive file uploads supported.')
+    parser.add_argument('-s', '--systemID', dest = 'systemID', default = 'data.vdjserver.org', nargs = '?', help = 'system ID')
+    parser.add_argument('-p', '--path', dest = 'path', nargs = '?', help = 'path to destination directory on remote system. Do not append the file name to the path.')
+    parser.add_argument('-f', '--file_upload', dest = 'file_upload', nargs = '?', help = 'the file or directory to upload')
+    parser.add_argument('-r', '--recursive', dest = 'recursive', action = 'store_true', help = 'upload file or directory recursively')
+    parser.add_argument('-n', '--file_name', dest = 'file_name', nargs = '?', help = 'name of file once uploaded. File will retain original name if this flag is not used. Not supported in recursive file uploads.')
+    parser.add_argument('-w', '--email_or_webhook', dest = 'email_or_webhook', default = '', nargs = '?', help = 'email or webhook to notify upon completion')
+    parser.add_argument('-v', '--verbose', dest = 'verbose', action = 'store_true', help = 'verbose output')
+    parser.add_argument('-z', '--accesstoken', dest = 'accesstoken', nargs = '?', help = 'access token')
     args = parser.parse_args()
 
     # UPLOAD FILE SETUP

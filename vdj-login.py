@@ -13,11 +13,11 @@ template_cache = './cache-template.json'
 if __name__ == '__main__':
 
     # arguments
-    parser = argparse.ArgumentParser()
-    parser.add_argument('-u', '--username', dest = 'username', nargs = '?')
-    parser.add_argument('-p', '--password', dest = 'password', nargs = '?')
-    parser.add_argument('-r', '--refresh', dest = 'refresh', default = '', nargs = '?')
-    parser.add_argument('-s', '--save', dest = 'save', action = 'store_true')
+    parser = argparse.ArgumentParser(description = 'Authenticate a user by retrieving a new access and refresh token. If the refresh flag is used, the new tokens are retrieved using the refresh token in the user\'s cache (~/.vdjapi), or one supplied by the user. If the save flag is used, the new tokens are cached.')
+    parser.add_argument('-u', '--username', dest = 'username', nargs = '?', help = 'user to authenticate')
+    parser.add_argument('-p', '--password', dest = 'password', nargs = '?', help = 'password of the user')
+    parser.add_argument('-r', '--refresh', dest = 'refresh', default = '', nargs = '?', help = 'use cached refresh token or one supplied by the user')
+    parser.add_argument('-s', '--save', dest = 'save', action = 'store_true', help = 'cache tokens once retrieved')
     args = parser.parse_args()
 
     # load cache

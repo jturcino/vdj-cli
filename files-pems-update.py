@@ -7,14 +7,14 @@ import argparse
 if __name__ == '__main__':
     
     # arguments
-    parser = argparse.ArgumentParser()
-    parser.add_argument('-p', '--path', dest = 'path', nargs = '?')
-    parser.add_argument('-s', '--systemID', dest = 'systemID', default = 'data.vdjserver.org', nargs = '?')
-    parser.add_argument('-u', '--username', dest = 'username', nargs = '?')
-    parser.add_argument('-r', '--recursive', dest = 'recursive', action = 'store_true')
-    parser.add_argument('-a', '--access', dest = 'access', nargs = '?')
-    parser.add_argument('-v', '--verbose', dest = 'verbose', action = 'store_true')
-    parser.add_argument('-z', '--accesstoken', dest = 'accesstoken', nargs = '?')
+    parser = argparse.ArgumentParser(description = 'Update a user\'s permissions for a file or directory on a remote system. System defaults to data.vdjserver.org. Permissions options are READ, WRITE, EXECUTE, READ_WRITE, READ_EXECUTE, WRITE_EXECUTE, ALL, or NONE.')
+    parser.add_argument('-s', '--systemID', dest = 'systemID', default = 'data.vdjserver.org', nargs = '?', help = 'system ID')
+    parser.add_argument('-p', '--path', dest = 'path', nargs = '?', help = 'path to file')
+    parser.add_argument('-u', '--username', dest = 'username', nargs = '?', help = 'username to update permissions')
+    parser.add_argument('-a', '--access', dest = 'access', nargs = '?', help = 'permissions to grant to user')
+    parser.add_argument('-r', '--recursive', dest = 'recursive', action = 'store_true', help = 'applies recursive permissions')
+    parser.add_argument('-v', '--verbose', dest = 'verbose', action = 'store_true', help = 'verbose output')
+    parser.add_argument('-z', '--accesstoken', dest = 'accesstoken', nargs = '?', help = 'access token')
     args = parser.parse_args()
 
     kwargs = {}

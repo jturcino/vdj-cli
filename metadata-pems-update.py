@@ -7,12 +7,12 @@ import argparse
 if __name__ == '__main__':
 
     # arguments
-    parser = argparse.ArgumentParser()
-    parser.add_argument('-u', '--uuid', dest = 'uuid', nargs = '?')
-    parser.add_argument('-n', '--username', dest = 'username', nargs = '?')
-    parser.add_argument('-p', '--permissions', dest = 'permissions', nargs = '?')
-    parser.add_argument('-v', '--verbose', dest = 'verbose', action = 'store_true')
-    parser.add_argument('-z', '--accesstoken', dest = 'accesstoken', nargs = '?')
+    parser = argparse.ArgumentParser(description = 'Update metadata object permissions for a user. Permissions options are READ, WRITE, EXECUTE, READ_WRITE, READ_EXECUTE, WRITE_EXECUTE, ALL, or NONE.')
+    parser.add_argument('-u', '--uuid', dest = 'uuid', nargs = '?', help = 'uuid of metadata object')
+    parser.add_argument('-n', '--username', dest = 'username', nargs = '?', help = 'username to be updated')
+    parser.add_argument('-p', '--permissions', dest = 'permissions', nargs = '?', help = 'permissions to grant to user')
+    parser.add_argument('-v', '--verbose', dest = 'verbose', action = 'store_true', help = 'verbose output')
+    parser.add_argument('-z', '--accesstoken', dest = 'accesstoken', nargs = '?', help = 'access token')
     args = parser.parse_args()
 
     kwargs = {}

@@ -8,9 +8,9 @@ import vdjpy
 if __name__ == '__main__':
     
     # arguments
-    parser = argparse.ArgumentParser()
-    parser.add_argument('-s', '--systemID', dest = 'systemID', nargs = '?')
-    parser.add_argument('-z', '--accesstoken', dest = 'accesstoken', nargs = '?')
+    parser = argparse.ArgumentParser(description = 'Delete a system. This deletes all applications registered to the system. Currently running jobs may fail to archive data if the archive system is deleted. Additionally, file transfers may fail if the transfer has not started when the system is deleted.')
+    parser.add_argument('-s', '--systemID', dest = 'systemID', nargs = '?', help = 'system ID')
+    parser.add_argument('-z', '--accesstoken', dest = 'accesstoken', nargs = '?', help = 'access token')
     args = parser.parse_args()
 
     # make agave object and kwargs

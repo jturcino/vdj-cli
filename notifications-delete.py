@@ -10,10 +10,10 @@ import sys
 if __name__ == '__main__':
 
     # arguments
-    parser = argparse.ArgumentParser()
-    parser.add_argument('-n', '--notification_uuid', dest = 'notification_uuid', nargs = '?')
-    parser.add_argument('-v', '--verbose', dest = 'verbose', action = 'store_true')
-    parser.add_argument('-z', '--accesstoken', dest = 'accesstoken', nargs = '?')
+    parser = argparse.ArgumentParser(description = 'Delete a notification.')
+    parser.add_argument('-n', '--notification_uuid', dest = 'notification_uuid', nargs = '?', help = 'uuid of notification object')
+    parser.add_argument('-v', '--verbose', dest = 'verbose', action = 'store_true', help = 'verbose output')
+    parser.add_argument('-z', '--accesstoken', dest = 'accesstoken', nargs = '?', help = 'access token')
     args = parser.parse_args()
 
     # make Agave object and kwargs

@@ -9,10 +9,10 @@ import sys
 if __name__ == '__main__':
     
     # arguments
-    parser = argparse.ArgumentParser()
-    parser.add_argument('-f', '--description_file', dest = 'description_file', nargs = '?')
-    parser.add_argument('-v', '--verbose', dest = 'verbose', action = 'store_true')
-    parser.add_argument('-z', '--accesstoken', dest = 'accesstoken', nargs = '?')
+    parser = argparse.ArgumentParser(description = 'Submit a job.')
+    parser.add_argument('-f', '--description_file', dest = 'description_file', nargs = '?', help = 'file containing JSON job description')
+    parser.add_argument('-v', '--verbose', dest = 'verbose', action = 'store_true', help = 'verbose output')
+    parser.add_argument('-z', '--accesstoken', dest = 'accesstoken', nargs = '?', help = 'access token')
     args = parser.parse_args()
 
     # make agave object and kwargs

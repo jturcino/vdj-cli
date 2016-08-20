@@ -9,12 +9,12 @@ import json
 if __name__ == '__main__':
 
     # arguments
-    parser = argparse.ArgumentParser()
-    parser.add_argument('-p', '--project', dest = 'project', nargs = '?')
-    parser.add_argument('-f', '--file_to_delete', dest = 'file_to_delete', default = '', nargs = '?')
-    parser.add_argument('-j', '--jobfile_to_delete', dest = 'jobfile_to_delete', default = '', nargs = '?')
-    parser.add_argument('-v', '--verbose', dest = 'verbose', action = 'store_true')
-    parser.add_argument('-z', '--accesstoken', dest = 'accesstoken', nargs = '?')
+    parser = argparse.ArgumentParser(description = 'Delete a projectfile or jobfile on data.vdjserver.org. This command updates metadata, and the deleted file will no longer be visible on vdjserver.org.')
+    parser.add_argument('-p', '--project', dest = 'project', nargs = '?', help = 'name of file\'s project')
+    parser.add_argument('-f', '--file_to_delete', dest = 'file_to_delete', default = '', nargs = '?', help = 'name of projectfile')
+    parser.add_argument('-j', '--jobfile_to_delete', dest = 'jobfile_to_delete', default = '', nargs = '?', help = 'name of jobfile')
+    parser.add_argument('-v', '--verbose', dest = 'verbose', action = 'store_true', help = 'verbose output')
+    parser.add_argument('-z', '--accesstoken', dest = 'accesstoken', nargs = '?', help = 'access token')
     args = parser.parse_args()
 
     # make agave object

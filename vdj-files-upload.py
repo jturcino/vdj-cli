@@ -8,16 +8,16 @@ import urllib
 if __name__ == '__main__':
 
     # arguments
-    parser = argparse.ArgumentParser()
-    parser.add_argument('-p', '--project', dest = 'project', nargs = '?')
-    parser.add_argument('-f', '--file_upload', dest = 'file_upload', nargs = '?')
-    parser.add_argument('-n', '--file_name', dest = 'file_name', nargs = '?')
-    parser.add_argument('-y', '--file_type', dest = 'file_type', default = '', nargs = '?')
-    parser.add_argument('-r', '--read_direction', dest = 'read_direction', default = '', nargs = '?')
-    parser.add_argument('-t', '--tags', dest = 'tags', action = 'store_true')
-    parser.add_argument('-w', '--email_or_webhook', dest = 'email_or_webhook', default = '', nargs = '?')
-    parser.add_argument('-v', '--verbose', dest = 'verbose', action = 'store_true')
-    parser.add_argument('-z', '--accesstoken', dest = 'accesstoken', nargs = '?')
+    parser = argparse.ArgumentParser(description = 'Upload a file as a projectfile to data.vdjserver.org. This command updates metadata, and the uploaded file will be visible on vdjserver.org.')
+    parser.add_argument('-p', '--project', dest = 'project', nargs = '?', help = 'name of the project destination')
+    parser.add_argument('-f', '--file_upload', dest = 'file_upload', nargs = '?', help = 'name of the file to upload')
+    parser.add_argument('-n', '--file_name', dest = 'file_name', nargs = '?', help = 'name of the file once uploaded. Defaults to original name.')
+    parser.add_argument('-y', '--file_type', dest = 'file_type', default = '', nargs = '?', help = 'filetype of file to be uploaded')
+    parser.add_argument('-r', '--read_direction', dest = 'read_direction', default = '', nargs = '?', help = 'read direction of genetic data. To be used for fasta/fastq files.')
+    parser.add_argument('-t', '--tags', dest = 'tags', action = 'store_true', help = 'use to enter tags')
+    parser.add_argument('-w', '--email_or_webhook', dest = 'email_or_webhook', default = '', nargs = '?', help = 'the email or webhook to notify upon completion')
+    parser.add_argument('-v', '--verbose', dest = 'verbose', action = 'store_true', help = 'verbose output')
+    parser.add_argument('-z', '--accesstoken', dest = 'accesstoken', nargs = '?', help = 'access token')
     args = parser.parse_args()
 
     # UPLOAD FILE SETUP

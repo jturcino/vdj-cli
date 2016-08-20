@@ -7,13 +7,13 @@ import argparse
 if __name__ == '__main__':
     
     # arguments
-    parser = argparse.ArgumentParser()
-    parser.add_argument('-p', '--path', dest = 'path', nargs = '?')
-    parser.add_argument('-s', '--systemID', dest = 'systemID', default = 'data.vdjserver.org', nargs = '?')
-    parser.add_argument('-l', '--limit', dest = 'limit', default = 250, type = int, nargs = '?')
-    parser.add_argument('-o', '--offser', dest = 'offset', default = 0, type = int, nargs = '?')
-    parser.add_argument('-v', '--verbose', dest = 'verbose', action = 'store_true')
-    parser.add_argument('-z', '--accesstoken', dest = 'accesstoken', nargs = '?')
+    parser = argparse.ArgumentParser(description = 'List permissions for a file or directory on a remote system. System defaults to data.vdjserver.org.')
+    parser.add_argument('-s', '--systemID', dest = 'systemID', default = 'data.vdjserver.org', nargs = '?', help = 'system ID')
+    parser.add_argument('-p', '--path', dest = 'path', nargs = '?', help = 'path to file')
+    parser.add_argument('-l', '--limit', dest = 'limit', default = 250, type = int, nargs = '?', help = 'maximum number of results return')
+    parser.add_argument('-o', '--offset', dest = 'offset', default = 0, type = int, nargs = '?', help = 'number of results to skip from the start')
+    parser.add_argument('-v', '--verbose', dest = 'verbose', action = 'store_true', help = 'verbose output')
+    parser.add_argument('-z', '--accesstoken', dest = 'accesstoken', nargs = '?', help = 'access token')
     args = parser.parse_args()
 
     kwargs = {}

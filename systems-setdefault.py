@@ -9,10 +9,10 @@ import sys
 if __name__ == '__main__':
     
     # arguments
-    parser = argparse.ArgumentParser()
-    parser.add_argument('-s', '--systemID', dest = 'systemID', nargs = '?')
-    parser.add_argument('-v', '--verbose', dest = 'verbose', action = 'store_true')
-    parser.add_argument('-z', '--accesstoken', dest = 'accesstoken', nargs = '?')
+    parser = argparse.ArgumentParser(description = 'Set a system as the user\'s default system of that type.')
+    parser.add_argument('-s', '--systemID', dest = 'systemID', nargs = '?', help = 'system ID')
+    parser.add_argument('-v', '--verbose', dest = 'verbose', action = 'store_true', help = 'verbose output')
+    parser.add_argument('-z', '--accesstoken', dest = 'accesstoken', nargs = '?', help = 'access token')
     args = parser.parse_args()
 
     # make agave object and kwargs
@@ -25,7 +25,7 @@ if __name__ == '__main__':
     kwargs['systemId'] = args.systemID
 
     # build body
-    kwargs['body'] = "{\n\t\"action\": \"SETDEFAULT\"\n}"
+    kwargs['body'] = {"action": "SETDEFAULT"}
     
 
     # set default system

@@ -7,12 +7,12 @@ import json
 if __name__ == '__main__':
 
     # arguments
-    parser = argparse.ArgumentParser()
-    parser.add_argument('-l', '--limit', dest = 'limit', type = int, default = 5000, nargs = '?')
-    parser.add_argument('-o', '--offset', dest = 'offset', type = int, default = 0, nargs = '?')
-    parser.add_argument('-s', '--sort', dest = 'sort', default = '', nargs = '?')
-    parser.add_argument('-v', '--verbose', dest = 'verbose', action = 'store_true')
-    parser.add_argument('-z', '--accesstoken', dest = 'accesstoken', nargs = '?')
+    parser = argparse.ArgumentParser(description = 'List the user\'s projects on data.vdjserver.org.Results can be sorted alphabetically.')
+    parser.add_argument('-s', '--alphabetical_sort', dest = 'alphabetical_sort', action = 'store_true', help = 'list alphabetically')
+    parser.add_argument('-l', '--limit', dest = 'limit', type = int, default = 5000, nargs = '?', help = 'maximum number of results to return')
+    parser.add_argument('-o', '--offset', dest = 'offset', type = int, default = 0, nargs = '?', help = 'number of results to skip from the start')
+    parser.add_argument('-v', '--verbose', dest = 'verbose', action = 'store_true', help = 'verbose output')
+    parser.add_argument('-z', '--accesstoken', dest = 'accesstoken', nargs = '?', help = 'access token')
     args = parser.parse_args()
 
     kwargs = {}
@@ -34,9 +34,9 @@ if __name__ == '__main__':
     my_agave = vdjpy.make_vdj_agave(args.accesstoken)
     projects = vdjpy.get_vdj_projects(my_agave, kwargs)
     
-    # if -t
-    if args.sort is not '':
-        projects = vdjpy.sortbyquery(projects, args.sort)
+    # if -s
+    if args.alphabetical_sort:
+	projects.sort(key = lambda e: e['value']['name'])
 
     # if -v
     if args.verbose is True:

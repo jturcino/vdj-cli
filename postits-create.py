@@ -8,15 +8,15 @@ import sys
 if __name__ == '__main__':
 
     # arguments
-    parser = argparse.ArgumentParser()
-    parser.add_argument('-f', '--description_file', dest = 'description_file', default = '', nargs = '?')
-    parser.add_argument('-u', '--url', dest = 'url', nargs = '?')
-    parser.add_argument('-l', '--lifetime', dest = 'lifetime', default = 2592000, nargs = '?')
-    parser.add_argument('-x', '--max_uses', dest = 'max_uses', default = 25, nargs = '?')
-    parser.add_argument('-m', '--method', dest = 'method', default = 'GET', nargs = '?')
-    parser.add_argument('-a', '--no_auth', dest = 'no_auth', action = 'store_true')
-    parser.add_argument('-v', '--verbose', dest = 'verbose', action = 'store_true')
-    parser.add_argument('-z', '--accesstoken', dest = 'accesstoken', nargs = '?')
+    parser = argparse.ArgumentParser(description = 'Generate a preauthenticated URI for an API endpoint. postit URI can be limited to the number of uses and/or timeframe during which they are valid.')
+    parser.add_argument('-f', '--description_file', dest = 'description_file', default = '', nargs = '?', help = 'file containing JSON postit description')
+    parser.add_argument('-u', '--url', dest = 'url', nargs = '?', help = 'url invoked when the postit is used')
+    parser.add_argument('-l', '--lifetime', dest = 'lifetime', default = 2592000, nargs = '?', help = 'lifetime of the postit in seconds')
+    parser.add_argument('-x', '--max_uses', dest = 'max_uses', default = 25, nargs = '?', help = 'maximum number of times the postit may be used')
+    parser.add_argument('-m', '--method', dest = 'method', default = 'GET', nargs = '?', help = 'HTTP method the postit uses (GET, POST, PUT, or DELETE). Defaults to GET.')
+    parser.add_argument('-a', '--no_auth', dest = 'no_auth', action = 'store_true', help = 'does not pre-authenticate the URL')
+    parser.add_argument('-v', '--verbose', dest = 'verbose', action = 'store_true', help = 'verbose output')
+    parser.add_argument('-z', '--accesstoken', dest = 'accesstoken', nargs = '?', help = 'access token')
     args = parser.parse_args()
 
     # make agave object and kwargs

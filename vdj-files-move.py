@@ -8,13 +8,13 @@ import sys
 if __name__ == '__main__':
     
     # arguments
-    parser = argparse.ArgumentParser()
-    parser.add_argument('-p', '--current_project', dest = 'current_project', nargs = '?')
-    parser.add_argument('-d', '--destination_project', dest = 'destination_project', nargs = '?')
-    parser.add_argument('-f', '--file_name', dest = 'file_name', default = '', nargs = '?')
-    parser.add_argument('-j', '--jobfile_name', dest = 'jobfile_name', default = '', nargs = '?')
-    parser.add_argument('-v', '--verbose', dest = 'verbose', action = 'store_true')
-    parser.add_argument('-z', '--accesstoken', dest = 'accesstoken', nargs = '?')
+    parser = argparse.ArgumentParser(description = 'Move a projectfile or jobfile from one location on data.vdjserver.org to a projectfile destination. This command updates metadata, and the moved file will be visible in its new location on vdjserver.org.')
+    parser.add_argument('-p', '--current_project', dest = 'current_project', nargs = '?', help = 'name of the file\'s current project')
+    parser.add_argument('-d', '--destination_project', dest = 'destination_project', nargs = '?', help = 'name of the file\'s destination project')
+    parser.add_argument('-f', '--file_name', dest = 'file_name', default = '', nargs = '?', help = 'name of projecfile')
+    parser.add_argument('-j', '--jobfile_name', dest = 'jobfile_name', default = '', nargs = '?', help = 'name of jobfile')
+    parser.add_argument('-v', '--verbose', dest = 'verbose', action = 'store_true', help = 'verbose output')
+    parser.add_argument('-z', '--accesstoken', dest = 'accesstoken', nargs = '?', help = 'access token')
     args = parser.parse_args()
 
     # make agave object 

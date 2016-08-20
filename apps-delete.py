@@ -8,9 +8,9 @@ import vdjpy
 if __name__ == '__main__':
     
     # arguments
-    parser = argparse.ArgumentParser()
-    parser.add_argument('-a', '--appID', dest = 'appID', nargs = '?')
-    parser.add_argument('-z', '--accesstoken', dest = 'accesstoken', nargs = '?')
+    parser = argparse.ArgumentParser(description = 'Delete an app. This action cannot be undone.')
+    parser.add_argument('-a', '--appID', dest = 'appID', nargs = '?', help = 'application ID')
+    parser.add_argument('-z', '--accesstoken', dest = 'accesstoken', nargs = '?', help = 'access token')
     args = parser.parse_args()
 
     # make agave object and kwargs

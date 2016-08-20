@@ -8,17 +8,17 @@ import sys
 if __name__ == '__main__':
     
     # arguments
-    parser = argparse.ArgumentParser()
-    parser.add_argument('-s', '--systemID', dest = 'systemID', default = '', nargs = '?')
-    parser.add_argument('-x', '--storageonly', dest = 'storageonly', action = 'store_true')
-    parser.add_argument('-e', '--executiononly', dest = 'executiononly', action = 'store_true')
-    parser.add_argument('-d', '--default', dest = 'default', action = 'store_true')
-    parser.add_argument('-q', '--private', dest = 'private', action = 'store_true')
-    parser.add_argument('-p', '--public', dest = 'public', action = 'store_true')
-    parser.add_argument('-l', '--limit', dest = 'limit', type = int, default = 250, nargs = '?')
-    parser.add_argument('-o', '--offset', dest = 'offset', type = int, default = 0, nargs = '?')
-    parser.add_argument('-v', '--verbose', dest = 'verbose', action = 'store_true')
-    parser.add_argument('-z', '--accesstoken', dest = 'accesstoken', nargs = '?')
+    parser = argparse.ArgumentParser(description = 'List available systems. Results can be filtered by system ID, storage, execution, default, public, and private systems. If a system ID is given, more detailed information about that system will be returned.')
+    parser.add_argument('-s', '--systemID', dest = 'systemID', default = '', nargs = '?', help = 'system ID')
+    parser.add_argument('-x', '--storageonly', dest = 'storageonly', action = 'store_true', help = 'list only storage systems')
+    parser.add_argument('-e', '--executiononly', dest = 'executiononly', action = 'store_true', help = 'list only execution systems')
+    parser.add_argument('-d', '--default', dest = 'default', action = 'store_true', help = 'list only default systems')
+    parser.add_argument('-p', '--public', dest = 'public', action = 'store_true', help = 'list only public systems')
+    parser.add_argument('-q', '--private', dest = 'private', action = 'store_true', help = 'list only private systems')
+    parser.add_argument('-l', '--limit', dest = 'limit', type = int, default = 250, nargs = '?', help = 'maximum number of results to return')
+    parser.add_argument('-o', '--offset', dest = 'offset', type = int, default = 0, nargs = '?', help = 'number of results to skip from the start')
+    parser.add_argument('-v', '--verbose', dest = 'verbose', action = 'store_true', help = 'verbose output')
+    parser.add_argument('-z', '--accesstoken', dest = 'accesstoken', nargs = '?', help = 'access token')
     args = parser.parse_args()
 
     # make agave object and kwargs

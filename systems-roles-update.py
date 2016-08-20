@@ -7,12 +7,12 @@ import vdjpy
 if __name__ == '__main__':
 
     # arguments
-    parser = argparse.ArgumentParser()
-    parser.add_argument('-s', '--systemID', dest = 'systemID', nargs = '?')
-    parser.add_argument('-r', '--role', dest = 'role', nargs = '?')
-    parser.add_argument('-u', '--username', dest = 'username', nargs = '?')
-    parser.add_argument('-v', '--verbose', dest = 'verbose', action = 'store_true')
-    parser.add_argument('-z', '--accesstoken', dest = 'accesstoken', nargs = '?')
+    parser = argparse.ArgumentParser(description = 'Updates a user\'s role on a system. Possible roles for a user are USER, PUBLISHER, ADMIN, and OWNER.')
+    parser.add_argument('-s', '--systemID', dest = 'systemID', nargs = '?', help = 'system ID')
+    parser.add_argument('-u', '--username', dest = 'username', nargs = '?', help = 'username to be updated')
+    parser.add_argument('-r', '--role', dest = 'role', nargs = '?', help = 'role to give user')
+    parser.add_argument('-v', '--verbose', dest = 'verbose', action = 'store_true', help = 'verbose output')
+    parser.add_argument('-z', '--accesstoken', dest = 'accesstoken', nargs = '?', help = 'access token')
     args = parser.parse_args()
 
     kwargs = {}
@@ -30,7 +30,7 @@ if __name__ == '__main__':
     # check role
     if args.role is not None:
          args.role = args.role.upper()
-    if args.role is not "USER" or not "PUBLISHER" or not "ADMIN" or not "OWNER" or None:
+    if args.role != "USER" or "PUBLISHER" or "ADMIN" or "OWNER" or None:
         print 'Possible roles for', args.username, 'are USER, PUBLISHER, ADMIN, and OWNER. \nPlease enter the selected role:',
         args.role = raw_input('')
     kwargs['body'] = {'username':args.username, 'role':args.role.upper()}

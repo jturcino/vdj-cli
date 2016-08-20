@@ -7,10 +7,10 @@ import vdjpy
 if __name__ == '__main__':
 
     # arguments
-    parser = argparse.ArgumentParser()
-    parser.add_argument('-s', '--systemID', dest = 'systemID', nargs = '?')
-    parser.add_argument('-u', '--username', dest = 'username', nargs = '?')
-    parser.add_argument('-z', '--accesstoken', dest = 'accesstoken', nargs = '?')
+    parser = argparse.ArgumentParser(description = 'Remove roles for a user on a system.')
+    parser.add_argument('-s', '--systemID', dest = 'systemID', nargs = '?', help = 'system ID')
+    parser.add_argument('-u', '--username', dest = 'username', nargs = '?', help = 'user to be removed')
+    parser.add_argument('-z', '--accesstoken', dest = 'accesstoken', nargs = '?', help = 'access token')
     args = parser.parse_args()
 
     kwargs = {}

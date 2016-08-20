@@ -7,12 +7,12 @@ import argparse
 if __name__ == '__main__':
     
     # arguments
-    parser = argparse.ArgumentParser()
-    parser.add_argument('-s', '--system', dest = 'system', default = 'data.vdjserver.org', nargs = '?')
-    parser.add_argument('-p', '--path', dest = 'path', nargs = '?')
-    parser.add_argument('-d', '--dirname', dest = 'dirname', nargs = '?')
-    parser.add_argument('-v', '--verbose', dest = 'verbose', action = 'store_true')
-    parser.add_argument('-z', '--accesstoken', dest = 'accesstoken', nargs = '?')
+    parser = argparse.ArgumentParser(description = 'Make a directory on a remote system. System defaults to data.vdjserver.org. This command does not update metadata. Files uploaded to the created directory will not be visible on vdjserver.org')
+    parser.add_argument('-s', '--systemID', dest = 'systemID', default = 'data.vdjserver.org', nargs = '?', help = 'system ID')
+    parser.add_argument('-p', '--path', dest = 'path', nargs = '?', help = 'path to created directory. Do not append new directory name to the end of the path.')
+    parser.add_argument('-d', '--dirname', dest = 'dirname', nargs = '?', help = 'name of directory to be created')
+    parser.add_argument('-v', '--verbose', dest = 'verbose', action = 'store_true', help = 'verbose output')
+    parser.add_argument('-z', '--accesstoken', dest = 'accesstoken', nargs = '?', help = 'access token')
     args = parser.parse_args()
 
     # make agave object and kwargs
@@ -20,9 +20,9 @@ if __name__ == '__main__':
     kwargs = {}
 
     # -s
-    if args.system is None:
-        args.system = vdjpy.prompt_user('system')
-    kwargs['systemId'] = args.system
+    if args.systemID is None:
+        args.systemID = vdjpy.prompt_user('system')
+    kwargs['systemId'] = args.systemID
 
     # -p
     if args.path is None:

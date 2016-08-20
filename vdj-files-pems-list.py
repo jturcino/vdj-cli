@@ -8,14 +8,14 @@ import sys
 if __name__ == '__main__':
     
     # arguments
-    parser = argparse.ArgumentParser()
-    parser.add_argument('-p', '--project', dest = 'project', nargs = '?')
-    parser.add_argument('-f', '--file_name', dest = 'file_name', default = '', nargs = '?')
-    parser.add_argument('-j', '--jobfile_name', dest = 'jobfile_name', default = '', nargs = '?')
-    parser.add_argument('-l', '--limit', dest = 'limit', default = 250, type = int, nargs = '?')
-    parser.add_argument('-o', '--offset', dest = 'offset', default = 0, type = int, nargs = '?')
-    parser.add_argument('-v', '--verbose', dest = 'verbose', action = 'store_true')
-    parser.add_argument('-z', '--accesstoken', dest = 'accesstoken', nargs = '?')
+    parser = argparse.ArgumentParser(description = 'List permissions for a projectfile or jobfile on data.vdjserver.org.')
+    parser.add_argument('-p', '--project', dest = 'project', nargs = '?', help = 'name of the file\'s project')
+    parser.add_argument('-f', '--file_name', dest = 'file_name', default = '', nargs = '?', help = 'name of projectfile')
+    parser.add_argument('-j', '--jobfile_name', dest = 'jobfile_name', default = '', nargs = '?', help = 'name of jobfile')
+    parser.add_argument('-l', '--limit', dest = 'limit', default = 250, type = int, nargs = '?', help = 'maximum number of results to return')
+    parser.add_argument('-o', '--offset', dest = 'offset', default = 0, type = int, nargs = '?', help = 'number of results to skip from the start')
+    parser.add_argument('-v', '--verbose', dest = 'verbose', action = 'store_true', help = 'verbose output')
+    parser.add_argument('-z', '--accesstoken', dest = 'accesstoken', nargs = '?', help = 'access token')
     args = parser.parse_args()
 
     # make Agave object and kwargs

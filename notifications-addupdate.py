@@ -7,14 +7,14 @@ import argparse
 if __name__ == '__main__':
     
     # arguments
-    parser = argparse.ArgumentParser()
-    parser.add_argument('-u', '--notification_uuid', dest = 'notification_uuid', default = '', nargs = '?')
-    parser.add_argument('-e', '--email_or_url', dest = 'email_or_url', nargs = '?')
-    parser.add_argument('-a', '--associated_uuid', dest = 'associated_uuid', nargs = '?')
-    parser.add_argument('-p', '--persistent', dest = 'persistent', action = 'store_true')
-    parser.add_argument('-f', '--info_file', dest = 'info_file', nargs = '?')
-    parser.add_argument('-v', '--verbose', dest = 'verbose', action = 'store_true')
-    parser.add_argument('-z', '--accesstoken', dest = 'accesstoken', nargs = '?')
+    parser = argparse.ArgumentParser(description = 'Add or update a notification object. If the uuid of an existing notification is given, the notification will be updated; otherwise, a new notification will be created.')
+    parser.add_argument('-u', '--notification_uuid', dest = 'notification_uuid', default = '', nargs = '?', help = 'uuid of notification object')
+    parser.add_argument('-f', '--description_file', dest = 'description_file', nargs = '?', help = 'file containing JSON notification description. Replaces use of -e, -a, and -p flags.')
+    parser.add_argument('-a', '--associated_uuid', dest = 'associated_uuid', nargs = '?', help = 'uuid of associated object')
+    parser.add_argument('-e', '--email_or_url', dest = 'email_or_url', nargs = '?', help = 'email or url to be notified')
+    parser.add_argument('-p', '--persistent', dest = 'persistent', action = 'store_true', help = 'keeps notification active for many uses')
+    parser.add_argument('-v', '--verbose', dest = 'verbose', action = 'store_true', help = 'verbose output')
+    parser.add_argument('-z', '--accesstoken', dest = 'accesstoken', nargs = '?', help = 'access token')
     args = parser.parse_args()
 
     # make agave object and kwargs
@@ -22,8 +22,8 @@ if __name__ == '__main__':
     kwargs = {}
 
     # if -f, use as body; otherwise build body from inputs
-    if args.info_file is not None:
-        body_contents = vdjpy.read_json(args.info_file)
+    if args.description_file is not None:
+        body_contents = vdjpy.read_json(args.description_file)
         if body_contents is None:
             sys.exit('Not a valid file path or does not contain a valid notification description.')
         kwargs['body'] = json.dumps(body_contents)

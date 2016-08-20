@@ -8,16 +8,18 @@ import sys
 if __name__ == '__main__':
     
     # arguments
-    parser = argparse.ArgumentParser()
-    parser.add_argument('-a', '--appID', dest = 'appID', default = '', nargs = '?')
-    parser.add_argument('-p', '--publiconly', dest = 'publiconly', default = False, action = 'store_true')
-    parser.add_argument('-q', '--privateonly', dest = 'privateonly', default = False, action = 'store_true')
-    parser.add_argument('-l', '--limit', dest = 'limit', type = int, default = 250, nargs = '?')
-    parser.add_argument('-o', '--offset', dest = 'offset', type = int, default = 0, nargs = '?')
-    parser.add_argument('-n', '--name', dest = 'name', default = '', nargs = '?')
-    parser.add_argument('-s', '--system', dest = 'system', default = '', nargs = '?')
-    parser.add_argument('-v', '--verbose', dest = 'verbose', action = 'store_true')
-    parser.add_argument('-z', '--accesstoken', dest = 'accesstoken', nargs = '?')
+    parser = argparse.ArgumentParser(description = 'List available apps. Results can be filtered by app ID, system, name, public, and private settings. See apps search for more specific requests. If an app ID is given, more detailed information about that app will be returned.')
+    parser.add_argument('-a', '--appID', dest = 'appID', default = '', nargs = '?', help = 'application ID')
+    parser.add_argument('-s', '--system', dest = 'system', default = '', nargs = '?', help = 'only return apps on the given system')
+    parser.add_argument('-n', '--name', dest = 'name', default = '', nargs = '?', help = 'only return
+ apps with the given name')
+    parser.add_argument('-p', '--publiconly', dest = 'publiconly', default = False, action = 'store_true', help = 'list only public apps')
+    parser.add_argument('-q', '--privateonly', dest = 'privateonly', default = False, action = 'store_true', help = 'list only private apps')
+    parser.add_argument('-l', '--limit', dest = 'limit', type = int, default = 250, nargs = '?', help = 'maximum number of results to return')
+    parser.add_argument('-o', '--offset', dest = 'offset', type = int, default = 0, nargs = '?', help = 'number of results to skip from the start')
+    parser.add_argument('-n', '--name', dest = 'name', default = '', nargs = '?', help = 'only return apps with the given name')
+    parser.add_argument('-v', '--verbose', dest = 'verbose', action = 'store_true', help = 'verbose output')
+    parser.add_argument('-z', '--accesstoken', dest = 'accesstoken', nargs = '?', help = 'access token')
     args = parser.parse_args()
 
     # make agave object and kwargs

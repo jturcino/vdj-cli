@@ -8,12 +8,12 @@ import sys
 if __name__ == '__main__':
     
     # arguments
-    parser = argparse.ArgumentParser()
-    parser.add_argument('-j', '--jobID', dest = 'jobID', nargs = '?')
-    parser.add_argument('-p', '--permissions', dest = 'permissions', nargs = '?')
-    parser.add_argument('-u', '--username', dest = 'username', nargs = '?')
-    parser.add_argument('-v', '--verbose', dest = 'verbose', action = 'store_true')
-    parser.add_argument('-z', '--accesstoken', dest = 'accesstoken', nargs = '?')
+    parser = argparse.ArgumentParser(description = 'Update job permissions for a user. Permission options are READ, WRITE, EXECUTE, READ_WRITE, READ_EXECUTE, WRITE_EXECUTE, ALL, or NONE.')
+    parser.add_argument('-j', '--jobID', dest = 'jobID', nargs = '?', help = 'job ID')
+    parser.add_argument('-u', '--username', dest = 'username', nargs = '?', help = 'username to be updated')
+    parser.add_argument('-p', '--permissions', dest = 'permissions', nargs = '?', help = 'permissions to grant to user')
+    parser.add_argument('-v', '--verbose', dest = 'verbose', action = 'store_true', help = 'verbose output')
+    parser.add_argument('-z', '--accesstoken', dest = 'accesstoken', nargs = '?', help = 'access token')
     args = parser.parse_args()
     
     kwargs = {}

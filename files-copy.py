@@ -7,12 +7,12 @@ import argparse
 if __name__ == '__main__':
     
     # arguments
-    parser = argparse.ArgumentParser()
-    parser.add_argument('-s', '--system', dest = 'system', default = 'data.vdjserver.org', nargs = '?')
-    parser.add_argument('-p', '--path', dest = 'path', nargs = '?')
-    parser.add_argument('-d', '--destination', dest = 'destination', nargs = '?')
-    parser.add_argument('-v', '--verbose', dest = 'verbose', action = 'store_true')
-    parser.add_argument('-z', '--accesstoken', dest = 'accesstoken', nargs = '?')
+    parser = argparse.ArgumentParser(description = 'Copy a file from a location to another on a remote system. System defaults to data.vdjserver.org. This command does not update metadata. If you wish the copied file to be visible at vdjserver.org, use the vdj files copy command.')
+    parser.add_argument('-s', '--systemID', dest = 'systemID', default = 'data.vdjserver.org', nargs = '?', help = 'system ID')
+    parser.add_argument('-p', '--path', dest = 'path', nargs = '?', help = 'path to file to be copied')
+    parser.add_argument('-d', '--destination', dest = 'destination', nargs = '?', help = 'path to copy\'s destination. Include the file name at the end of this path.')
+    parser.add_argument('-v', '--verbose', dest = 'verbose', action = 'store_true', help = 'verbose output')
+    parser.add_argument('-z', '--accesstoken', dest = 'accesstoken', nargs = '?', help = 'access token')
     args = parser.parse_args()
 
     # make agave object and kwargs
@@ -20,9 +20,9 @@ if __name__ == '__main__':
     kwargs = {}
 
     # -s
-    if args.system is None:
-        args.system = vdjpy.prompt_user('system')
-    kwargs['systemId'] = args.system
+    if args.systemID is None:
+        args.systemID = vdjpy.prompt_user('systemID')
+    kwargs['systemId'] = args.systemID
 
     # -p
     if args.path is None:

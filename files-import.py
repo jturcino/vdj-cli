@@ -7,15 +7,15 @@ import json
 if __name__ == '__main__':
 
     # arguments
-    parser = argparse.ArgumentParser()
-    parser.add_argument('-s', '--systemID', dest = 'systemID', default = 'data.vdjserver.org', nargs = '?')
-    parser.add_argument('-w', '--email_or_webhook', dest = 'email_or_webhook', default = '', nargs = '?')
-    parser.add_argument('-p', '--path', dest = 'path', nargs = '?')
-    parser.add_argument('-u', '--import_url', dest = 'import_url', nargs = '?')
-    parser.add_argument('-n', '--file_name', dest = 'file_name', nargs = '?')
-    parser.add_argument('-y', '--file_type', dest = 'file_type', default = '', nargs = '?')
-    parser.add_argument('-v', '--verbose', dest = 'verbose', action = 'store_true')
-    parser.add_argument('-z', '--accesstoken', dest = 'accesstoken', nargs = '?')
+    parser = argparse.ArgumentParser(description = 'Import a file to a remote file system. System defaults to data.vdjserver.org. This command does not update metadata. If you with the imported file to be visible on vdjserver.org, use the vdj files import command.')
+    parser.add_argument('-s', '--systemID', dest = 'systemID', default = 'data.vdjserver.org', nargs = '?', help = 'system ID')
+    parser.add_argument('-p', '--path', dest = 'path', nargs = '?', help = 'path to destination directory')
+    parser.add_argument('-u', '--import_url', dest = 'import_url', nargs = '?', help = 'url of file to import')
+    parser.add_argument('-n', '--file_name', dest = 'file_name', nargs = '?', help = 'name of file once imported. Defaults to original name.')
+    parser.add_argument('-y', '--file_type', dest = 'file_type', default = '', nargs = '?', help = 'filetype of file to be imported')
+    parser.add_argument('-w', '--email_or_webhook', dest = 'email_or_webhook', default = '', nargs = '?', help = 'the email or webhook to notify upon completion')
+    parser.add_argument('-v', '--verbose', dest = 'verbose', action = 'store_true', help = 'verbose output')
+    parser.add_argument('-z', '--accesstoken', dest = 'accesstoken', nargs = '?', help = 'access token')
     args = parser.parse_args()
 
     # UPLOAD FILE SETUP

@@ -8,12 +8,12 @@ import sys
 if __name__ == '__main__':
 
     # arguments
-    parser = argparse.ArgumentParser()
-    parser.add_argument('-j', '--jobID', dest = 'jobID', default = '', nargs = '?') 
-    parser.add_argument('-l', '--limit', dest = 'limit', type = int, default = 250, nargs = '?')
-    parser.add_argument('-o', '--offset', dest = 'offset', type = int, default = 0, nargs = '?')
-    parser.add_argument('-v', '--verbose', dest = 'verbose', action = 'store_true')
-    parser.add_argument('-z', '--accesstoken', dest = 'accesstoken', nargs = '?')
+    parser = argparse.ArgumentParser(description = 'List jobs. If a job ID is given, more detailed information about that job will be returned.')
+    parser.add_argument('-j', '--jobID', dest = 'jobID', default = '', nargs = '?', help = 'job ID') 
+    parser.add_argument('-l', '--limit', dest = 'limit', type = int, default = 250, nargs = '?', help = 'maximum number of results to return')
+    parser.add_argument('-o', '--offset', dest = 'offset', type = int, default = 0, nargs = '?', help = 'number of results to skip from the start')
+    parser.add_argument('-v', '--verbose', dest = 'verbose', action = 'store_true', help = 'verbose output')
+    parser.add_argument('-z', '--accesstoken', dest = 'accesstoken', nargs = '?', help = 'access token')
     args = parser.parse_args()
 
     # make agave object and kwargs

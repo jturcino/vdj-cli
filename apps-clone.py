@@ -10,16 +10,16 @@ import urllib
 if __name__ == '__main__':
     
     # arguments
-    parser = argparse.ArgumentParser()
-    parser.add_argument('-a', '--appID', dest = 'appID', nargs = '?')
-    parser.add_argument('-n', '--clone_name', dest = 'clone_name', default = '', nargs = '?')
-    parser.add_argument('-s', '--deployment_system', dest = 'deployment_system', nargs = '?')
-    parser.add_argument('-e', '--execution_system', dest = 'execution_system', nargs = '?')
-    parser.add_argument('-x', '--version', dest = 'version', default = '', nargs = '?')
-    parser.add_argument('-d', '--deployment_path', dest = 'deployment_path', nargs = '?')
-    parser.add_argument('-f', '--description_file', dest = 'description_file', default = '', nargs = '?')
-    parser.add_argument('-v', '--verbose', dest = 'verbose', action = 'store_true')
-    parser.add_argument('-z', '--accesstoken', dest = 'accesstoken', nargs = '?')
+    parser = argparse.ArgumentParser(description = 'Creates a private copy of a public application. Only published apps may be cloned.')
+    parser.add_argument('-a', '--appID', dest = 'appID', nargs = '?', help = 'application ID')
+    parser.add_argument('-n', '--clone_name', dest = 'clone_name', default = '', nargs = '?', help = 'name of cloned app. If this flag is not used, user\'s name will be appended to the current app name.')
+    parser.add_argument('-s', '--deployment_system', dest = 'deployment_system', nargs = '?', help = 'deployment system for the cloned app')
+    parser.add_argument('-e', '--execution_system', dest = 'execution_system', nargs = '?', help = 'execution system for the cloned app')
+    parser.add_argument('-x', '--version', dest = 'version', default = '', nargs = '?', help = 'version of cloned app. Defaults to current app\'s version number.')
+    parser.add_argument('-d', '--deployment_path', dest = 'deployment_path', nargs = '?', help = 'deployment path for cloned app on deployment system')
+    parser.add_argument('-f', '--description_file', dest = 'description_file', default = '', nargs = '?', help = 'file containing JSON clone description. Only appID is needed if this flag is used.')
+    parser.add_argument('-v', '--verbose', dest = 'verbose', action = 'store_true', help = 'verbose output')
+    parser.add_argument('-z', '--accesstoken', dest = 'accesstoken', nargs = '?', help = 'access token')
     args = parser.parse_args()
 
     # make agave object and kwargs
