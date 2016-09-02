@@ -4,11 +4,12 @@ import vdjpy
 import argparse
 import os.path
 import sys
+import requests.exceptions
 
 if __name__ == '__main__':
 
     # arguments
-    parser = argparse.ArgumentParser(description = 'Download a file from a remote system. System defaults to data.vdjserver.org. Recursive file downloads not yet supported.')
+    parser = argparse.ArgumentParser(description = 'Download a file from a remote system. System defaults to data.vdjserver.org. Recursive file downloads not yet supported. Only file downloads are supported.')
     parser.add_argument('-s', '--systemID', dest = 'systemID', default = 'data.vdjserver.org', nargs = '?', help = 'system ID')
     parser.add_argument('-p', '--path', dest = 'path', nargs = '?', help = 'path to file or directory on remote system')
 #    parser.add_argument('-r', '--recursive', dest = 'recursive', action = 'store_true', help = 'download file or directory recursively')
@@ -41,8 +42,12 @@ if __name__ == '__main__':
     elif args.newfile_name is None:
 	args.newfile_name = vdjpy.prompt_user('name of file once downloaded')
     
-    # download file
-    download = my_agave.files.download(**kwargs)
+    # download file; catch error if user tries to download directory
+    try:
+        download = my_agave.files.download(**kwargs)
+    except requests.exceptions.HTTPError:
+        print file_name, 'is a directory, and recursive downloads are not yet implemented. Please try again on a file.'
+        sys.exit()
     download.raise_for_status()
 
     # write contents to file
