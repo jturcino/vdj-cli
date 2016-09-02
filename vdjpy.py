@@ -14,7 +14,7 @@ from requests.packages.urllib3.exceptions import InsecureRequestWarning # to dis
 # global constants
 base_url = 'https://vdj-agave-api.tacc.utexas.edu'
 token_url = 'https://vdjserver.org:443/api/v1/token'
-projects_cache = './.vdjprojects'
+projects_cache = '~/.vdjprojects'
 user_cache = '~/.vdjapi'
 data_url = 'data.vdjserver.org/'
 
