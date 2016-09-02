@@ -61,7 +61,7 @@ $ vdj files pems rm
 ```
 Use the `-h` flag with each command to see an explanation of their usage and function.
 
-To upload or import a file such that it is visible on vdjserver.org, use:
+To upload or import a file such that it is visible on [vdjserver.org](https://vdjserver.org/), use:
 ```
 $ vdj files upload -p myproject -f myfile
 $ vdj files import -p myproject -u importURL
@@ -78,4 +78,4 @@ $ vdj profiles
 $ vdj systems
 ```
 
-Additionally, there is a set of nonspecific files commands not supported by bash complete. These commands are distinguishable from vdj-specific commands in their naming structure. vdj-specific commands are named vdj-files-\*, while nonspecific commands are named files-\*. These commands do not update metadata, which means their effects will not be visible on vdjserver.org. In short, use these with caution!
+Additionally, there is a set of nonspecific files commands not supported by bash complete. These commands are distinguishable from vdj-specific commands in their naming structure. vdj-specific commands are named vdj-files-\*, while nonspecific commands are named files-\*. These commands do not update metadata, which means their effects will not be visible on [vdjserver.org](https://vdjserver.org/). In short, use these with caution!
