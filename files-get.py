@@ -50,7 +50,7 @@ if __name__ == '__main__':
             print file_name, 'is a directory. Beginning recursive download.'
             args.recursive = True
 
-    # if recursive, download (not using else becuase try/except above may chance args.recursive)
+    # if recursive, download using function
     if args.recursive is True:
         vdjpy.recursive_file_download(args.path, '.', args.systemID, my_agave)
         sys.exit()
