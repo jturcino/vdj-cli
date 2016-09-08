@@ -135,6 +135,46 @@ def read_json(filename):
                 print "JSON could not be parsed in " + filename
     return None
 
+def recursive_file_download(filepath, destfilepath, systemID, agave_object):
+    """Recursively download contents of a directory. Print concise output as files are downloaded."""
+    # standardize format of filepath and destfilepath
+    if filepath[len(filepath) - 1] == '/':
+        filepath = filepath[:len(filepath) - 1]
+    if destfilepath[len(destfilepath) - 1] == '/':
+        destfilepath = destfilepath[:len(destfilepath) - 1]
+    
+    # list files at filepath
+    files_list = agave_object.files.list(systemId = systemID,
+                                         filePath = filepath)
+
+    # if more than one entry in files_list, the item is a directory; else, it is a file
+    # if it is a directory, make the appropriate directory locally and call function recursively
+    if len(files_list) > 1:
+        # get filename
+        filename = os.path.basename(filepath)
+        
+        # update destfilepath and mkdir
+        destfilepath += '/' + filename
+        os.mkdir(destfilepath)        
+        print 'Made directory', filename, 'at path', destfilepath
+        
+        # call self on all files except '.'
+        for item in files_list:
+            if item['name'] != '.':
+                recursive_file_download(filepath + '/' + item['name'],
+                                        destfilepath, systemID, agave_object)
+    # if the item is a file, download 
+    else:
+        filename = files_list[0]['name']
+        download = agave_object.files.download(systemId = systemID,
+                                               filePath = filepath)
+        download.raise_for_status()
+        with open(os.path.expanduser(destfilepath + '/' + filename), 'w') as download_file:
+            download_file.write(download.text)
+        print 'Downloaded', filename, 'to', destfilepath
+    
+    return
+
 def recursive_file_upload(filepath, destfilepath, systemID, agave_object, verbose):
     """Recursively upload contents of a directory. Prints verbose or concise output as files are uploaded. No metadata updates."""
     filename = os.path.basename(filepath)

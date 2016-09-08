@@ -12,7 +12,7 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description = 'Download a file from a remote system. System defaults to data.vdjserver.org. Recursive file downloads not yet supported. Only file downloads are supported.')
     parser.add_argument('-s', '--systemID', dest = 'systemID', default = 'data.vdjserver.org', nargs = '?', help = 'system ID')
     parser.add_argument('-p', '--path', dest = 'path', nargs = '?', help = 'path to file or directory on remote system')
-#    parser.add_argument('-r', '--recursive', dest = 'recursive', action = 'store_true', help = 'download file or directory recursively')
+    parser.add_argument('-r', '--recursive', dest = 'recursive', action = 'store_true', help = 'download file or directory recursively')
     parser.add_argument('-n', '--newfile_name', dest = 'newfile_name', default = '', nargs = '?', help = 'name of the file once downloaded. File will retain original name if this flag is not used. Not supported in recursive file downloads.')
     parser.add_argument('-z', '--accesstoken', dest = 'accesstoken', nargs = '?', help = 'access token')
     args = parser.parse_args()
@@ -42,15 +42,21 @@ if __name__ == '__main__':
     elif args.newfile_name is None:
 	args.newfile_name = vdjpy.prompt_user('name of file once downloaded')
     
-    # download file; catch error if user tries to download directory
-    try:
-        download = my_agave.files.download(**kwargs)
-    except requests.exceptions.HTTPError:
-        print file_name, 'is a directory, and recursive downloads are not yet implemented. Please try again on a file.'
+    # download file if not recursive; catch if user tries to download directory
+    if args.recursive is False:
+        try:
+            download = my_agave.files.download(**kwargs)
+        except requests.exceptions.HTTPError:
+            print file_name, 'is a directory. Beginning recursive download.'
+            args.recursive = True
+
+    # if recursive, download (not using else becuase try/except above may chance args.recursive)
+    if args.recursive is True:
+        vdjpy.recursive_file_download(args.path, '.', args.systemID, my_agave)
         sys.exit()
-    download.raise_for_status()
 
     # write contents to file
+    download.raise_for_status()
     with open(os.path.expanduser(args.newfile_name), 'w') as download_file:
         download_file.write(download.text)
 
