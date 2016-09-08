@@ -26,9 +26,9 @@ auth-tokens-create 		done in vdj-login
 auth-tokens-refresh 		done in vdj-login
 
 files-list 			done
-files-upload 			done (recursion optional)
+files-upload 			done with recursion
 files-import			done
-files-get 			done, BUT no recursion
+files-get 			done with recursion
 files-pems-list			done
 files-pems-update		done
 files-pems-delete		done
