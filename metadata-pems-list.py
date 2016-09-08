@@ -34,13 +34,18 @@ if __name__ == '__main__':
 
     # list permissions
     my_agave = vdjpy.make_vdj_agave(args.accesstoken)
-    pems = my_agave.meta.listMetadataPermissions(**kwargs)
+    pems_list = my_agave.meta.listMetadataPermissions(**kwargs)
 
     # -v
     if args.verbose:
-        print json.dumps(pems, default = vdjpy.json_serial, sort_keys = True, indent = 4, separators = (',', ': '))
+        print json.dumps(pems_list, default = vdjpy.json_serial, sort_keys = True, indent = 4, separators = (',', ': '))
 
     # if no -v
     else:
-        for item in pems:
-            print item['username'], '\n\t read:', item['permission']['read'], '\n\twrite:', item['permission']['write']
+        for item in pems_list:
+            user_pems = ''
+            if item['permission']['read'] is True:
+                user_pems+='r'
+            if item['permission']['write'] is True:
+                user_pems+='w'
+            print item['username'], user_pems
