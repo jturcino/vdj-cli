@@ -9,7 +9,7 @@ import requests.exceptions
 if __name__ == '__main__':
 
     # arguments
-    parser = argparse.ArgumentParser(description = 'Download a file from a remote system. System defaults to data.vdjserver.org. Recursive file downloads not yet supported. Only file downloads are supported.')
+    parser = argparse.ArgumentParser(description = 'Download a file from a remote system. System defaults to data.vdjserver.org. Recursive file downloads supported.')
     parser.add_argument('-s', '--systemID', dest = 'systemID', default = 'data.vdjserver.org', nargs = '?', help = 'system ID')
     parser.add_argument('-p', '--path', dest = 'path', nargs = '?', help = 'path to file or directory on remote system')
     parser.add_argument('-r', '--recursive', dest = 'recursive', action = 'store_true', help = 'download file or directory recursively')
