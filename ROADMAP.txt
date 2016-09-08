@@ -44,6 +44,7 @@ jobs-delete			done
 jobs-history			done
 jobs-pems-list			done
 jobs-pems-update		done
+jobs-pems-delete		done
 jobs-submit			done
 jobs-status			done
 
@@ -52,6 +53,7 @@ metadata-delete			done
 metadata-list 			done
 metadata-pems-addupdate		done
 metadata-pems-list		limit/offset not working, otherwise done
+metadata-pems-delete		done
 
 notifications-addupdate		done
 notifications-list		done
