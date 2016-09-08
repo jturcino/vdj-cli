@@ -37,14 +37,17 @@ if __name__ == '__main__':
     # -f
     if args.file_upload is None:
         args.file_upload = vdjpy.prompt_user('file to upload')
-    try:
-        kwargs['fileToUpload'] = open(args.file_upload)
-    except IOError:
-	print args.file_upload, 'is a directory. Beginning recursive upload'
-	args.recursive = True
 
-    # -r
-    if args.recursive:
+    # open file for upload if not recursive; catch if user tries to upload directory
+    if args.recursive is False:
+        try:
+            kwargs['fileToUpload'] = open(args.file_upload)
+        except IOError:
+	    print args.file_upload, 'is a directory. Beginning recursive upload'
+	    args.recursive = True
+
+    # if recursive, upload using function
+    if args.recursive is True:
         vdjpy.recursive_file_upload(args.file_upload, args.path, args.systemID, my_agave, args.verbose)
         sys.exit()
 

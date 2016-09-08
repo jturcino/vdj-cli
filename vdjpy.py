@@ -148,12 +148,9 @@ def recursive_file_download(filepath, destfilepath, systemID, agave_object):
                                          filePath = filepath)
 
     # if more than one entry in files_list, the item is a directory; else, it is a file
-    # if it is a directory, make the appropriate directory locally and call function recursively
+    # if it is a directory, make corresponding directory locally, update destfilepath,  and call function recursively
     if len(files_list) > 1:
-        # get filename
         filename = os.path.basename(filepath)
-        
-        # update destfilepath and mkdir
         destfilepath += '/' + filename
         os.mkdir(destfilepath)        
         print 'Made directory', filename, 'at path', destfilepath
@@ -163,7 +160,7 @@ def recursive_file_download(filepath, destfilepath, systemID, agave_object):
             if item['name'] != '.':
                 recursive_file_download(filepath + '/' + item['name'],
                                         destfilepath, systemID, agave_object)
-    # if the item is a file, download 
+    # if a file, download 
     else:
         filename = files_list[0]['name']
         download = agave_object.files.download(systemId = systemID,
@@ -176,27 +173,37 @@ def recursive_file_download(filepath, destfilepath, systemID, agave_object):
     return
 
 def recursive_file_upload(filepath, destfilepath, systemID, agave_object, verbose):
-    """Recursively upload contents of a directory. Prints verbose or concise output as files are uploaded. No metadata updates."""
+    """Recursively upload contents of a directory. Print verbose or concise output as files are uploaded. Does not update metadata."""
+    # standardize format of filepath and destfilepath
+    if filepath[len(filepath) - 1] == '/':
+        filepath = filepath[:len(filepath) - 1]
+    if destfilepath[len(destfilepath) - 1] == '/':
+        destfilepath = destfilepath[:len(destfilepath) - 1]
+
+    # get filename
     filename = os.path.basename(filepath)
-    if destfilepath[len(destfilepath) - 1] != '/':
-        destfilepath += '/'
+
+    # if directory: make corresponding directory remotely, update destfilepath, and call function recursively 
     if os.path.isdir(filepath) is True:
         mkdir = agave_object.files.manage(systemId = systemID,
-                                  filePath = destfilepath,
-                                  body = {'action': 'mkdir',
+                            	          filePath = destfilepath,
+                                  	  body = {'action': 'mkdir',
                                           'path': filename})
         if verbose:
             print json.dumps(mkdir, default = vdjpy.json_serial, sort_keys = True, indent = 4, separators = (',', ': '))
         else:
             print 'Made directory', filename, 'at path', destfilepath
-        destfilepath += filename + '/'
+        destfilepath += '/' + filename
+
+        # call self for all items in directory
         for item in os.listdir(filepath):
             recursive_file_upload(filepath + '/' + item, destfilepath, systemID, agave_object, verbose)
+    # if a file, upload
     else:
         file_upload = agave_object.files.importData(systemId = systemID,
-                                      filePath = destfilepath,
-                                      fileToUpload = open(filepath),
-                                      fileName = filename)
+                                  		    filePath = destfilepath,
+                                      		    fileToUpload = open(filepath),
+                                      		    fileName = filename)
         if verbose:
             print json.dumps(file_upload, default = vdjpy.json_serial, sort_keys = True, indent = 4, separators = (',', ': '))
         else:
