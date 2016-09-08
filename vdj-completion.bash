@@ -21,13 +21,14 @@ _vdj () {
             notification|notifications) COMPREPLY=( $(compgen -W "addupdate ls rm search" -- $cur) ) ;;
             project|projects) COMPREPLY=( $(compgen -W "create ls rm" -- $cur) ) ;;
             postit|postits) COMPREPLY=( $(compgen -W "create ls rm" -- $cur) ) ;;
-            system|systems|s) COMPREPLY=( $(compgen -W "addupdate clone disable enable history ls publish queues rm roles search setdefault unsetdefault" -- $cur) ) ;; 
+            system|systems|s) COMPREPLY=( $(compgen -W "addupdate clone disable enable history ls publish queues rm roles search setdefault unsetdefault unpublish" -- $cur) ) ;; 
         esac
 
     elif [ $COMP_CWORD -gt 2 ]; then
         prev=${COMP_WORDS[COMP_CWORD-1]}
 
         case "$prev" in
+	    pems|roles) COMPREPLY=( $(compgen -W "ls update rm" -- $cur) ) ;;
             -p) local IFS=$'\n'; COMPREPLY=($(compgen -W "$(vdj-projects-list.py | awk '{$NF=""; print "\x27" $0 }' | sed "s/ $/\x27/" | sed "s/ /\\ /g" )" -- $cur)) ;;
         esac
     fi
