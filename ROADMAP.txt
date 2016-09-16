@@ -79,7 +79,7 @@ systems-unpublish		done CANNOT TEST
 
 other endpoints for essentially a v2 release:
 auth-check
-apps-clone
+apps-clone			done
 apps-disable
 apps-enable
 apps-erase
@@ -91,7 +91,7 @@ clients-subscriptions-list
 clients-subscriptions-update
 files-index
 files-publish
-jobs resubmit
+jobs-resubmit			done
 jobs-run-this
 jobs-search
 jobs-template - use existing as long as we can?
