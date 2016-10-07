@@ -58,7 +58,7 @@ case "$1" in
                         update)       shift; jobs-pems-update.py "$@";;
                     esac;;
 
-            resubmit)       shift; echo "Not currently implemented";;
+            resubmit)       shift; jobs-resubmit.py "$@";;
             rm|delete)      shift; jobs-delete.py "$@";;
             run)            shift; echo "Not currently implemented";;
             search)         shift; echo "Not currently implemented";;
