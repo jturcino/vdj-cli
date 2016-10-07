@@ -22,6 +22,7 @@ _vdj () {
             project|projects) COMPREPLY=( $(compgen -W "create ls rm" -- $cur) ) ;;
             postit|postits) COMPREPLY=( $(compgen -W "create ls rm" -- $cur) ) ;;
             system|systems|s) COMPREPLY=( $(compgen -W "addupdate clone disable enable history ls publish queues rm roles search setdefault unsetdefault unpublish" -- $cur) ) ;; 
+	    *) COMPREPLY=( $(compgen -f "${cur}") ) ;;
         esac
 
     elif [ $COMP_CWORD -gt 2 ]; then
