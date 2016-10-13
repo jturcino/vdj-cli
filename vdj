@@ -68,7 +68,13 @@ case "$1" in
             *)              jobs-list.py "$@";;
         esac;;
 
-  login)    shift; vdj-login.py "$@";;
+  login)    shift;
+	case $1 in
+	    check)	    shift; vdj-auth-check.py "$@";;
+	    create)	    shift; vdj-login.py "$@";;
+	    refresh)	    shift; vdj-login.py -r "$@";;
+	    *)		    vdj-login.py "$@";;
+	esac;;
 
   metadata) shift;
         case $1 in

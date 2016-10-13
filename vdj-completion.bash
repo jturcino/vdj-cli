@@ -16,6 +16,7 @@ _vdj () {
             app|apps) COMPREPLY=( $(compgen -W "addupdate clone disable enable erase history ls pems publish rm search" -- $cur) ) ;;
             file|files) COMPREPLY=( $(compgen -W "cp download history import index ls mv pems publish rename rm upload" -- $cur) ) ;;
             job|jobs) COMPREPLY=( $(compgen -W "history ls output pems resubmit rm run search status submit template" -- $cur) ) ;;
+	    login) COMPREPLY=( $(compgen -W "check create refresh" -- $cur) );;
             metadata) COMPREPLY=( $(compgen -W "addupdate ls pems schema rm" -- $cur) ) ;;
             monitor|monitors) COMPREPLY=( $(compgen -W "addupdate checks ls rm" -- $cur) ) ;;
             notification|notifications) COMPREPLY=( $(compgen -W "addupdate ls rm search" -- $cur) ) ;;
