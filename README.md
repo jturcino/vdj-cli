@@ -7,8 +7,7 @@ Installation using GitHub
 -------------------------
 
 ```
-$ git init
-$ git pull https://github.com/jturcino/vdj-cli.git
+$ git clone https://github.com/jturcino/vdj-cli.git
 ```
 
 Set Up
