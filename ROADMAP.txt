@@ -78,7 +78,7 @@ systems-unpublish		done CANNOT TEST
 
 
 other endpoints for essentially a v2 release:
-auth-check
+auth-check			done
 apps-clone			done
 apps-disable
 apps-enable
