@@ -20,7 +20,7 @@ $ source vdj-completion.bash
 
 Now, pull a token to access VDJServer. This requires an account, which can be created through the [website](https://vdjserver.org/). The -s flag caches the token in a file (~/.vdjapi); if you do not want to save the token for future use, simply leave off this flag.
 ```
-$ vdj login -s -u myusername
+$ vdj login create -s -u myusername
 ```
 
 Usage
@@ -28,7 +28,11 @@ Usage
 
 A valid access token is required to use any of the commands in this CLI. Once you have cached an access token the first time, you may refresh expired access tokens using your cache:
 ```
-$ vdj login -r -s
+$ vdj login refresh -s
+```
+You may check the expiration status of your access token at any time if the token is cached:
+```
+$ vdj login check
 ```
 If you prefer to not cache your access token, you must manually pass an access token to each command you run via the `-z` flag.
 
