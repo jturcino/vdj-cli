@@ -94,10 +94,10 @@ case "$1" in
 
   monitors) shift;
         case $1 in
-            addupdate)      shift; echo "Not currently implemented";;
-            checks)         shift; echo "Not currently implemented";;
+            addupdate)      shift; monitors-add.py "$@";;
+            checks)         shift; monitors-checks-list.py "$@";;
             ls|list)        shift; monitors-list.py "$@";;
-            rm|delete)      shift; echo "Not currently implemented";;
+            rm|delete)      shift; monitors-delete.py "$@";;
             *)              monitors-list.py "$@";;
         esac;;
 

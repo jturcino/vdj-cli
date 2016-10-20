@@ -70,11 +70,12 @@ $ vdj files upload -p myproject -f myfile
 $ vdj files import -p myproject -u importURL
 ```
 
-A set of commands for apps, jobs, metadata, notifications, postits, profiles, and systems is also included. To see the set of commands for each of these, do one of the following and hit tab three times:
+A set of commands for apps, jobs, metadata, monitors, notifications, postits, profiles, and systems is also included. To see the set of commands for each of these, do one of the following and hit tab twice:
 ```
 $ vdj apps 
 $ vdj jobs
 $ vdj metadata
+$ vdj monitors
 $ vdj notifications
 $ vdj postits
 $ vdj profiles
