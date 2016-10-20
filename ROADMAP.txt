@@ -101,11 +101,11 @@ metadata-schema-delete
 metadata-schema-list
 metadata-schema-pems-addupdate
 metadata-schema-pems-list
-monitors-addupdate
-monitors-checks-list
+monitors-addupdate		add done, update not working
+monitors-checks-list		done (start and end date not working)
 monitors-common.sh
-monitors-delete
-monitors-list
+monitors-delete			done
+monitors-list			done
 notifications-list-failures
 notifications-search
 transforms-list
